@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Rookie.Ecom.MetaShop.Identity.Migrations
 {
-    public partial class Init_IdentityUser : Migration
+    public partial class InitialAspNetIdentityMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

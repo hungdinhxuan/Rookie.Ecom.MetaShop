@@ -1,12 +1,13 @@
 ﻿using IdentityModel;
+using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Mappers;
+using IdentityServer4.EntityFramework.Storage;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Rookie.Ecom.MetaShop.Identity.Data;
-using Serilog;
 using System;
 using System.Linq;
-using System.Reflection;
 using System.Security.Claims;
 
 namespace Rookie.Ecom.MetaShop.Identity
@@ -17,91 +18,130 @@ namespace Rookie.Ecom.MetaShop.Identity
         {
             var services = new ServiceCollection();
             services.AddLogging();
+            services.AddDbContext<AspNetIdentityDbContext>(
+                options => options.UseSqlServer(connectionString)
+            );
 
-            string assembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-
-            services.AddDbContext<AspNetIdentityDbContext>(options =>
-                options.UseSqlServer(connectionString,
-                b => b.MigrationsAssembly(assembly)));
-
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services
+                .AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<AspNetIdentityDbContext>()
                 .AddDefaultTokenProviders();
 
-            using (var serviceProvider = services.BuildServiceProvider())
-            {
-                using (var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            services.AddOperationalDbContext(
+                options =>
                 {
-                    var context = scope.ServiceProvider.GetService<AspNetIdentityDbContext>();
-                    context.Database.Migrate();
+                    options.ConfigureDbContext = db =>
+                        db.UseSqlServer(
+                            connectionString,
+                            sql => sql.MigrationsAssembly(typeof(SeedData).Assembly.FullName)
+                        );
+                }
+            );
+            services.AddConfigurationDbContext(
+                options =>
+                {
+                    options.ConfigureDbContext = db =>
+                        db.UseSqlServer(
+                            connectionString,
+                            sql => sql.MigrationsAssembly(typeof(SeedData).Assembly.FullName)
+                        );
+                }
+            );
 
-                    var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-                    var alice = userMgr.FindByNameAsync("alice").Result;
-                    if (alice == null)
-                    {
-                        alice = new ApplicationUser
-                        {
-                            UserName = "alice",
-                            Email = "AliceSmith@email.com",
-                            EmailConfirmed = true,
-                        };
-                        var result = userMgr.CreateAsync(alice, "Pass123$").Result;
-                        if (!result.Succeeded)
-                        {
-                            throw new Exception(result.Errors.First().Description);
-                        }
+            var serviceProvider = services.BuildServiceProvider();
 
-                        result = userMgr.AddClaimsAsync(alice, new Claim[]{
-                            new Claim(JwtClaimTypes.Name, "Alice Smith"),
-                            new Claim(JwtClaimTypes.GivenName, "Alice"),
-                            new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                            new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
-                        }).Result;
-                        if (!result.Succeeded)
-                        {
-                            throw new Exception(result.Errors.First().Description);
-                        }
-                        Log.Debug("alice created");
-                    }
-                    else
-                    {
-                        Log.Debug("alice already exists");
-                    }
+            using var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            scope.ServiceProvider.GetService<PersistedGrantDbContext>().Database.Migrate();
 
-                    var bob = userMgr.FindByNameAsync("bob").Result;
-                    if (bob == null)
-                    {
-                        bob = new ApplicationUser
-                        {
-                            UserName = "bob",
-                            Email = "BobSmith@email.com",
-                            EmailConfirmed = true
-                        };
-                        var result = userMgr.CreateAsync(bob, "Pass123$").Result;
-                        if (!result.Succeeded)
-                        {
-                            throw new Exception(result.Errors.First().Description);
-                        }
+            var context = scope.ServiceProvider.GetService<ConfigurationDbContext>();
+            context.Database.Migrate();
 
-                        result = userMgr.AddClaimsAsync(bob, new Claim[]{
-                            new Claim(JwtClaimTypes.Name, "Bob Smith"),
-                            new Claim(JwtClaimTypes.GivenName, "Bob"),
-                            new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                            new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
+            EnsureSeedData(context);
+
+            var ctx = scope.ServiceProvider.GetService<AspNetIdentityDbContext>();
+            ctx.Database.Migrate();
+            EnsureUsers(scope);
+        }
+
+        private static void EnsureUsers(IServiceScope scope)
+        {
+            var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+            var angella = userMgr.FindByNameAsync("angella").Result;
+            if (angella == null)
+            {
+                angella = new IdentityUser
+                {
+                    UserName = "angella",
+                    Email = "angella.freeman@email.com",
+                    EmailConfirmed = true
+                };
+                var result = userMgr.CreateAsync(angella, "Pass123$").Result;
+                if (!result.Succeeded)
+                {
+                    throw new Exception(result.Errors.First().Description);
+                }
+
+                result =
+                    userMgr.AddClaimsAsync(
+                        angella,
+                        new Claim[]
+                        {
+                            new Claim(JwtClaimTypes.Name, "Angella Freeman"),
+                            new Claim(JwtClaimTypes.GivenName, "Angella"),
+                            new Claim(JwtClaimTypes.FamilyName, "Freeman"),
+                            new Claim(JwtClaimTypes.WebSite, "http://angellafreeman.com"),
                             new Claim("location", "somewhere")
-                        }).Result;
-                        if (!result.Succeeded)
-                        {
-                            throw new Exception(result.Errors.First().Description);
                         }
-                        Log.Debug("bob created");
-                    }
-                    else
-                    {
-                        Log.Debug("bob already exists");
-                    }
+                    ).Result;
+                if (!result.Succeeded)
+                {
+                    throw new Exception(result.Errors.First().Description);
                 }
             }
+        }
+
+        private static void EnsureSeedData(ConfigurationDbContext context)
+        {
+            if (!context.Clients.Any())
+            {
+                foreach (var client in Config.Clients.ToList())
+                {
+                    context.Clients.Add(client.ToEntity());
+                }
+
+                context.SaveChanges();
+            }
+
+            if (!context.IdentityResources.Any())
+            {
+                foreach (var resource in Config.IdentityResources.ToList())
+                {
+                    context.IdentityResources.Add(resource.ToEntity());
+                }
+
+                context.SaveChanges();
+            }
+
+            if (!context.ApiScopes.Any())
+            {
+                foreach (var resource in Config.ApiScopes.ToList())
+                {
+                    context.ApiScopes.Add(resource.ToEntity());
+                }
+
+                context.SaveChanges();
+            }
+
+            /*if (!context.ApiResources.Any())
+            {
+                foreach (var resource in Config.ApiResources.ToList())
+                {
+                    context.ApiResources.Add(resource.ToEntity());
+                }
+
+                context.SaveChanges();
+            }*/
         }
     }
 }
