@@ -20,6 +20,7 @@ namespace Rookie.Ecom.MetaShop.Customer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+            services.AddRazorPages().AddRazorRuntimeCompilation();
 
             JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
@@ -57,7 +58,8 @@ namespace Rookie.Ecom.MetaShop.Customer
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseStatusCodePages();
+            app.UseStatusCodePagesWithRedirects("/Errors/Error{0}");
             app.UseRouting();
 
             app.UseAuthentication();
