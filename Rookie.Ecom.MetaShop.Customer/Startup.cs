@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Rookie.Ecom.MetaShop.Business;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace Rookie.Ecom.MetaShop.Customer
@@ -21,6 +22,7 @@ namespace Rookie.Ecom.MetaShop.Customer
         {
             services.AddRazorPages();
             services.AddRazorPages().AddRazorRuntimeCompilation();
+            services.AddBusinessLayer(Configuration);
 
             JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 

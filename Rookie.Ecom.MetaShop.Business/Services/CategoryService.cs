@@ -27,6 +27,10 @@ namespace Rookie.Ecom.MetaShop.Business.Services
 
         public async Task<CategoryDto> AddAsync(CategoryDto categoryDto)
         {
+            if (categoryDto == null)
+            {
+                throw new ArgumentNullException(nameof(categoryDto));
+            }
             var category = _mapper.Map<Category>(categoryDto);
             var item = await _baseRepository.AddAsync(category);
             return _mapper.Map<CategoryDto>(item);

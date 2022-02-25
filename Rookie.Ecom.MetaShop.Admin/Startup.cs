@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Rookie.Ecom.MetaShop.Business;
+
 
 namespace Rookie.Ecom.MetaShop.Admin
 {
@@ -22,6 +24,10 @@ namespace Rookie.Ecom.MetaShop.Admin
         {
 
             services.AddControllersWithViews();
+            services.AddHttpContextAccessor();
+            services.AddBusinessLayer(Configuration);
+
+            services.AddSwaggerGen();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -47,6 +53,12 @@ namespace Rookie.Ecom.MetaShop.Admin
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            app.UseSwagger()
+                 .UseSwaggerUI(c =>
+                 {
+                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                 });
 
             app.UseRouting();
 
