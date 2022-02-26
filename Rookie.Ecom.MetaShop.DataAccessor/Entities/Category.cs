@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Rookie.Ecom.MetaShop.DataAccessor.Entities
 {
@@ -13,6 +15,9 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Entities
         public string Desc { get; set; }
 
         [StringLength(maximumLength: 250)]
+        [Column("image_url")]
         public string ImageUrl { get; set; }
+
+        public List<Category> Categories { get; set; }
     }
 }

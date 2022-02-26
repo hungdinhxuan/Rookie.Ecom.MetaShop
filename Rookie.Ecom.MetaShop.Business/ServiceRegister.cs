@@ -15,6 +15,8 @@ namespace Rookie.Ecom.MetaShop.Business
             services.AddDataAccessorLayer(configuration);
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IProductService, ProductService>();
+
         }
     }
 }

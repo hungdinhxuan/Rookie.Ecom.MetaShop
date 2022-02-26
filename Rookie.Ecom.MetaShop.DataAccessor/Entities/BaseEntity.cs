@@ -11,10 +11,11 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Entities
         public Guid Id { get; set; }
 
         [Column("created_date")]
-
+        [DataType(DataType.Date)]
         public DateTime CreatedDate { get; set; }
 
         [Column("updated_date")]
+        [DataType(DataType.Date)]
         public DateTime UpdatedDate { get; set; }
 
         [Column("created_by")]

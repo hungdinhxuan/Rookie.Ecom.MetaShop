@@ -1,23 +1,29 @@
-﻿using EnsureThat;
+﻿using AutoMapper;
+using EnsureThat;
 using Microsoft.AspNetCore.Mvc;
+using Rookie.Ecom.MetaShop.Business;
 using Rookie.Ecom.MetaShop.Business.Interfaces;
+using Rookie.Ecom.MetaShop.Contracts;
 using Rookie.Ecom.MetaShop.Contracts.Constants;
 using Rookie.Ecom.MetaShop.Contracts.Dtos;
+using Rookie.Ecom.MetaShop.Contracts.Dtos.Category;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Rookie.Ecom.MetaShop.Admin.Controllers
 {
-    [Route("api/[controller]")]
+    [Route(Endpoints.Category)]
     [ApiController]
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
 
+
         public CategoryController(ICategoryService categoryService)
         {
             _categoryService = categoryService;
+
         }
 
         [HttpDelete("{id}")]
@@ -39,10 +45,11 @@ namespace Rookie.Ecom.MetaShop.Admin.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<CategoryDto>> CreateAsync([FromBody] CategoryDto categoryDto)
+        public async Task<ActionResult<CategoryDto>> CreateAsync([FromBody] CreateCategoryDto newCategoryDto)
         {
-            Ensure.Any.IsNotNull(categoryDto, nameof(categoryDto));
-            var asset = await _categoryService.AddAsync(categoryDto);
+            Ensure.Any.IsNotNull(newCategoryDto, nameof(newCategoryDto));
+
+            var asset = await _categoryService.AddAsync(newCategoryDto);
             return Created(Endpoints.Category, asset);
         }
 
@@ -54,6 +61,11 @@ namespace Rookie.Ecom.MetaShop.Admin.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("find")]
+        public async Task<PagedResponseModel<CategoryDto>>
+            FindAsync(string name, int page = 1, int limit = 10)
+            => await _categoryService.PagedQueryAsync(name, page, limit);
 
     }
 }

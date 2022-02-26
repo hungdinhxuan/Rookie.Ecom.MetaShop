@@ -4,6 +4,7 @@ using Moq;
 using Rookie.Ecom.MetaShop.Business;
 using Rookie.Ecom.MetaShop.Business.Services;
 using Rookie.Ecom.MetaShop.Contracts.Dtos;
+using Rookie.Ecom.MetaShop.Contracts.Dtos.Category;
 using Rookie.Ecom.MetaShop.DataAccessor.Entities;
 using Rookie.Ecom.MetaShop.DataAccessor.Interfaces;
 using System;
@@ -65,6 +66,7 @@ namespace Rookie.Ecom.UnitTests.Business
             result.Should().NotBeNull();
             result.Id.Should().Be(entity.Id);
 
+
             _categoryRepository.Verify(mock => mock.GetByIdAsync(entity.Id), Times.Once);
         }
 
@@ -85,10 +87,10 @@ namespace Rookie.Ecom.UnitTests.Business
                 Name = "name"
             };
 
-            var categoryDto = new CategoryDto()
+            var newCategoryDto = new CreateCategoryDto()
             {
                 Desc = "code",
-                Id = Guid.NewGuid(),
+                ImageUrl = "string>imgurl",
                 Name = "name"
             };
             _categoryRepository.Setup(x => x
@@ -97,11 +99,32 @@ namespace Rookie.Ecom.UnitTests.Business
 
             _categoryRepository.Setup(x => x.AddAsync(It.IsAny<Category>())).Returns(Task.FromResult(category));
 
-            var result = await _categoryService.AddAsync(categoryDto);
+            var result = await _categoryService.AddAsync(newCategoryDto);
 
             result.Should().NotBeNull();
 
             _categoryRepository.Verify(mock => mock.AddAsync(It.IsAny<Category>()), Times.Once());
         }
+
+        /*[Fact]
+        public async Task GetCategoryByNameShouldReturnObjectAsync()
+        {
+            var entity = new Category()
+            {
+                Desc = "code",
+                ImageUrl = "string>imgurl",
+                Name = "name",
+                Id = Guid.NewGuid(),
+            };
+
+            _categoryRepository.Setup(x => x.GetByIdAsync(entity.Id)).Returns(Task.FromResult(entity));
+            var result = await _categoryService.GetByNameAsync(entity.Name);
+            result.Should().NotBeNull();
+            result.Name.Should().Be(entity.Name);
+
+            _categoryRepository.Verify(mock => mock.GetByIdAsync(entity.Id), Times.Once);
+        }*/
+
+
     }
 }

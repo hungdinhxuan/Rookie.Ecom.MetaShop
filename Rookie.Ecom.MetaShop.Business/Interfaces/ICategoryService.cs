@@ -1,5 +1,6 @@
 ﻿using Rookie.Ecom.MetaShop.Contracts;
 using Rookie.Ecom.MetaShop.Contracts.Dtos;
+using Rookie.Ecom.MetaShop.Contracts.Dtos.Category;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Rookie.Ecom.MetaShop.Business.Interfaces
 
         Task<CategoryDto> GetByNameAsync(string name);
 
-        Task<CategoryDto> AddAsync(CategoryDto categoryDto);
+        Task<CategoryDto> AddAsync(CreateCategoryDto categoryDto);
 
         Task DeleteAsync(Guid id);
 

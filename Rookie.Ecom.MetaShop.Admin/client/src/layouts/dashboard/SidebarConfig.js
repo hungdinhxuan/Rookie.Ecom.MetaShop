@@ -16,6 +16,12 @@ const sidebarConfig = [
     path: '/dashboard/user',
     icon: getIcon('eva:people-fill')
   },
+
+  {
+    title: 'category',
+    path: '/dashboard/category',
+    icon: getIcon('bx:category-alt')
+  },
   {
     title: 'product',
     path: '/dashboard/products',

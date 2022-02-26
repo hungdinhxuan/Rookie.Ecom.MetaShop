@@ -9,6 +9,7 @@ import DashboardApp from './pages/DashboardApp';
 import Products from './pages/Products';
 import Blog from './pages/Blog';
 import User from './pages/User';
+import Category from './pages/Category';
 import NotFound from './pages/Page404';
 
 // ----------------------------------------------------------------------
@@ -22,6 +23,7 @@ export default function Router() {
         { path: 'app', element: <DashboardApp /> },
         { path: 'user', element: <User /> },
         { path: 'products', element: <Products /> },
+        { path: 'category', element: <Category /> },
         { path: 'blog', element: <Blog /> }
       ]
     },

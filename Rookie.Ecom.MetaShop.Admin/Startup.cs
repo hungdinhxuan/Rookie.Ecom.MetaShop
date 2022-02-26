@@ -19,13 +19,29 @@ namespace Rookie.Ecom.MetaShop.Admin
 
         public IConfiguration Configuration { get; }
 
+        public string AllOrigins = "AllowAllOrigins";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
+
+
+
             services.AddControllersWithViews();
             services.AddHttpContextAccessor();
             services.AddBusinessLayer(Configuration);
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: AllOrigins,
+                                  builder =>
+                                  {
+                                      builder.AllowAnyOrigin()
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod();
+                                  });
+            });
 
             services.AddSwaggerGen();
 
@@ -61,7 +77,7 @@ namespace Rookie.Ecom.MetaShop.Admin
                  });
 
             app.UseRouting();
-
+            app.UseCors(AllOrigins);
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
