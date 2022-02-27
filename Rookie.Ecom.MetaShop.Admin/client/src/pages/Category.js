@@ -1,6 +1,6 @@
-import { filter } from 'lodash';
-import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { filter } from "lodash";
+import { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 // material
 import {
   Card,
@@ -14,29 +14,40 @@ import {
   Container,
   Typography,
   TableContainer,
-  TablePagination
-} from '@mui/material';
+  TablePagination,
+  
+} from "@mui/material";
 // components
-import Page from '../components/Page';
-import Scrollbar from '../components/Scrollbar';
-import Iconify from '../components/Iconify';
-import SearchNotFound from '../components/SearchNotFound';
-import { CategoryListHead, CategoryListToolbar, CategoryMoreMenu } from '../sections/@dashboard/categories';
+import Page from "../components/Page";
+import Scrollbar from "../components/Scrollbar";
+import Iconify from "../components/Iconify";
+import SearchNotFound from "../components/SearchNotFound";
+import {
+  CategoryListHead,
+  CategoryListToolbar,
+  CategoryMoreMenu,
+} from "../sections/@dashboard/categories";
 // ----------------------------------------------------------------------
 
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {getAllCategoriesAsync} from '../features/categorySlice'
+import { getAllCategoriesAsync, setShowDeleteDialog } from "../features/categorySlice";
 
 // ----------------------------------------------------------------------
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 const TABLE_HEAD = [
-  { id: 'id', label: 'Id', alignRight: false },
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'desc', label: 'Description', alignRight: false },
-  { id: 'img_url', label: 'Image', alignRight: false },
-  { id: 'created_by', label: 'Created By', alignRight: false },
-  { id: '' }
+  { id: "id", label: "Id", alignRight: false },
+  { id: "name", label: "Name", alignRight: false },
+  { id: "desc", label: "Description", alignRight: false },
+  { id: "img_url", label: "Image", alignRight: false },
+  { id: "created_by", label: "Created By", alignRight: false },
+  { id: "" },
 ];
 
 // ----------------------------------------------------------------------
@@ -52,7 +63,7 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-  return order === 'desc'
+  return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
@@ -65,24 +76,43 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_Category) => _Category.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(
+      array,
+      (_Category) =>
+        _Category.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+    );
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
 export default function Category() {
- const CategoryLIST = useSelector(state => state.category.categories)
- const dispatch = useDispatch();
+  const CategoryLIST = useSelector((state) => state.category.categories);
+ 
+  const dispatch = useDispatch();
+
+  const [open, setOpen] = useState(false);
+  
+
+  
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const [page, setPage] = useState(0);
-  const [order, setOrder] = useState('asc');
+  const [order, setOrder] = useState("asc");
   const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState('name');
-  const [filterName, setFilterName] = useState('');
+  const [orderBy, setOrderBy] = useState("name");
+  const [filterName, setFilterName] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
@@ -126,21 +156,30 @@ export default function Category() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - CategoryLIST.length) : 0;
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - CategoryLIST.length) : 0;
 
-  const filteredCategorys = applySortFilter(CategoryLIST, getComparator(order, orderBy), filterName);
+  const filteredCategorys = applySortFilter(
+    CategoryLIST,
+    getComparator(order, orderBy),
+    filterName
+  );
 
   const isCategoryNotFound = filteredCategorys.length === 0;
 
-
   useEffect(() => {
     dispatch(getAllCategoriesAsync());
-    }, [dispatch]);
+  }, [dispatch]);
 
   return (
     <Page title="Category | Minimal-UI">
       <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          mb={5}
+        >
           <Typography variant="h4" gutterBottom>
             Category
           </Typography>
@@ -149,6 +188,7 @@ export default function Category() {
             component={RouterLink}
             to="#"
             startIcon={<Iconify icon="eva:plus-fill" />}
+            onClick={handleClickOpen}
           >
             New Category
           </Button>
@@ -177,7 +217,7 @@ export default function Category() {
                   {filteredCategorys
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, name, desc, img_url, created_by } = row;
+                      const { id, name, desc, imageUrl, createdBy } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
 
                       return (
@@ -196,7 +236,11 @@ export default function Category() {
                             />
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
-                            <Stack direction="row" alignItems="center" spacing={2}>
+                            <Stack
+                              direction="row"
+                              alignItems="center"
+                              spacing={2}
+                            >
                               <Typography variant="subtitle2" noWrap>
                                 {id}
                               </Typography>
@@ -205,13 +249,17 @@ export default function Category() {
                           <TableCell align="left">{name}</TableCell>
                           <TableCell align="left">{desc}</TableCell>
                           <TableCell align="left">
-                            <img src={img_url} alt={name} width="100" height="100" />
+                            <img
+                              src={imageUrl}
+                              alt={name}
+                              width="100"
+                              height="100"
+                            />
                           </TableCell>
-                          <TableCell align="left">{created_by}</TableCell>
-                          
+                          <TableCell align="left">{createdBy}</TableCell>
 
                           <TableCell align="right">
-                            <CategoryMoreMenu />
+                            <CategoryMoreMenu category={row} />
                           </TableCell>
                         </TableRow>
                       );
@@ -246,6 +294,38 @@ export default function Category() {
           />
         </Card>
       </Container>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Category</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Create a new category
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Name"
+            type="text"
+            fullWidth
+            variant="outlined"
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="description"
+            label="Description"
+            type="text"
+            fullWidth
+            variant="outlined"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>Create</Button>
+        </DialogActions>
+      </Dialog>
+
+     
     </Page>
   );
 }

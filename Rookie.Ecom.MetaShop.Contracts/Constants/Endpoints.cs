@@ -4,5 +4,7 @@ namespace Rookie.Ecom.MetaShop.Contracts.Constants
     {
         public const string Category = "api/v1/category";
         public const string Product = "api/v1/product";
+        public const string FileUpload = "api/v1/fileupload";
+
     }
 }

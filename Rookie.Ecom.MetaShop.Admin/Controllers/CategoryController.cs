@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EnsureThat;
 using Microsoft.AspNetCore.Mvc;
+using Rookie.Ecom.MetaShop.Admin.Utils;
 using Rookie.Ecom.MetaShop.Business;
 using Rookie.Ecom.MetaShop.Business.Interfaces;
 using Rookie.Ecom.MetaShop.Contracts;
@@ -48,7 +49,7 @@ namespace Rookie.Ecom.MetaShop.Admin.Controllers
         public async Task<ActionResult<CategoryDto>> CreateAsync([FromBody] CreateCategoryDto newCategoryDto)
         {
             Ensure.Any.IsNotNull(newCategoryDto, nameof(newCategoryDto));
-
+            newCategoryDto.ImageUrl = await ImageUpload.SaveImage(newCategoryDto?.ImageFile);
             var asset = await _categoryService.AddAsync(newCategoryDto);
             return Created(Endpoints.Category, asset);
         }
