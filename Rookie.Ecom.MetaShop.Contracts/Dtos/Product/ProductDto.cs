@@ -19,5 +19,7 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos.Product
         public bool IsPublished { get; set; } = true;
 
         public Guid CategoryId { get; set; }
+
+        public CategoryDto Category { get; set; }
     }
 }

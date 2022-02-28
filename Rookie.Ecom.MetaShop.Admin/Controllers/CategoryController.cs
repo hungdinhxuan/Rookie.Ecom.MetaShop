@@ -49,13 +49,12 @@ namespace Rookie.Ecom.MetaShop.Admin.Controllers
         public async Task<ActionResult<CategoryDto>> CreateAsync([FromBody] CreateCategoryDto newCategoryDto)
         {
             Ensure.Any.IsNotNull(newCategoryDto, nameof(newCategoryDto));
-            newCategoryDto.ImageUrl = await ImageUpload.SaveImage(newCategoryDto?.ImageFile);
             var asset = await _categoryService.AddAsync(newCategoryDto);
             return Created(Endpoints.Category, asset);
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateAsync([FromBody] CategoryDto categoryDto)
+        public async Task<ActionResult> UpdateAsync([FromBody] UpdateCategoryDto categoryDto)
         {
             Ensure.Any.IsNotNull(categoryDto, nameof(categoryDto));
             await _categoryService.UpdateAsync(categoryDto);

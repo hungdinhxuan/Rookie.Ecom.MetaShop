@@ -25,9 +25,6 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
@@ -68,8 +65,6 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                         .HasColumnName("updated_date");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Categories");
                 });
@@ -340,13 +335,6 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                     b.ToTable("ProductRatings");
                 });
 
-            modelBuilder.Entity("Rookie.Ecom.MetaShop.DataAccessor.Entities.Category", b =>
-                {
-                    b.HasOne("Rookie.Ecom.MetaShop.DataAccessor.Entities.Category", null)
-                        .WithMany("Categories")
-                        .HasForeignKey("CategoryId");
-                });
-
             modelBuilder.Entity("Rookie.Ecom.MetaShop.DataAccessor.Entities.OrderItem", b =>
                 {
                     b.HasOne("Rookie.Ecom.MetaShop.DataAccessor.Entities.Order", "Order")
@@ -369,7 +357,7 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
             modelBuilder.Entity("Rookie.Ecom.MetaShop.DataAccessor.Entities.Product", b =>
                 {
                     b.HasOne("Rookie.Ecom.MetaShop.DataAccessor.Entities.Category", "Category")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -407,7 +395,7 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
 
             modelBuilder.Entity("Rookie.Ecom.MetaShop.DataAccessor.Entities.Category", b =>
                 {
-                    b.Navigation("Categories");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Rookie.Ecom.MetaShop.DataAccessor.Entities.Order", b =>

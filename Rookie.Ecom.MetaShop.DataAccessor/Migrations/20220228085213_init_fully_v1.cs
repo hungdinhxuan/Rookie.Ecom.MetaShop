@@ -15,9 +15,8 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Desc = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     image_url = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     updated_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     created_by = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     updated_by = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     deleted_by = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -26,12 +25,6 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Categories_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -41,8 +34,8 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     total_price = table.Column<decimal>(type: "money", nullable: false),
-                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     updated_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     created_by = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     updated_by = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     deleted_by = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -66,8 +59,8 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     is_published = table.Column<bool>(type: "bit", nullable: false),
                     category_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     updated_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     created_by = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     updated_by = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     deleted_by = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -93,8 +86,8 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                     Price = table.Column<decimal>(type: "money", nullable: false),
                     OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     updated_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     created_by = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     updated_by = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     deleted_by = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -125,8 +118,8 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                     PictureUrl = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
                     Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     product_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     updated_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     created_by = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     updated_by = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     deleted_by = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -153,8 +146,8 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                     product_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     order_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     is_rated = table.Column<bool>(type: "bit", nullable: false),
-                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     updated_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     created_by = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     updated_by = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     deleted_by = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -176,11 +169,6 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Categories_CategoryId",
-                table: "Categories",
-                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderItems_OrderId",

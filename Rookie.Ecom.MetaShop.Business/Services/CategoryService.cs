@@ -42,7 +42,7 @@ namespace Rookie.Ecom.MetaShop.Business.Services
             await _baseRepository.DeleteAsync(id);
         }
 
-        public async Task UpdateAsync(CategoryDto categoryDto)
+        public async Task UpdateAsync(UpdateCategoryDto categoryDto)
         {
             var category = _mapper.Map<Category>(categoryDto);
             await _baseRepository.UpdateAsync(category);

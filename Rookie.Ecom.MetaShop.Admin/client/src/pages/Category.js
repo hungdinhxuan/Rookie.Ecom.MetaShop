@@ -31,15 +31,12 @@ import {
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCategoriesAsync, setShowDeleteDialog } from "../features/categorySlice";
+import { getAllCategoriesAsync } from "../features/categorySlice";
 
 // ----------------------------------------------------------------------
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import CreateCategory from "src/sections/@dashboard/categories/CreateCategory";
+
+
 
 const TABLE_HEAD = [
   { id: "id", label: "Id", alignRight: false },
@@ -294,37 +291,9 @@ export default function Category() {
           />
         </Card>
       </Container>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Category</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Create a new category
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Name"
-            type="text"
-            fullWidth
-            variant="outlined"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="description"
-            label="Description"
-            type="text"
-            fullWidth
-            variant="outlined"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Create</Button>
-        </DialogActions>
-      </Dialog>
-
+      
+      <CreateCategory open={open} setOpen={setOpen}/>
+     
      
     </Page>
   );

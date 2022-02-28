@@ -22,6 +22,9 @@ namespace Rookie.Ecom.MetaShop.Business
             CreateMap<CategoryDto, Category>(memberList: AutoMapper.MemberList.None);
             CreateMap<CreateCategoryDto, Category>(memberList: AutoMapper.MemberList.None);
 
+            CreateMap<UpdateCategoryDto, Category>(memberList: AutoMapper.MemberList.None);
+
+
             CreateMap<ProductDto, Category>(memberList: AutoMapper.MemberList.None);
             CreateMap<CreateProductDto, Product>(memberList: AutoMapper.MemberList.None);
 

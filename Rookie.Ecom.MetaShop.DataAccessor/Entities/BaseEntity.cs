@@ -7,16 +7,21 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Entities
 {
     public class BaseEntity
     {
+        public BaseEntity()
+        {
+            UpdatedDate = DateTime.Now;
+            CreatedDate = UpdatedDate;
+        }
         [Key]
         public Guid Id { get; set; }
+        [Column("updated_date")]
+        [DataType(DataType.Date)]
+        public DateTime UpdatedDate { get; set; }
 
         [Column("created_date")]
         [DataType(DataType.Date)]
         public DateTime CreatedDate { get; set; }
 
-        [Column("updated_date")]
-        [DataType(DataType.Date)]
-        public DateTime UpdatedDate { get; set; }
 
         [Column("created_by")]
         public Guid? CreatedBy { get; set; }

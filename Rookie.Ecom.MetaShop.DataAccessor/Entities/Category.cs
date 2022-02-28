@@ -18,6 +18,6 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Entities
         [Column("image_url")]
         public string ImageUrl { get; set; }
 
-        public List<Category> Categories { get; set; }
+        public List<Product> Products { get; set; }
     }
 }

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 using Rookie.Ecom.MetaShop.DataAccessor.Entities;
 using System;
 using System.Linq;
@@ -28,5 +26,21 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Data
 
         public DbSet<ProductRating> ProductRatings { get; set; }
 
+
+        public override Task<int> SaveChangesAsync(
+            bool acceptAllChangesOnSuccess,
+            CancellationToken token = default)
+        {
+            foreach (var entity in ChangeTracker
+                .Entries()
+                .Where(x => x.Entity is BaseEntity && x.State == EntityState.Modified)
+                .Select(x => x.Entity)
+                .Cast<BaseEntity>())
+            {
+                entity.UpdatedDate = DateTime.Now;
+            }
+
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, token);
+        }
     }
 }

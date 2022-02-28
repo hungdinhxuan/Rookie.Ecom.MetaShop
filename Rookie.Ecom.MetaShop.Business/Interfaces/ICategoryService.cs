@@ -23,6 +23,6 @@ namespace Rookie.Ecom.MetaShop.Business.Interfaces
 
         Task DeleteAsync(Guid id);
 
-        Task UpdateAsync(CategoryDto categoryDto);
+        Task UpdateAsync(UpdateCategoryDto categoryDto);
     }
 }

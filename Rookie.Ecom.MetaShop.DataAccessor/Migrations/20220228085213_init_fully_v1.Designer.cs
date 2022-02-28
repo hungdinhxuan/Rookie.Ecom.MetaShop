@@ -10,7 +10,7 @@ using Rookie.Ecom.MetaShop.DataAccessor.Data;
 namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220226114846_init_fully_v1")]
+    [Migration("20220228085213_init_fully_v1")]
     partial class init_fully_v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,9 +25,6 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("CreatedBy")
@@ -70,8 +67,6 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                         .HasColumnName("updated_date");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Categories");
                 });
@@ -342,13 +337,6 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                     b.ToTable("ProductRatings");
                 });
 
-            modelBuilder.Entity("Rookie.Ecom.MetaShop.DataAccessor.Entities.Category", b =>
-                {
-                    b.HasOne("Rookie.Ecom.MetaShop.DataAccessor.Entities.Category", null)
-                        .WithMany("Categories")
-                        .HasForeignKey("CategoryId");
-                });
-
             modelBuilder.Entity("Rookie.Ecom.MetaShop.DataAccessor.Entities.OrderItem", b =>
                 {
                     b.HasOne("Rookie.Ecom.MetaShop.DataAccessor.Entities.Order", "Order")
@@ -371,7 +359,7 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
             modelBuilder.Entity("Rookie.Ecom.MetaShop.DataAccessor.Entities.Product", b =>
                 {
                     b.HasOne("Rookie.Ecom.MetaShop.DataAccessor.Entities.Category", "Category")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -409,7 +397,7 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
 
             modelBuilder.Entity("Rookie.Ecom.MetaShop.DataAccessor.Entities.Category", b =>
                 {
-                    b.Navigation("Categories");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Rookie.Ecom.MetaShop.DataAccessor.Entities.Order", b =>
