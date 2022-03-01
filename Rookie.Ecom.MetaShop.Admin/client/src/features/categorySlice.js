@@ -4,17 +4,21 @@ import { swalWithBootstrapButtons } from "../utils/sweetalert2";
 import { ref, deleteObject } from "firebase/storage";
 import {storage} from "../utils/firebase";
 import exactFirebaseLink from "../utils/exactFirebaseLink";
+import {LIMIT_CATEGORY_PER_PAGE} from "../app/constants";
 
 const initialState = {
   categories: [],
   category: null,
+  currentPage: 1,
+  totalPages: 1,
+  totalItems: 0,
 };
 
 export const getAllCategoriesAsync = createAsyncThunk(
   "categories/getAllCategories",
   async (values, { rejectWithValue }) => {
     try {
-      const response = await axiosClient.get(`/category`);
+      const response = await axiosClient.get(`/category/find${values}`);
       return response;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -65,11 +69,19 @@ export const categorySlice = createSlice({
     setCategory: (state, action) => {
       state.category = action.payload;
     },
+    setCurrentPage: (state, action) => {
+      state.currentPage = action.payload;
+    },
+    
   },
   extraReducers: (builder) => {
     builder
       .addCase(getAllCategoriesAsync.fulfilled, (state, action) => {
-        state.categories = action.payload.data;
+        console.log(action.payload.data);
+        state.categories = action.payload.data.items;
+        state.totalPages = action.payload.data.totalPages;
+        state.currentPage = action.payload.data.currentPage;
+        state.totalItems = action.payload.data.totalItems;
       })
       .addCase(deleteCategoryAsync.fulfilled, (state, action) => {
         console.log(state.category);
@@ -97,6 +109,15 @@ export const categorySlice = createSlice({
           });
         }
         state.category = null;
+
+        state.totalItems = state.totalItems - 1;
+        if(state.totalItems % LIMIT_CATEGORY_PER_PAGE === 0){
+          state.totalPages = state.totalPages - 1;
+
+          
+          state.currentPage = state.currentPage - 1;
+        }
+        
       })
       .addCase(deleteCategoryAsync.rejected, (state, action) => {
         swalWithBootstrapButtons.fire(
@@ -108,7 +129,11 @@ export const categorySlice = createSlice({
       })
       .addCase(createCategoryAsync.fulfilled, (state, action) => {
         state.categories.push(action.payload.data);
+        state.totalItems = state.totalItems + 1;
 
+        if(state.totalItems / LIMIT_CATEGORY_PER_PAGE > state.totalPages){
+          state.totalPages = state.totalPages + 1;
+        }
         swalWithBootstrapButtons.fire(
           "Created!",
           "A new category has been created.",
@@ -146,5 +171,5 @@ export const categorySlice = createSlice({
   },
 });
 
-export const { setCategory } = categorySlice.actions;
+export const { setCategory, setCurrentPage } = categorySlice.actions;
 export default categorySlice.reducer;

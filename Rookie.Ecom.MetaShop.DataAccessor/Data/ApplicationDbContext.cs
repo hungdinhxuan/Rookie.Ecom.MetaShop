@@ -42,5 +42,18 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Data
 
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, token);
         }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            foreach (var entity in ChangeTracker
+                .Entries()
+                .Where(x => x.Entity is BaseEntity && x.State == EntityState.Modified)
+                .Select(x => x.Entity)
+                .Cast<BaseEntity>())
+            {
+                entity.UpdatedDate = DateTime.Now;
+            }
+            return base.SaveChangesAsync(cancellationToken);
+        }
     }
 }

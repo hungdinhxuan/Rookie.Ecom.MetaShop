@@ -125,6 +125,10 @@ namespace Rookie.Ecom.UnitTests.Business
             _categoryRepository.Verify(mock => mock.GetByIdAsync(entity.Id), Times.Once);
         }*/
 
+        [Fact]
+        public async Task UpdateCategoryShouldHaveUpdatedDateGreaterThanCreatedDate()
+        {
 
+        }
     }
 }

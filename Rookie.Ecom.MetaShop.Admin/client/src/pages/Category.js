@@ -1,6 +1,10 @@
 import { filter } from "lodash";
 import { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import {
+  Link as RouterLink,
+  useSearchParams,
+  useNavigate,
+} from "react-router-dom";
 // material
 import {
   Card,
@@ -14,8 +18,7 @@ import {
   Container,
   Typography,
   TableContainer,
-  TablePagination,
-  
+  Pagination,
 } from "@mui/material";
 // components
 import Page from "../components/Page";
@@ -31,10 +34,16 @@ import {
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCategoriesAsync } from "../features/categorySlice";
+import {
+  getAllCategoriesAsync
+} from "../features/categorySlice";
 
 // ----------------------------------------------------------------------
 import CreateCategory from "src/sections/@dashboard/categories/CreateCategory";
+import parseObjectToUrlQuery from "src/utils/parseObjectToUrlQuery";
+import {
+  LIMIT_CATEGORY_PER_PAGE
+} from "src/app/constants";
 
 
 
@@ -42,8 +51,9 @@ const TABLE_HEAD = [
   { id: "id", label: "Id", alignRight: false },
   { id: "name", label: "Name", alignRight: false },
   { id: "desc", label: "Description", alignRight: false },
-  { id: "img_url", label: "Image", alignRight: false },
-  { id: "created_by", label: "Created By", alignRight: false },
+  { id: "imamgeUrl", label: "Image", alignRight: false },
+  { id: "createdDate", label: "Created Date", alignRight: false },
+  { id: "updatedDate", label: "Updated Date", alignRight: false },
   { id: "" },
 ];
 
@@ -83,14 +93,17 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function Category() {
-  const CategoryLIST = useSelector((state) => state.category.categories);
- 
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const {
+    categories: CategoryLIST,
+    totalPages: CategoryTotalPages,
+    currentPage: CategoryCurrentPage,
+  } = useSelector((state) => state.category);
+
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
-  
-
-  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -105,7 +118,7 @@ export default function Category() {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState("name");
   const [filterName, setFilterName] = useState("");
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(LIMIT_CATEGORY_PER_PAGE);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -141,12 +154,13 @@ export default function Category() {
   };
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    navigate({
+      pathname: "/dashboard/category",
+      search: parseObjectToUrlQuery({
+        page: newPage,
+        limit: rowsPerPage,
+      }),
+    });
   };
 
   const handleFilterByName = (event) => {
@@ -164,9 +178,27 @@ export default function Category() {
 
   const isCategoryNotFound = filteredCategorys.length === 0;
 
+ 
+
   useEffect(() => {
-    dispatch(getAllCategoriesAsync());
-  }, [dispatch]);
+    if (!searchParams.get("page") && !searchParams.get("limit")) {
+      navigate({
+        pathname: "/dashboard/category",
+        search: parseObjectToUrlQuery({
+          page: 1,
+          limit: LIMIT_CATEGORY_PER_PAGE,
+        }),
+      });
+    }
+    dispatch(
+      getAllCategoriesAsync(
+        parseObjectToUrlQuery({
+          page: parseInt(searchParams.get("page")) || CategoryCurrentPage,
+          limit: parseInt(searchParams.get("limit")) || LIMIT_CATEGORY_PER_PAGE,
+        })
+      )
+    );
+  }, [dispatch, searchParams, CategoryCurrentPage]);
 
   return (
     <Page title="Category | Minimal-UI">
@@ -175,7 +207,7 @@ export default function Category() {
           direction="row"
           alignItems="center"
           justifyContent="space-between"
-          mb={5}
+          mb={LIMIT_CATEGORY_PER_PAGE}
         >
           <Typography variant="h4" gutterBottom>
             Category
@@ -214,7 +246,7 @@ export default function Category() {
                   {filteredCategorys
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, name, desc, imageUrl, createdBy } = row;
+                      const { id, name, desc, imageUrl, createdDate, updatedDate } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
 
                       return (
@@ -247,13 +279,14 @@ export default function Category() {
                           <TableCell align="left">{desc}</TableCell>
                           <TableCell align="left">
                             <img
-                              src={imageUrl}
+                              src={imageUrl || "/static/none.png"}
                               alt={name}
-                              width="100"
-                              height="100"
+                              width="80"
+                              height="80"
                             />
                           </TableCell>
-                          <TableCell align="left">{createdBy}</TableCell>
+                          <TableCell align="left">{new Date(createdDate).toLocaleString()}</TableCell>
+                          <TableCell align="left">{new Date(updatedDate).toLocaleString()}</TableCell>
 
                           <TableCell align="right">
                             <CategoryMoreMenu category={row} />
@@ -280,21 +313,17 @@ export default function Category() {
             </TableContainer>
           </Scrollbar>
 
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={CategoryLIST.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
+          <Pagination
+            count={CategoryTotalPages}
+            variant="outlined"
+            shape="rounded"
+            page={CategoryCurrentPage}
+            onChange={handleChangePage}
           />
         </Card>
       </Container>
-      
-      <CreateCategory open={open} setOpen={setOpen}/>
-     
-     
+
+      <CreateCategory open={open} setOpen={setOpen} />
     </Page>
   );
 }

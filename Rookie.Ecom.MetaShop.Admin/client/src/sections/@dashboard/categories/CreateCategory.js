@@ -1,4 +1,3 @@
-import React, { useRef } from "react";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -27,7 +26,7 @@ const CreateCategory = ({ open, setOpen }) => {
   };
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
-  
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
 
@@ -87,10 +86,9 @@ const CreateCategory = ({ open, setOpen }) => {
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             console.log("File available at", downloadURL);
-          
-              dispatch(
-                createCategoryAsync({ ...category, imageUrl: downloadURL })
-              
+
+            dispatch(
+              createCategoryAsync({ ...category, imageUrl: downloadURL })
             );
           });
         }
@@ -109,42 +107,40 @@ const CreateCategory = ({ open, setOpen }) => {
     handleClose();
   };
   return (
-   
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Category</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Create a new category</DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Name"
-            type="text"
-            fullWidth
-            variant="outlined"
-            onChange={handleCategoryChange}
-            name="name"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="description"
-            label="Description"
-            type="text"
-            fullWidth
-            variant="outlined"
-            onChange={handleCategoryChange}
-            name="desc"
-          />
-        </DialogContent>
-        <input type="file" onChange={handleFileChange} />
-        <img src={previewUrl} alt="preview" width={100} height={100} />
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleCreate}>Create</Button>
-        </DialogActions>
-      </Dialog>
-  
+    <Dialog open={open} onClose={handleClose}>
+      <DialogTitle>Category</DialogTitle>
+      <DialogContent>
+        <DialogContentText>Create a new category</DialogContentText>
+        <TextField
+          autoFocus
+          margin="dense"
+          id="name"
+          label="Name"
+          type="text"
+          fullWidth
+          variant="outlined"
+          onChange={handleCategoryChange}
+          name="name"
+        />
+        <TextField
+          autoFocus
+          margin="dense"
+          id="description"
+          label="Description"
+          type="text"
+          fullWidth
+          variant="outlined"
+          onChange={handleCategoryChange}
+          name="desc"
+        />
+      </DialogContent>
+      <input type="file" onChange={handleFileChange} />
+      <img src={previewUrl || "/static/none.png"} alt="preview" width={100} height={100} />
+      <DialogActions>
+        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={handleCreate}>Create</Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 
