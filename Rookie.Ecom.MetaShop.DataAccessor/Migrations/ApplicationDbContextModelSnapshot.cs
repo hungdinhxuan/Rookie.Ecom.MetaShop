@@ -254,7 +254,7 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<Guid?>("ProductId")
+                    b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("product_id");
 
@@ -369,7 +369,9 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                 {
                     b.HasOne("Rookie.Ecom.MetaShop.DataAccessor.Entities.Product", "Product")
                         .WithMany("ProductPictures")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Product");
                 });

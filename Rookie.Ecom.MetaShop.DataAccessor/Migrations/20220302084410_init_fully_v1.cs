@@ -117,7 +117,7 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PictureUrl = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
                     Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    product_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    product_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     updated_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     created_by = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -133,7 +133,7 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                         column: x => x.product_id,
                         principalTable: "Products",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

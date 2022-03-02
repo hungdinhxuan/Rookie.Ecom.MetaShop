@@ -1,9 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using Rookie.Ecom.MetaShop.Contracts.Dtos.Product;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rookie.Ecom.MetaShop.Contracts.Dtos
 {
@@ -15,6 +11,6 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos
 
         public string ImageUrl { get; set; }
 
-
+        public List<ProductDto> Products { get; set; }
     }
 }

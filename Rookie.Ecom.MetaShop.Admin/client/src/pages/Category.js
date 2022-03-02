@@ -19,6 +19,8 @@ import {
   Typography,
   TableContainer,
   Pagination,
+  CircularProgress,
+  Box,
 } from "@mui/material";
 // components
 import Page from "../components/Page";
@@ -34,18 +36,12 @@ import {
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getAllCategoriesAsync
-} from "../features/categorySlice";
+import { getAllCategoriesAsync } from "../features/categorySlice";
 
 // ----------------------------------------------------------------------
 import CreateCategory from "src/sections/@dashboard/categories/CreateCategory";
 import parseObjectToUrlQuery from "src/utils/parseObjectToUrlQuery";
-import {
-  LIMIT_CATEGORY_PER_PAGE
-} from "src/app/constants";
-
-
+import { LIMIT_CATEGORY_PER_PAGE } from "src/app/constants";
 
 const TABLE_HEAD = [
   { id: "id", label: "Id", alignRight: false },
@@ -99,6 +95,7 @@ export default function Category() {
     categories: CategoryLIST,
     totalPages: CategoryTotalPages,
     currentPage: CategoryCurrentPage,
+    loading: CategoryLoading,
   } = useSelector((state) => state.category);
 
   const dispatch = useDispatch();
@@ -178,7 +175,18 @@ export default function Category() {
 
   const isCategoryNotFound = filteredCategorys.length === 0;
 
- 
+  useEffect(() => {
+    
+    dispatch(
+      getAllCategoriesAsync(
+        parseObjectToUrlQuery({
+          page: parseInt(searchParams.get("page")) || CategoryCurrentPage,
+          limit: parseInt(searchParams.get("limit")) || LIMIT_CATEGORY_PER_PAGE,
+        })
+      )
+    );
+  }, [dispatch, searchParams, CategoryCurrentPage]);
+
 
   useEffect(() => {
     if (!searchParams.get("page") && !searchParams.get("limit")) {
@@ -190,18 +198,11 @@ export default function Category() {
         }),
       });
     }
-    dispatch(
-      getAllCategoriesAsync(
-        parseObjectToUrlQuery({
-          page: parseInt(searchParams.get("page")) || CategoryCurrentPage,
-          limit: parseInt(searchParams.get("limit")) || LIMIT_CATEGORY_PER_PAGE,
-        })
-      )
-    );
-  }, [dispatch, searchParams, CategoryCurrentPage]);
+    console.log('re-render category')
+  }, [searchParams, navigate]);
 
   return (
-    <Page title="Category | Minimal-UI">
+    <Page title="Category">
       <Container>
         <Stack
           direction="row"
@@ -243,57 +244,86 @@ export default function Category() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredCategorys
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const { id, name, desc, imageUrl, createdDate, updatedDate } = row;
-                      const isItemSelected = selected.indexOf(name) !== -1;
+                  {CategoryLoading ? (
+                    <TableRow>
+                      <TableCell>
+                        <Box sx={{ display: "flex" }}>
+                          <CircularProgress />
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    filteredCategorys
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((row) => {
+                        const {
+                          id,
+                          name,
+                          desc,
+                          imageUrl,
+                          createdDate,
+                          updatedDate,
+                        } = row;
+                        const isItemSelected = selected.indexOf(name) !== -1;
 
-                      return (
-                        <TableRow
-                          hover
-                          key={id}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) => handleClick(event, name)}
-                            />
-                          </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack
-                              direction="row"
-                              alignItems="center"
-                              spacing={2}
+                        return (
+                          <TableRow
+                            hover
+                            key={id}
+                            tabIndex={-1}
+                            role="checkbox"
+                            selected={isItemSelected}
+                            aria-checked={isItemSelected}
+                          >
+                            <TableCell padding="checkbox">
+                              <Checkbox
+                                checked={isItemSelected}
+                                onChange={(event) => handleClick(event, name)}
+                              />
+                            </TableCell>
+                            <TableCell
+                              component="th"
+                              scope="row"
+                              padding="none"
                             >
-                              <Typography variant="subtitle2" noWrap>
-                                {id}
-                              </Typography>
-                            </Stack>
-                          </TableCell>
-                          <TableCell align="left">{name}</TableCell>
-                          <TableCell align="left">{desc}</TableCell>
-                          <TableCell align="left">
-                            <img
-                              src={imageUrl || "/static/none.png"}
-                              alt={name}
-                              width="80"
-                              height="80"
-                            />
-                          </TableCell>
-                          <TableCell align="left">{new Date(createdDate).toLocaleString()}</TableCell>
-                          <TableCell align="left">{new Date(updatedDate).toLocaleString()}</TableCell>
+                              <Stack
+                                direction="row"
+                                alignItems="center"
+                                spacing={2}
+                              >
+                                <Typography variant="subtitle2" noWrap>
+                                  {id}
+                                </Typography>
+                              </Stack>
+                            </TableCell>
+                            <TableCell align="left">{name}</TableCell>
+                            <TableCell align="left">{desc}</TableCell>
+                            <TableCell align="left">
+                              <img
+                                src={imageUrl || "/static/none.png"}
+                                alt={name}
+                                width="80"
+                                height="80"
+                              />
+                            </TableCell>
+                            <TableCell align="left">
+                              {new Date(createdDate).toLocaleString()}
+                            </TableCell>
+                            <TableCell align="left">
+                              {new Date(updatedDate).toLocaleString()}
+                            </TableCell>
 
-                          <TableCell align="right">
-                            <CategoryMoreMenu category={row} />
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
+                            <TableCell align="right">
+                              <CategoryMoreMenu category={row} />
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })
+                  )}
+
                   {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell colSpan={6} />

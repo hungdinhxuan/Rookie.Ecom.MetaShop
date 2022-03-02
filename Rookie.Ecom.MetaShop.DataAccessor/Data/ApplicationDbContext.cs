@@ -55,5 +55,6 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Data
             }
             return base.SaveChangesAsync(cancellationToken);
         }
+
     }
 }

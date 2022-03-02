@@ -18,4 +18,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Rookie.Ecom.MetaShop.Contracts\Rookie.Ecom.MetaShop.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>

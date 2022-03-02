@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Rookie.Ecom.MetaShop.Contracts.Dtos.ProductPicture;
+using System;
+using System.Collections.Generic;
 
 namespace Rookie.Ecom.MetaShop.Contracts.Dtos.Product
 {
@@ -21,5 +23,7 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos.Product
         public Guid CategoryId { get; set; }
 
         public CategoryDto Category { get; set; }
+
+        public List<ProductPictureDto> ProductPictures { get; set; }
     }
 }

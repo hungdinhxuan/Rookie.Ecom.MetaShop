@@ -79,6 +79,8 @@ namespace Rookie.Ecom.MetaShop.Business.Services
 
             query = query.Where(x => string.IsNullOrEmpty(name) || x.Name.Contains(name));
 
+            query = query.Include(c => c.Category).Include(c => c.ProductPictures);
+
             query = query.OrderBy(x => x.Name);
 
             var assets = await query

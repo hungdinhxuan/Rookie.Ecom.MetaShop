@@ -4,22 +4,22 @@ import { swalWithBootstrapButtons } from "../utils/sweetalert2";
 import { ref, deleteObject } from "firebase/storage";
 import {storage} from "../utils/firebase";
 import exactFirebaseLink from "../utils/exactFirebaseLink";
-import {LIMIT_CATEGORY_PER_PAGE} from "../app/constants";
+import {LIMIT_product_PER_PAGE} from "../app/constants";
 
 const initialState = {
-  categories: [],
-  category: null,
+  products: [],
+  product: null,
   currentPage: 1,
   totalPages: 1,
   totalItems: 0,
   loading: false
 };
 
-export const getAllCategoriesAsync = createAsyncThunk(
-  "categories/getAllCategories",
+export const getAllProductsAsync = createAsyncThunk(
+  "products/getAllproducts",
   async (values, { rejectWithValue }) => {
     try {
-      const response = await axiosClient.get(`/category/find${values}`);
+      const response = await axiosClient.get(`/product/find${values}`);
       return response;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -27,11 +27,11 @@ export const getAllCategoriesAsync = createAsyncThunk(
   }
 );
 
-export const deleteCategoryAsync = createAsyncThunk(
-  "categories/deleteCategory",
+export const deleteProductAsync = createAsyncThunk(
+  "products/deleteProduct",
   async (values, { rejectWithValue }) => {
     try {
-      const response = await axiosClient.delete(`/category/${values.id}`);
+      const response = await axiosClient.delete(`/product/${values.id}`);
       return response;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -39,11 +39,11 @@ export const deleteCategoryAsync = createAsyncThunk(
   }
 );
 
-export const createCategoryAsync = createAsyncThunk(
-  "categories/createCategory",
+export const createProductAsync = createAsyncThunk(
+  "products/createProduct",
   async (values, { rejectWithValue }) => {
     try {
-      const response = await axiosClient.post(`/category`, values);
+      const response = await axiosClient.post(`/product`, values);
       return response;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -51,11 +51,11 @@ export const createCategoryAsync = createAsyncThunk(
   }
 );
 
-export const updateCategoryAsync = createAsyncThunk(
-  "categories/updateCategory",
+export const updateProductAsync = createAsyncThunk(
+  "products/updateProduct",
   async (values, { rejectWithValue }) => {
     try {
-      const response = await axiosClient.put(`/category`, values);
+      const response = await axiosClient.put(`/product`, values);
       return response;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -63,12 +63,12 @@ export const updateCategoryAsync = createAsyncThunk(
   }
 );
 
-export const categorySlice = createSlice({
-  name: "category",
+export const productSlice = createSlice({
+  name: "product",
   initialState,
   reducers: {
-    setCategory: (state, action) => {
-      state.category = action.payload;
+    setproduct: (state, action) => {
+      state.product = action.payload;
     },
     setCurrentPage: (state, action) => {
       state.currentPage = action.payload;
@@ -77,24 +77,24 @@ export const categorySlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-    .addCase(getAllCategoriesAsync.pending, (state, action) => {
-      state.loading = true
-    })
-      .addCase(getAllCategoriesAsync.fulfilled, (state, action) => {
+      .addCase(getAllProductsAsync.pending, (state, action) => {
+          state.loading = true
+      })
+      .addCase(getAllProductsAsync.fulfilled, (state, action) => {
         console.log(action.payload.data);
-        state.categories = action.payload.data.items["$values"];
+        state.products = action.payload.data.items;
         state.totalPages = action.payload.data.totalPages;
         state.currentPage = action.payload.data.currentPage;
         state.totalItems = action.payload.data.totalItems;
         state.loading = false
       })
-      .addCase(getAllCategoriesAsync.rejected, (state, action) => {
+      .addCase(getAllProductsAsync.rejected, (state, action) => {
         state.loading = false
-      })
-      .addCase(deleteCategoryAsync.fulfilled, (state, action) => {
-        console.log(state.category);
-        state.categories = state.categories.filter(
-          (category) => category.id !== state.category.id
+    })
+      .addCase(deleteProductAsync.fulfilled, (state, action) => {
+        console.log(state.product);
+        state.products = state.products.filter(
+          (product) => product.id !== state.product.id
         );
         
         swalWithBootstrapButtons.fire(
@@ -103,7 +103,7 @@ export const categorySlice = createSlice({
           "success"
         );
 
-        const objLink = exactFirebaseLink(state.category.imageUrl);
+        const objLink = exactFirebaseLink(state.product.imageUrl);
 
         if(objLink){
 
@@ -116,10 +116,10 @@ export const categorySlice = createSlice({
             console.log(error);
           });
         }
-        state.category = null;
+        state.product = null;
 
         state.totalItems = state.totalItems - 1;
-        if(state.totalItems % LIMIT_CATEGORY_PER_PAGE === 0){
+        if(state.totalItems % LIMIT_product_PER_PAGE === 0){
           state.totalPages = state.totalPages - 1;
 
           
@@ -127,28 +127,28 @@ export const categorySlice = createSlice({
         }
         
       })
-      .addCase(deleteCategoryAsync.rejected, (state, action) => {
+      .addCase(deleteProductAsync.rejected, (state, action) => {
         swalWithBootstrapButtons.fire(
           "Error",
           action.error || "Something went wrong.",
           "error"
         );
-        state.category = null;
+        state.product = null;
       })
-      .addCase(createCategoryAsync.fulfilled, (state, action) => {
-        state.categories.push(action.payload.data);
+      .addCase(createProductAsync.fulfilled, (state, action) => {
+        state.products.push(action.payload.data);
         state.totalItems = state.totalItems + 1;
 
-        if(state.totalItems / LIMIT_CATEGORY_PER_PAGE > state.totalPages){
+        if(state.totalItems / LIMIT_product_PER_PAGE > state.totalPages){
           state.totalPages = state.totalPages + 1;
         }
         swalWithBootstrapButtons.fire(
           "Created!",
-          "A new category has been created.",
+          "A new product has been created.",
           "success"
         );
       })
-      .addCase(createCategoryAsync.rejected, (state, action) => {
+      .addCase(createProductAsync.rejected, (state, action) => {
         swalWithBootstrapButtons.fire(
           "Error",
           action.error || "Something went wrong.",
@@ -156,20 +156,20 @@ export const categorySlice = createSlice({
         );
       })
       
-      .addCase(updateCategoryAsync.fulfilled, (state, action) => {
-        const index = state.categories.findIndex(
-          (category) => category.id === state.category.id
+      .addCase(updateProductAsync.fulfilled, (state, action) => {
+        const index = state.products.findIndex(
+          (product) => product.id === state.product.id
         );
-        state.categories[index] = state.category;
+        state.products[index] = state.product;
 
         swalWithBootstrapButtons.fire(
           "Updated!",
-          "A category has been updated.",
+          "A product has been updated.",
           "success"
         );
 
       })
-      .addCase(updateCategoryAsync.rejected, (state, action) => {
+      .addCase(updateProductAsync.rejected, (state, action) => {
         swalWithBootstrapButtons.fire(
           "Error",
           action.error || "Something went wrong.",
@@ -179,5 +179,5 @@ export const categorySlice = createSlice({
   },
 });
 
-export const { setCategory, setCurrentPage } = categorySlice.actions;
-export default categorySlice.reducer;
+export const { setproduct, setCurrentPage } = productSlice.actions;
+export default productSlice.reducer;

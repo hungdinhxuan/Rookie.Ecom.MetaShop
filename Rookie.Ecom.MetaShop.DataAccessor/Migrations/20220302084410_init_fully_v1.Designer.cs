@@ -10,7 +10,7 @@ using Rookie.Ecom.MetaShop.DataAccessor.Data;
 namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220228085213_init_fully_v1")]
+    [Migration("20220302084410_init_fully_v1")]
     partial class init_fully_v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -256,7 +256,7 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<Guid?>("ProductId")
+                    b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("product_id");
 
@@ -371,7 +371,9 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                 {
                     b.HasOne("Rookie.Ecom.MetaShop.DataAccessor.Entities.Product", "Product")
                         .WithMany("ProductPictures")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Product");
                 });

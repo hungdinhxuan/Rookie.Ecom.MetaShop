@@ -7,6 +7,7 @@ using Rookie.Ecom.MetaShop.Contracts;
 using Rookie.Ecom.MetaShop.Contracts.Constants;
 using Rookie.Ecom.MetaShop.Contracts.Dtos;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.Product;
+using Rookie.Ecom.MetaShop.Contracts.Dtos.ProductPicture;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,12 +19,12 @@ namespace Rookie.Ecom.MetaShop.Admin.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
+        private readonly IProductPictureService _productPictureService;
 
-
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, IProductPictureService productPictureService)
         {
             _productService = productService;
-
+            _productPictureService = productPictureService;
         }
 
         [HttpDelete("{id}")]
@@ -66,6 +67,16 @@ namespace Rookie.Ecom.MetaShop.Admin.Controllers
         public async Task<PagedResponseModel<ProductDto>>
             FindAsync(string name, int page = 1, int limit = 10)
             => await _productService.PagedQueryAsync(name, page, limit);
+
+        [HttpPost("picture")]
+        public async Task<ActionResult<ProductPictureDto>> CreateProductPictureAsync([FromBody] CreateProductPictureDto newProductPictureDto)
+        {
+            Ensure.Any.IsNotNull(newProductPictureDto, nameof(newProductPictureDto));
+
+            var asset = await _productPictureService.AddAsync(newProductPictureDto);
+            return Created(Endpoints.Product, asset);
+        }
+
 
     }
 }

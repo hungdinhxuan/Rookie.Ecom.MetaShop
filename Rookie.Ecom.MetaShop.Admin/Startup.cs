@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,6 +8,8 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Rookie.Ecom.MetaShop.Business;
 using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Rookie.Ecom.MetaShop.Admin
 {
@@ -25,10 +28,15 @@ namespace Rookie.Ecom.MetaShop.Admin
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddControllers(options =>
+            {
+                options.OutputFormatters.RemoveType<SystemTextJsonOutputFormatter>();
+                options.OutputFormatters.Add(new SystemTextJsonOutputFormatter(new JsonSerializerOptions(JsonSerializerDefaults.Web)
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                }));
+            });
 
-
-
-            services.AddControllersWithViews();
             services.AddHttpContextAccessor();
             services.AddBusinessLayer(Configuration);
 

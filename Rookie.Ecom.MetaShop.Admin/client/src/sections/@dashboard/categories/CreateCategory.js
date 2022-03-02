@@ -12,6 +12,13 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { createCategoryAsync } from "src/features/categorySlice";
 import { useDispatch } from "react-redux";
 import uuid from "src/utils/uuid";
+import { styled } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
+
+const Input = styled("input")({
+  display: "none",
+});
 
 const CreateCategory = ({ open, setOpen }) => {
   const dispatch = useDispatch();
@@ -134,8 +141,37 @@ const CreateCategory = ({ open, setOpen }) => {
           name="desc"
         />
       </DialogContent>
-      <input type="file" onChange={handleFileChange} />
-      <img src={previewUrl || "/static/none.png"} alt="preview" width={100} height={100} />
+      <div
+        style={{
+          margin: "auto",
+          display: "flex",
+          justifyContent: "space-between",
+          height: "150px",
+          flexDirection: "column",
+        }}
+      >
+        <Stack direction="row" alignItems="center" spacing={2}>
+          <label htmlFor="contained-button-file">
+            <Input
+              accept="image/*"
+              id="contained-button-file"
+              multiple
+              type="file"
+              onChange={handleFileChange}
+            />
+            <Button variant="contained" component="span">
+              Upload Photo
+            </Button>
+          </label>
+        </Stack>
+        <img
+          src={previewUrl || "/static/none.png"}
+          alt="preview"
+          width={100}
+          height={100}
+          style={{ marginLeft: "15px" }}
+        />
+      </div>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
         <Button onClick={handleCreate}>Create</Button>

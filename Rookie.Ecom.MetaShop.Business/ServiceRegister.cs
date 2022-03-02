@@ -17,6 +17,7 @@ namespace Rookie.Ecom.MetaShop.Business
 
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IProductPictureService, ProductPictureService>();
 
         }
     }

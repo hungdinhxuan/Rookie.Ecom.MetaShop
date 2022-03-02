@@ -13,7 +13,7 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Entities
         public string Title { get; set; }
 
         [Column("product_id")]
-        public Guid? ProductId { get; set; }
+        public Guid ProductId { get; set; }
         public Product Product { get; set; }
     }
 }

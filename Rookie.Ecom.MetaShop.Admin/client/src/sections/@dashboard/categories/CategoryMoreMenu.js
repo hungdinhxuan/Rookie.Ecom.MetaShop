@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+
 // material
 import { Menu, MenuItem, IconButton, ListItemIcon, ListItemText } from '@mui/material';
 // component
@@ -10,16 +10,16 @@ import {deleteCategoryAsync, setCategory} from "../../../features/categorySlice"
 
 // ----------------------------------------------------------------------
 
-import {swalWithBootstrapButtons} from "../../../utils/sweetalert2";
+import {swalWithBootstrapButtons} from "src/utils/sweetalert2";
 import Swal from "sweetalert2";
 import UpdateCategory from "src/sections/@dashboard/categories/UpdateCategory";
+import { memo } from 'react';
 
-export default function CategoryMoreMenu({category}) {
+function CategoryMoreMenu({category}) {
   
   const ref = useRef(null);
   const dispatch = useDispatch();
   const [isDeleteDialogConfirm, setIsDeleteDialogConfirm] = useState(false);
-  
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
 
   const handleShowDeleteConfirm = () => {
@@ -49,9 +49,7 @@ export default function CategoryMoreMenu({category}) {
     })
   };
 
-  const handleShowEditDialog = () => {
-    setIsUpdateDialogOpen(true);
-  }
+  
 
   return (
     <>
@@ -81,14 +79,19 @@ export default function CategoryMoreMenu({category}) {
           <ListItemText primary="Delete" primaryTypographyProps={{ variant: 'body2' }} onClick={handleShowDeleteConfirm}/>
         </MenuItem>
 
-        <MenuItem component={RouterLink} to="#" sx={{ color: 'text.secondary' }}>
+        <MenuItem sx={{ color: 'text.secondary' }}>
           <ListItemIcon>
             <Iconify icon="eva:edit-fill" width={24} height={24} />
           </ListItemIcon>
-          <ListItemText primary="Edit" primaryTypographyProps={{ variant: 'body2' }} onClick={handleShowEditDialog}/>
+          <ListItemText primary="Edit" primaryTypographyProps={{ variant: 'body2' }} onClick={() => setIsUpdateDialogOpen(true)}/>
         </MenuItem>
       </Menu>
-      <UpdateCategory open={isUpdateDialogOpen} setOpen={setIsUpdateDialogOpen}/>
+      {
+        isUpdateDialogOpen && <UpdateCategory open={isUpdateDialogOpen} setOpen={setIsUpdateDialogOpen} />
+      }
+
     </>
   );
 }
+
+export default memo(CategoryMoreMenu);

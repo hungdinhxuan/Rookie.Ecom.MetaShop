@@ -10,7 +10,7 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Entities
         public BaseEntity()
         {
             UpdatedDate = DateTime.Now;
-            CreatedDate = UpdatedDate;
+            CreatedDate = DateTime.Now;
         }
         [Key]
         public Guid Id { get; set; }

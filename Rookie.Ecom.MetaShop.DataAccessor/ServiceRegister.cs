@@ -10,7 +10,7 @@ namespace Rookie.Ecom.MetaShop.DataAccessor
     {
         public static void AddDataAccessorLayer(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), b =>
