@@ -29,27 +29,31 @@ import Iconify from "../components/Iconify";
 import SearchNotFound from "../components/SearchNotFound";
 import {
   ProductListHead,
-  ProductListToolbar,
-  ProductMoreMenu,
-} from "../sections/@dashboard/categories";
+  ProductListToolbar
+} from "src/sections/@dashboard/products";
 // ----------------------------------------------------------------------
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCategoriesAsync } from "../features/ProductSlice";
+import { getAllProductsAsync } from "../features/productSlice";
 
 // ----------------------------------------------------------------------
-import CreateProduct from "src/sections/@dashboard/categories/CreateProduct";
 import parseObjectToUrlQuery from "src/utils/parseObjectToUrlQuery";
-import { LIMIT_Product_PER_PAGE } from "src/app/constants";
+import { LIMIT_PRODUCT_PER_PAGE } from "src/app/constants";
+
+import CreateProduct from "src/sections/@dashboard/products/CreateProduct";
+import Label from 'src/components/Label';
+import { sentenceCase } from 'change-case';
 
 const TABLE_HEAD = [
   { id: "id", label: "Id", alignRight: false },
   { id: "name", label: "Name", alignRight: false },
-  { id: "desc", label: "Description", alignRight: false },
-  { id: "imamgeUrl", label: "Image", alignRight: false },
-  { id: "createdDate", label: "Created Date", alignRight: false },
-  { id: "updatedDate", label: "Updated Date", alignRight: false },
+  { id: "shortDesc", label: "Short Description", alignRight: false },
+  { id: "longDesc", label: "Long Description", alignRight: false },
+  { id: "price", label: "Price", alignRight: false },
+  { id: "quantity", label: "Quantity", alignRight: false },
+  { id: "status", label: "Status", alignRight: false },
+  { id: "isPublished", label: "Publish", alignRight: false },
   { id: "" },
 ];
 
@@ -92,11 +96,11 @@ export default function Product() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const {
-    categories: ProductLIST,
+    products: ProductLIST,
     totalPages: ProductTotalPages,
     currentPage: ProductCurrentPage,
     loading: ProductLoading,
-  } = useSelector((state) => state.Product);
+  } = useSelector((state) => state.product);
 
   const dispatch = useDispatch();
 
@@ -115,7 +119,7 @@ export default function Product() {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState("name");
   const [filterName, setFilterName] = useState("");
-  const [rowsPerPage, setRowsPerPage] = useState(LIMIT_Product_PER_PAGE);
+  const [rowsPerPage, setRowsPerPage] = useState(LIMIT_PRODUCT_PER_PAGE);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -152,7 +156,7 @@ export default function Product() {
 
   const handleChangePage = (event, newPage) => {
     navigate({
-      pathname: "/dashboard/Product",
+      pathname: "/dashboard/product",
       search: parseObjectToUrlQuery({
         page: newPage,
         limit: rowsPerPage,
@@ -176,29 +180,27 @@ export default function Product() {
   const isProductNotFound = filteredProducts.length === 0;
 
   useEffect(() => {
-    
     dispatch(
-      getAllCategoriesAsync(
+      getAllProductsAsync (
         parseObjectToUrlQuery({
           page: parseInt(searchParams.get("page")) || ProductCurrentPage,
-          limit: parseInt(searchParams.get("limit")) || LIMIT_Product_PER_PAGE,
+          limit: parseInt(searchParams.get("limit")) || LIMIT_PRODUCT_PER_PAGE,
         })
       )
     );
   }, [dispatch, searchParams, ProductCurrentPage]);
 
-
   useEffect(() => {
     if (!searchParams.get("page") && !searchParams.get("limit")) {
       navigate({
-        pathname: "/dashboard/Product",
+        pathname: "/dashboard/product",
         search: parseObjectToUrlQuery({
           page: 1,
-          limit: LIMIT_Product_PER_PAGE,
+          limit: LIMIT_PRODUCT_PER_PAGE,
         }),
       });
     }
-    console.log('re-render Product')
+    console.log("re-render Product");
   }, [searchParams, navigate]);
 
   return (
@@ -208,14 +210,13 @@ export default function Product() {
           direction="row"
           alignItems="center"
           justifyContent="space-between"
-          mb={LIMIT_Product_PER_PAGE}
+          mb={LIMIT_PRODUCT_PER_PAGE}
         >
           <Typography variant="h4" gutterBottom>
             Product
           </Typography>
           <Button
             variant="contained"
-            component={RouterLink}
             to="#"
             startIcon={<Iconify icon="eva:plus-fill" />}
             onClick={handleClickOpen}
@@ -262,8 +263,12 @@ export default function Product() {
                         const {
                           id,
                           name,
-                          desc,
-                          imageUrl,
+                          shortDesc,
+                          longDesc,
+                          price,
+                          quantity,
+                          status,
+                          isPublished,
                           createdDate,
                           updatedDate,
                         } = row;
@@ -300,25 +305,29 @@ export default function Product() {
                               </Stack>
                             </TableCell>
                             <TableCell align="left">{name}</TableCell>
-                            <TableCell align="left">{desc}</TableCell>
+                            <TableCell align="left">{shortDesc}</TableCell>
+                            <TableCell align="left">{longDesc}</TableCell>
+                            <TableCell align="left">{price}</TableCell>
+                            <TableCell align="left">{quantity}</TableCell>
+                            <TableCell align="left">{status}</TableCell>
                             <TableCell align="left">
-                              <img
-                                src={imageUrl || "/static/none.png"}
-                                alt={name}
-                                width="80"
-                                height="80"
-                              />
-                            </TableCell>
-                            <TableCell align="left">
+                            <Label
+                              variant="ghost"
+                              color={(isPublished === false && 'error') || 'success'}
+                            >
+                              {sentenceCase(`${isPublished}`)}
+                            </Label>
+                          </TableCell>
+                            {/* <TableCell align="left">
                               {new Date(createdDate).toLocaleString()}
                             </TableCell>
                             <TableCell align="left">
                               {new Date(updatedDate).toLocaleString()}
-                            </TableCell>
+                            </TableCell> */}
 
-                            <TableCell align="right">
+                            {/* <TableCell align="right">
                               <ProductMoreMenu Product={row} />
-                            </TableCell>
+                            </TableCell> */}
                           </TableRow>
                         );
                       })

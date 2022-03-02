@@ -75,11 +75,7 @@ namespace Rookie.Ecom.MetaShop.Admin
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "Images")),
-                RequestPath = "/Images"
-            });
+
             app.UseSpaStaticFiles();
 
             app.UseSwagger()

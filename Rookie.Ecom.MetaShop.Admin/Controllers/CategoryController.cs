@@ -67,5 +67,14 @@ namespace Rookie.Ecom.MetaShop.Admin.Controllers
             FindAsync(string name, int page = 1, int limit = 10)
             => await _categoryService.PagedQueryAsync(name, page, limit);
 
+        [HttpDelete("{id}/soft")]
+        public async Task<ActionResult> SoftDeleteAssetAsync([FromRoute] Guid id)
+        {
+            var categoryDto = await _categoryService.GetByIdAsync(id);
+            Ensure.Any.IsNotNull(categoryDto, nameof(categoryDto));
+            await _categoryService.SoftDeleteAsync(id);
+            return NoContent();
+        }
+
     }
 }

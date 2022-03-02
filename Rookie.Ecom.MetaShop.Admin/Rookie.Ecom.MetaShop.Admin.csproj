@@ -14,8 +14,8 @@
 		<PackageReference Include="FluentValidation.AspNetCore" Version="9.5.1" />
 		<PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.14" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.14">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
 	</ItemGroup>
@@ -28,11 +28,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="client\" />
+		<Folder Include="client\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Rookie.Ecom.MetaShop.Business\Rookie.Ecom.MetaShop.Business.csproj" />
+		<ProjectReference Include="..\Rookie.Ecom.MetaShop.Business\Rookie.Ecom.MetaShop.Business.csproj" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

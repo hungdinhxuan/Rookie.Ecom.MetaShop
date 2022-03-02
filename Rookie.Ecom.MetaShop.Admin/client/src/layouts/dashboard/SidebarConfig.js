@@ -24,7 +24,7 @@ const sidebarConfig = [
   },
   {
     title: 'product',
-    path: '/dashboard/products',
+    path: '/dashboard/product',
     icon: getIcon('eva:shopping-bag-fill')
   },
   {
@@ -36,16 +36,6 @@ const sidebarConfig = [
     title: 'login',
     path: '/login',
     icon: getIcon('eva:lock-fill')
-  },
-  {
-    title: 'register',
-    path: '/register',
-    icon: getIcon('eva:person-add-fill')
-  },
-  {
-    title: 'Not found',
-    path: '/404',
-    icon: getIcon('eva:alert-triangle-fill')
   }
 ];
 

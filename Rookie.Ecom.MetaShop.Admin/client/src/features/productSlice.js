@@ -4,7 +4,7 @@ import { swalWithBootstrapButtons } from "../utils/sweetalert2";
 import { ref, deleteObject } from "firebase/storage";
 import {storage} from "../utils/firebase";
 import exactFirebaseLink from "../utils/exactFirebaseLink";
-import {LIMIT_product_PER_PAGE} from "../app/constants";
+import {LIMIT_PRODUCT_PER_PAGE} from "../app/constants";
 
 const initialState = {
   products: [],
@@ -82,7 +82,7 @@ export const productSlice = createSlice({
       })
       .addCase(getAllProductsAsync.fulfilled, (state, action) => {
         console.log(action.payload.data);
-        state.products = action.payload.data.items;
+        state.products = action.payload.data.items["$values"];
         state.totalPages = action.payload.data.totalPages;
         state.currentPage = action.payload.data.currentPage;
         state.totalItems = action.payload.data.totalItems;
@@ -119,7 +119,7 @@ export const productSlice = createSlice({
         state.product = null;
 
         state.totalItems = state.totalItems - 1;
-        if(state.totalItems % LIMIT_product_PER_PAGE === 0){
+        if(state.totalItems % LIMIT_PRODUCT_PER_PAGE === 0){
           state.totalPages = state.totalPages - 1;
 
           
@@ -139,7 +139,7 @@ export const productSlice = createSlice({
         state.products.push(action.payload.data);
         state.totalItems = state.totalItems + 1;
 
-        if(state.totalItems / LIMIT_product_PER_PAGE > state.totalPages){
+        if(state.totalItems / LIMIT_PRODUCT_PER_PAGE > state.totalPages){
           state.totalPages = state.totalPages + 1;
         }
         swalWithBootstrapButtons.fire(

@@ -1,6 +1,7 @@
 // scroll bar
 import 'simplebar/src/simplebar.css';
-
+// import 'antd/dist/antd.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';

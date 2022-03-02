@@ -95,5 +95,10 @@ namespace Rookie.Ecom.MetaShop.Business.Services
                 Items = _mapper.Map<IEnumerable<ProductDto>>(assets.Items)
             };
         }
+
+        public async Task SoftDeleteAsync(Guid id)
+        {
+            await _baseRepository.SoftDeleteAsync(id);
+        }
     }
 }

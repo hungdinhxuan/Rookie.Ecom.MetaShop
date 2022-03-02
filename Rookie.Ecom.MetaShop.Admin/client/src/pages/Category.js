@@ -36,7 +36,7 @@ import {
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCategoriesAsync } from "../features/categorySlice";
+import { getPagedCategoriesAsync } from "../features/categorySlice";
 
 // ----------------------------------------------------------------------
 import CreateCategory from "src/sections/@dashboard/categories/CreateCategory";
@@ -178,7 +178,7 @@ export default function Category() {
   useEffect(() => {
     
     dispatch(
-      getAllCategoriesAsync(
+      getPagedCategoriesAsync(
         parseObjectToUrlQuery({
           page: parseInt(searchParams.get("page")) || CategoryCurrentPage,
           limit: parseInt(searchParams.get("limit")) || LIMIT_CATEGORY_PER_PAGE,
@@ -215,7 +215,6 @@ export default function Category() {
           </Typography>
           <Button
             variant="contained"
-            component={RouterLink}
             to="#"
             startIcon={<Iconify icon="eva:plus-fill" />}
             onClick={handleClickOpen}

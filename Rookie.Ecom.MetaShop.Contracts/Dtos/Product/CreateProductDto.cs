@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Rookie.Ecom.MetaShop.Contracts.Dtos.ProductPicture;
+using System;
+using System.Collections.Generic;
 
 namespace Rookie.Ecom.MetaShop.Contracts.Dtos.Product
 {
@@ -19,5 +21,7 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos.Product
         public bool IsPublished { get; set; } = true;
 
         public Guid CategoryId { get; set; }
+
+        public List<CreateProductPictureDto> ProductPictureDtos { get; set; }
     }
 }

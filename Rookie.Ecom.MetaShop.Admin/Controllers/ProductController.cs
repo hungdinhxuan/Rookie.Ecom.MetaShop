@@ -11,6 +11,7 @@ using Rookie.Ecom.MetaShop.Contracts.Dtos.ProductPicture;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Rookie.Ecom.MetaShop.Admin.Controllers
@@ -50,8 +51,18 @@ namespace Rookie.Ecom.MetaShop.Admin.Controllers
         public async Task<ActionResult<ProductDto>> CreateAsync([FromBody] CreateProductDto newProductDto)
         {
             Ensure.Any.IsNotNull(newProductDto, nameof(newProductDto));
-
             var asset = await _productService.AddAsync(newProductDto);
+            for (int i = 0; i < newProductDto.ProductPictureDtos.Count; i++)
+            {
+                newProductDto.ProductPictureDtos[i].ProductId = asset.Id;
+            }
+
+            var productPictures = await _productPictureService.AddRangeAsync(newProductDto.ProductPictureDtos);
+
+            foreach (var item in productPictures)
+            {
+                asset.ProductPictures.Add(item);
+            }
             return Created(Endpoints.Product, asset);
         }
 
@@ -77,6 +88,15 @@ namespace Rookie.Ecom.MetaShop.Admin.Controllers
 
             var asset = await _productPictureService.AddRangeAsync(newProductPictureDtos);
             return Created(Endpoints.Product, asset);
+        }
+
+        [HttpDelete("{id}/soft")]
+        public async Task<ActionResult> SoftDeleteAssetAsync([FromRoute] Guid id)
+        {
+            var categoryDto = await _productService.GetByIdAsync(id);
+            Ensure.Any.IsNotNull(categoryDto, nameof(categoryDto));
+            await _productService.SoftDeleteAsync(id);
+            return NoContent();
         }
     }
 }

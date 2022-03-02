@@ -22,8 +22,12 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Interfaces
 
         Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities);
 
+        Task RemoveRangeAsync(IEnumerable<T> entities);
+
         Task UpdateAsync(T entity);
 
         Task DeleteAsync(object id);
+
+        Task SoftDeleteAsync(object id);
     }
 }

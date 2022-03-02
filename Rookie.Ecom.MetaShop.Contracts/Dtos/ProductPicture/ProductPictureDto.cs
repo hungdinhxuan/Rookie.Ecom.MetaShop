@@ -1,9 +1,6 @@
 ﻿using Rookie.Ecom.MetaShop.Contracts.Dtos.Product;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace Rookie.Ecom.MetaShop.Contracts.Dtos.ProductPicture
 {
@@ -13,6 +10,7 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos.ProductPicture
 
         public Guid ProductId { get; set; }
 
+        [JsonIgnore]
         public ProductDto Product { get; set; }
     }
 }

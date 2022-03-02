@@ -41,6 +41,12 @@ namespace Rookie.Ecom.MetaShop.DataAccessor
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task RemoveRangeAsync(IEnumerable<T> entities)
+        {
+            _dbContext.Set<T>().RemoveRange(entities);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _dbContext.Set<T>().ToListAsync();
@@ -71,6 +77,19 @@ namespace Rookie.Ecom.MetaShop.DataAccessor
         {
             _dbContext.Update(entity);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task SoftDeleteAsync(object id)
+        {
+            var entity = await _dbContext.Set<T>().FindAsync(id);
+            // lets assume the property exists and is a nullable bool; get the value from the property.
+
+            var property = entity.GetType().GetProperty("IsDeleted");
+
+            property.SetValue(entity, true);
+
+            await _dbContext.SaveChangesAsync();
+
         }
     }
 }
