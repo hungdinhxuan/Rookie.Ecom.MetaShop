@@ -115,8 +115,7 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PictureUrl = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    PictureUrl = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     product_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     updated_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     created_date = table.Column<DateTime>(type: "datetime2", nullable: false),

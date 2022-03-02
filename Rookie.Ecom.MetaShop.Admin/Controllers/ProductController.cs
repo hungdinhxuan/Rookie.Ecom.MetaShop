@@ -9,6 +9,7 @@ using Rookie.Ecom.MetaShop.Contracts.Dtos;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.Product;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.ProductPicture;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -68,15 +69,14 @@ namespace Rookie.Ecom.MetaShop.Admin.Controllers
             FindAsync(string name, int page = 1, int limit = 10)
             => await _productService.PagedQueryAsync(name, page, limit);
 
-        [HttpPost("picture")]
-        public async Task<ActionResult<ProductPictureDto>> CreateProductPictureAsync([FromBody] CreateProductPictureDto newProductPictureDto)
-        {
-            Ensure.Any.IsNotNull(newProductPictureDto, nameof(newProductPictureDto));
 
-            var asset = await _productPictureService.AddAsync(newProductPictureDto);
+        [HttpPost("picture")]
+        public async Task<ActionResult<IEnumerable<ProductPictureDto>>> CreateProductPictureRangeAsync([FromBody] IEnumerable<CreateProductPictureDto> newProductPictureDtos)
+        {
+            Ensure.Any.IsNotNull(newProductPictureDtos, nameof(newProductPictureDtos));
+
+            var asset = await _productPictureService.AddRangeAsync(newProductPictureDtos);
             return Created(Endpoints.Product, asset);
         }
-
-
     }
 }

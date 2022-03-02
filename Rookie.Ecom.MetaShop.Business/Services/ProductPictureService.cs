@@ -34,6 +34,24 @@ namespace Rookie.Ecom.MetaShop.Business.Services
             return _mapper.Map<ProductPictureDto>(itemProductPicture);
         }
 
+        public async Task<IEnumerable<ProductPictureDto>> AddRangeAsync(IEnumerable<CreateProductPictureDto> items)
+        {
+            if (items == null)
+            {
+                throw new ArgumentNullException(nameof(items));
+            }
+
+            if (!items.Any())
+            {
+                return null;
+            }
+
+            var productPictures = _mapper.Map<IEnumerable<ProductPicture>>(items);
+            var itemProductPictures = await _baseRepository.AddRangeAsync(productPictures);
+
+            return _mapper.Map<IEnumerable<ProductPictureDto>>(itemProductPictures);
+        }
+
         public async Task DeleteAsync(Guid id)
         {
             await _baseRepository.DeleteAsync(id);
@@ -42,8 +60,6 @@ namespace Rookie.Ecom.MetaShop.Business.Services
         public async Task<IEnumerable<ProductPictureDto>> GetAllByProductIdAsync(Guid productId)
         {
             var productPicture = await _baseRepository.GetAllAsync();
-
-
 
             throw new NotImplementedException();
         }

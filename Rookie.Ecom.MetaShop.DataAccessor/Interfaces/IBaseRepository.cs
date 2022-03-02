@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -17,6 +18,9 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Interfaces
         Task<IEnumerable<T>> GetAllAsync();
 
         Task<T> AddAsync(T entity);
+
+
+        Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities);
 
         Task UpdateAsync(T entity);
 

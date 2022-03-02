@@ -251,16 +251,13 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                         .HasColumnName("is_deleted");
 
                     b.Property<string>("PictureUrl")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("product_id");
-
-                    b.Property<string>("Title")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
 
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uniqueidentifier")

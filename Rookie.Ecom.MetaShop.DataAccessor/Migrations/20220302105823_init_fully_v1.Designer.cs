@@ -10,7 +10,7 @@ using Rookie.Ecom.MetaShop.DataAccessor.Data;
 namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220302084410_init_fully_v1")]
+    [Migration("20220302105823_init_fully_v1")]
     partial class init_fully_v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -253,16 +253,13 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                         .HasColumnName("is_deleted");
 
                     b.Property<string>("PictureUrl")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("product_id");
-
-                    b.Property<string>("Title")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
 
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uniqueidentifier")

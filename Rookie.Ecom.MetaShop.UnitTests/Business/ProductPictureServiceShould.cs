@@ -1,9 +1,15 @@
 ﻿using AutoMapper;
+using FluentAssertions;
 using Moq;
 using Rookie.Ecom.MetaShop.Business;
 using Rookie.Ecom.MetaShop.Business.Services;
+using Rookie.Ecom.MetaShop.Contracts.Dtos.ProductPicture;
 using Rookie.Ecom.MetaShop.DataAccessor.Entities;
 using Rookie.Ecom.MetaShop.DataAccessor.Interfaces;
+using System;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace Rookie.Ecom.UnitTests.Business
 {
@@ -31,5 +37,18 @@ namespace Rookie.Ecom.UnitTests.Business
                     _mapper
                 );
         }
+
+        [Fact]
+        public async Task AddRangeShouldThrowExceptionAsync()
+        {
+            Func<Task> act = async () => await _productPictureService.AddRangeAsync(null);
+            await act.Should().ThrowAsync<ArgumentNullException>();
+        }
+        /*
+                [Fact]
+                public async Task AddRangeShouldBeSuccessfullyAsync()
+                {
+
+                }*/
     }
 }

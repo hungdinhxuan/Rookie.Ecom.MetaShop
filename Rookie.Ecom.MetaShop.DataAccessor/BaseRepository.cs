@@ -27,6 +27,13 @@ namespace Rookie.Ecom.MetaShop.DataAccessor
             return entity;
         }
 
+        public async Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities)
+        {
+            await _dbContext.Set<T>().AddRangeAsync(entities);
+            await _dbContext.SaveChangesAsync();
+            return entities;
+        }
+
         public async Task DeleteAsync(object id)
         {
             var entity = await _dbContext.Set<T>().FindAsync(id);

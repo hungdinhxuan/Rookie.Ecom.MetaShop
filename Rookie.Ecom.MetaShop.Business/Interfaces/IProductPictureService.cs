@@ -14,6 +14,8 @@ namespace Rookie.Ecom.MetaShop.Business.Interfaces
 
         Task DeleteAsync(Guid id);
 
+        public Task<IEnumerable<ProductPictureDto>> AddRangeAsync(IEnumerable<CreateProductPictureDto> items);
+
 
     }
 }

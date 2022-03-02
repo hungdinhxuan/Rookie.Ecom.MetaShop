@@ -6,12 +6,11 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Entities
 {
     public class ProductPicture : BaseEntity
     {
+        [Required]
         [StringLength(maximumLength: 250)]
         public string PictureUrl { get; set; }
 
-        [StringLength(maximumLength: 100)]
-        public string Title { get; set; }
-
+        [Required]
         [Column("product_id")]
         public Guid ProductId { get; set; }
         public Product Product { get; set; }
