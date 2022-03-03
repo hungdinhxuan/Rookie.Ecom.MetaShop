@@ -29,7 +29,7 @@ import Iconify from "../components/Iconify";
 import SearchNotFound from "../components/SearchNotFound";
 import {
   ProductListHead,
-  ProductListToolbar
+  ProductListToolbar,
 } from "src/sections/@dashboard/products";
 // ----------------------------------------------------------------------
 
@@ -42,8 +42,11 @@ import parseObjectToUrlQuery from "src/utils/parseObjectToUrlQuery";
 import { LIMIT_PRODUCT_PER_PAGE } from "src/app/constants";
 
 import CreateProduct from "src/sections/@dashboard/products/CreateProduct";
-import Label from 'src/components/Label';
-import { sentenceCase } from 'change-case';
+import {
+  ProductMoreMenu
+} from "src/sections/@dashboard/products";
+import Label from "src/components/Label";
+import { sentenceCase } from "change-case";
 
 const TABLE_HEAD = [
   { id: "id", label: "Id", alignRight: false },
@@ -181,7 +184,7 @@ export default function Product() {
 
   useEffect(() => {
     dispatch(
-      getAllProductsAsync (
+      getAllProductsAsync(
         parseObjectToUrlQuery({
           page: parseInt(searchParams.get("page")) || ProductCurrentPage,
           limit: parseInt(searchParams.get("limit")) || LIMIT_PRODUCT_PER_PAGE,
@@ -311,13 +314,20 @@ export default function Product() {
                             <TableCell align="left">{quantity}</TableCell>
                             <TableCell align="left">{status}</TableCell>
                             <TableCell align="left">
-                            <Label
-                              variant="ghost"
-                              color={(isPublished === false && 'error') || 'success'}
-                            >
-                              {sentenceCase(`${isPublished}`)}
-                            </Label>
-                          </TableCell>
+                              <Label
+                                variant="ghost"
+                                color={
+                                  (isPublished === false && "error") ||
+                                  "success"
+                                }
+                              >
+                                {sentenceCase(`${isPublished}`)}
+                              </Label>
+                            </TableCell>
+
+                            <TableCell align="right">
+                              <ProductMoreMenu product={row} />
+                            </TableCell>
                             {/* <TableCell align="left">
                               {new Date(createdDate).toLocaleString()}
                             </TableCell>

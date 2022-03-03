@@ -1,6 +1,9 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import {getStorage} from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import uuid from "./uuid";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -16,6 +19,42 @@ const firebaseConfig = {
   measurementId: "G-0RWFEV85LC"
 };
 
+
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const storage = getStorage(app);
+
+
+export async function uploadImageToFirebaseAsPromise (imageFile) {
+  return new Promise(function (resolve, reject) {
+    const storageRef = ref(storage, uuid() + imageFile.name);
+    const uploadTask = uploadBytesResumable(storageRef, imageFile);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        
+      },
+      (error) => {
+
+        reject(error);
+      },
+      () => {
+        // Handle successful uploads on complete
+        // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log("File available at", downloadURL);
+          resolve(downloadURL);
+        });
+      }
+    );
+  });
+}
+
+export const exactFirebaseLink = (link) => {
+  try {
+      return link.match(/o\/.*\?/g)[0].split('o/')[1].split('?')[0];
+  } catch (error) {
+      return null;
+  }
+}

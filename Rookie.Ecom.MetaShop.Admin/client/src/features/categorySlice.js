@@ -3,7 +3,7 @@ import axiosClient from "../utils/axiosClient";
 import { swalWithBootstrapButtons } from "../utils/sweetalert2";
 import { ref, deleteObject } from "firebase/storage";
 import { storage } from "../utils/firebase";
-import exactFirebaseLink from "../utils/exactFirebaseLink";
+import {exactFirebaseLink} from "../utils/firebase";
 import { LIMIT_CATEGORY_PER_PAGE } from "../app/constants";
 
 const initialState = {

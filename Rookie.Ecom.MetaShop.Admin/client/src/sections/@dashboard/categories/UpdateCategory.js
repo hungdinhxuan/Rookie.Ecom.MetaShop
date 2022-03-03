@@ -17,7 +17,7 @@ import {
 } from "firebase/storage";
 import uuid from "src/utils/uuid";
 import { setCategory, updateCategoryAsync } from "src/features/categorySlice";
-import exactFirebaseLink from "src/utils/exactFirebaseLink";
+import {exactFirebaseLink} from "src/utils/firebase";
 
 const UpdateCategory = ({ open, setOpen }) => {
   const types = ["image/png", "image/jpeg", "image/jpg"];
@@ -137,7 +137,7 @@ const UpdateCategory = ({ open, setOpen }) => {
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Category</DialogTitle>
       <DialogContent>
-        <DialogContentText>Create a new category</DialogContentText>
+        <DialogContentText>Update category</DialogContentText>
         <TextField
           autoFocus
           margin="dense"

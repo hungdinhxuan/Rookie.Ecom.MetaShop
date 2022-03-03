@@ -1,10 +1,6 @@
 import { filter } from "lodash";
 import { useState } from "react";
-import {
-  Link as RouterLink,
-  useSearchParams,
-  useNavigate,
-} from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 // material
 import {
   Card,
@@ -42,6 +38,7 @@ import { getPagedCategoriesAsync } from "../features/categorySlice";
 import CreateCategory from "src/sections/@dashboard/categories/CreateCategory";
 import parseObjectToUrlQuery from "src/utils/parseObjectToUrlQuery";
 import { LIMIT_CATEGORY_PER_PAGE } from "src/app/constants";
+import { fDateTime } from "src/utils/formatTime";
 
 const TABLE_HEAD = [
   { id: "id", label: "Id", alignRight: false },
@@ -176,7 +173,6 @@ export default function Category() {
   const isCategoryNotFound = filteredCategorys.length === 0;
 
   useEffect(() => {
-    
     dispatch(
       getPagedCategoriesAsync(
         parseObjectToUrlQuery({
@@ -186,7 +182,6 @@ export default function Category() {
       )
     );
   }, [dispatch, searchParams, CategoryCurrentPage]);
-
 
   useEffect(() => {
     if (!searchParams.get("page") && !searchParams.get("limit")) {
@@ -198,7 +193,7 @@ export default function Category() {
         }),
       });
     }
-    console.log('re-render category')
+    console.log("re-render category");
   }, [searchParams, navigate]);
 
   return (
@@ -309,10 +304,10 @@ export default function Category() {
                               />
                             </TableCell>
                             <TableCell align="left">
-                              {new Date(createdDate).toLocaleString()}
+                              {fDateTime(createdDate)}
                             </TableCell>
                             <TableCell align="left">
-                              {new Date(updatedDate).toLocaleString()}
+                              {fDateTime(updatedDate)}
                             </TableCell>
 
                             <TableCell align="right">

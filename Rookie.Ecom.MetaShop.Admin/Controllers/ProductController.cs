@@ -67,11 +67,10 @@ namespace Rookie.Ecom.MetaShop.Admin.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateAsync([FromBody] ProductDto ProductDto)
+        public async Task<ActionResult> UpdateAsync([FromBody] UpdateProductDto ProductDto)
         {
             Ensure.Any.IsNotNull(ProductDto, nameof(ProductDto));
             await _productService.UpdateAsync(ProductDto);
-
             return NoContent();
         }
 

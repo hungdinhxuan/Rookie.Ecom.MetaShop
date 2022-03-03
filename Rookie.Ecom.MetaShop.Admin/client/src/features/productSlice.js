@@ -3,7 +3,7 @@ import axiosClient from "../utils/axiosClient";
 import { swalWithBootstrapButtons } from "../utils/sweetalert2";
 import { ref, deleteObject } from "firebase/storage";
 import {storage} from "../utils/firebase";
-import exactFirebaseLink from "../utils/exactFirebaseLink";
+import {exactFirebaseLink} from "../utils/firebase";
 import {LIMIT_PRODUCT_PER_PAGE} from "../app/constants";
 
 const initialState = {
@@ -67,7 +67,7 @@ export const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
-    setproduct: (state, action) => {
+    setProduct: (state, action) => {
       state.product = action.payload;
     },
     setCurrentPage: (state, action) => {
@@ -102,20 +102,23 @@ export const productSlice = createSlice({
           "Delete successfully",
           "success"
         );
+        
+        const deletePromise = [];
+        state.product.productPictures["$values"].forEach((productPic) => {
+          const beforeUrlLink = exactFirebaseLink(productPic.pictureUrl);
+          if (beforeUrlLink !== null) {
+            const desertRef = ref(storage, beforeUrlLink);
+            deletePromise.push(deleteObject(desertRef));
+          }
+        });
 
-        const objLink = exactFirebaseLink(state.product.imageUrl);
+        
+        Promise.all(deletePromise).then(() => {
+          console.log("All files deleted");
+        }).catch((error) => {
+          console.log(error);
+        });
 
-        if(objLink){
-
-          const desertRef = ref(storage, objLink);
-          deleteObject(desertRef).then(() => {
-            // File deleted successfully
-            console.log("File deleted successfully");
-          }).catch((error) => {
-            // Uh-oh, an error occurred!
-            console.log(error);
-          });
-        }
         state.product = null;
 
         state.totalItems = state.totalItems - 1;
@@ -179,5 +182,5 @@ export const productSlice = createSlice({
   },
 });
 
-export const { setproduct, setCurrentPage } = productSlice.actions;
+export const { setProduct, setCurrentPage } = productSlice.actions;
 export default productSlice.reducer;

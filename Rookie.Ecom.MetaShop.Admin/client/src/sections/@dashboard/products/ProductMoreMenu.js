@@ -6,20 +6,22 @@ import { Menu, MenuItem, IconButton, ListItemIcon, ListItemText } from '@mui/mat
 import Iconify from '../../../components/Iconify';
 
 import { useDispatch } from "react-redux";
-import {deleteCategoryAsync, setCategory} from "../../../features/categorySlice";
+import {deleteProductAsync, setProduct} from "../../../features/productSlice";
 
 // ----------------------------------------------------------------------
 
 import {swalWithBootstrapButtons} from "src/utils/sweetalert2";
 import Swal from "sweetalert2";
-import UpdateCategory from "src/sections/@dashboard/categories/UpdateCategory";
+import UpdateProduct from "src/sections/@dashboard/products/UpdateProduct";
+import ProductDetail from "src/sections/@dashboard/products/ProductDetail";
 import { memo } from 'react';
 
-function ProductMoreMenu({category}) {
+function ProductMoreMenu({product}) {
   
   const ref = useRef(null);
   const dispatch = useDispatch();
   const [isDeleteDialogConfirm, setIsDeleteDialogConfirm] = useState(false);
+  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
 
   const handleShowDeleteConfirm = () => {
@@ -34,7 +36,7 @@ function ProductMoreMenu({category}) {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(deleteCategoryAsync({id: category.id}));
+        dispatch(deleteProductAsync({id: product.id}));
         
       } else if (
         /* Read more about handling dismissals below */
@@ -55,7 +57,7 @@ function ProductMoreMenu({category}) {
     <>
       <IconButton ref={ref} onClick={() => {
         setIsDeleteDialogConfirm(true)
-        dispatch(setCategory(category));
+        dispatch(setProduct(product));
       }}>
         <Iconify icon="eva:more-vertical-fill" width={20} height={20} />
       </IconButton>
@@ -85,9 +87,19 @@ function ProductMoreMenu({category}) {
           </ListItemIcon>
           <ListItemText primary="Edit" primaryTypographyProps={{ variant: 'body2' }} onClick={() => setIsUpdateDialogOpen(true)}/>
         </MenuItem>
+
+        <MenuItem sx={{ color: 'text.secondary' }}>
+          <ListItemIcon>
+            <Iconify icon="carbon:view-filled" width={24} height={24} />
+          </ListItemIcon>
+          <ListItemText primary="View" primaryTypographyProps={{ variant: 'body2' }} onClick={() => setIsViewDialogOpen(true)}/>
+        </MenuItem>
       </Menu>
       {
-        isUpdateDialogOpen && <UpdateCategory open={isUpdateDialogOpen} setOpen={setIsUpdateDialogOpen} />
+        isUpdateDialogOpen && <UpdateProduct open={isUpdateDialogOpen} setOpen={setIsUpdateDialogOpen} />
+      }
+      {
+        isViewDialogOpen && <ProductDetail open={isViewDialogOpen} setOpen={setIsViewDialogOpen} />
       }
 
     </>

@@ -22,10 +22,10 @@ import NumberFormat from "react-number-format";
 import Box from "@mui/material/Box";
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import {uploadImageToFirebaseAsPromise} from "src/utils/firebase";
 
 const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
   const { onChange, ...other } = props;
-
   return (
     <NumberFormat
       {...other}
@@ -45,7 +45,33 @@ const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
   );
 });
 
+const NumberFormatCustom2 = forwardRef(function NumberFormatCustom2(props, ref) {
+  const { onChange, ...other } = props;
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={ref}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator
+      isNumericString
+    />
+  );
+});
+
+
 NumberFormatCustom.propTypes = {
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
+NumberFormatCustom2.propTypes = {
   name: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };
@@ -68,14 +94,13 @@ const CreateProduct = ({ open, setOpen }) => {
   const { categories } = useSelector((state) => state.category);
   const [product, setProduct] = useState({
     name: "",
-    desc: "",
-    imageUrl: "",
     shortDesc: "",
     longDesc: "",
     price: 0,
     quantity: 0,
     isPublished: true,
     categoryId: "",
+    productPictureDtos: []
   });
   const handleProductChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
@@ -86,19 +111,12 @@ const CreateProduct = ({ open, setOpen }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [previewFiles, setPreviewFiles] = useState([]);
 
-  const onSelectCategory = (value) => {
-    console.log(value);
-    setProduct({ ...product, categoryId: value });
-  };
-
-  function onSearchCategory(val) {
-    console.log("search:", val);
-  }
-
+  
   const handleSelectedFilesChange = (e) => {
     const files = convertFileListToArray(e.target.files);
 
     if (files.length > 3) {
+      handleClose();
       swalWithBootstrapButtons.fire({
         title: "Error",
         text: "You can only upload maximum 3 images",
@@ -108,6 +126,7 @@ const CreateProduct = ({ open, setOpen }) => {
       return;
     }
     if (files.map((file) => file.type).some((type) => !types.includes(type))) {
+      handleClose();
       swalWithBootstrapButtons.fire({
         title: "Error",
         text: "You can only upload png, jpg, jpeg images",
@@ -126,37 +145,64 @@ const CreateProduct = ({ open, setOpen }) => {
     setSelectedFiles(files);
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-
-    if (file && types.includes(file.type)) {
-      setFile(file);
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewUrl(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setOpen(false);
-      swalWithBootstrapButtons.fire(
-        "Error",
-        "Please select an image file (png, jpg, jpeg)",
-        "error"
-      );
-    }
-  };
 
   const handleClose = () => {
     setOpen(false);
     setProduct({
       name: "",
-      desc: "",
-      imageUrl: "",
+      shortDesc: "",
+      longDesc: "",
+      price: 0,
+      quantity: 0,
+      isPublished: true,
+      categoryId: "",
+      productPictureDtos: []
     });
     setFile(null);
+    setSelectedFiles([]);
+    setPreviewFiles([]);
     setPreviewUrl("");
   };
+
+  const handleCreateProduct = () => {
+    console.log(product);
+    if(selectedFiles.length === 0){
+      handleClose();
+      swalWithBootstrapButtons.fire({
+        title: "Error",
+        text: "You must upload at least one image",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      return;
+    }
+    else if(!product.name || !product.shortDesc || !product.price || !product.quantity || !product.categoryId){
+      handleClose();
+      swalWithBootstrapButtons.fire({
+        title: "Error",
+        text: "You must fill all the fields",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      return;
+    }else
+    {
+      const downloadURLs = [];
+      selectedFiles.forEach((file) => {
+        downloadURLs.push(uploadImageToFirebaseAsPromise(file));
+      });
+      handleClose();
+      Promise.all(downloadURLs).then((urls) => {
+        dispatch( createProductAsync({
+          ...product,
+          productPictureDtos: urls.map((url) => ({
+            pictureUrl: url
+          }))
+        }))
+      })
+      
+    }
+  }
 
   const handleCreate = () => {
     // firebase upload
@@ -223,17 +269,19 @@ const CreateProduct = ({ open, setOpen }) => {
           variant="outlined"
           onChange={handleProductChange}
           name="name"
+          value={product.name}
         />
         <TextField
           autoFocus
           margin="dense"
           id="shortDesc"
           label="Short Description"
+          value={product.shortDesc}
           type="text"
           fullWidth
           variant="outlined"
           onChange={handleProductChange}
-          name="desc"
+          name="shortDesc"
         />
         <TextField
           autoFocus
@@ -243,8 +291,9 @@ const CreateProduct = ({ open, setOpen }) => {
           type="text"
           fullWidth
           variant="outlined"
+          value={product.longDesc}
           onChange={handleProductChange}
-          name="desc"
+          name="longDesc"
           multiline
         />
 
@@ -274,7 +323,7 @@ const CreateProduct = ({ open, setOpen }) => {
             name="quantity"
             id="formatted-quantity-input"
             InputProps={{
-              inputComponent: NumberFormatCustom,
+              inputComponent: NumberFormatCustom2,
             }}
             variant="standard"
           />
@@ -345,7 +394,7 @@ const CreateProduct = ({ open, setOpen }) => {
 
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleCreate}>Create</Button>
+        <Button onClick={handleCreateProduct}>Create</Button>
       </DialogActions>
     </Dialog>
   );
