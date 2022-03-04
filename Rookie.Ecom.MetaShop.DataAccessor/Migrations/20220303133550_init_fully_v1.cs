@@ -58,6 +58,7 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     is_published = table.Column<bool>(type: "bit", nullable: false),
+                    is_featured = table.Column<bool>(type: "bit", nullable: false),
                     category_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     updated_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     created_date = table.Column<DateTime>(type: "datetime2", nullable: false),

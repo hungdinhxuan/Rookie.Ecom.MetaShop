@@ -22,7 +22,9 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos.Product
 
         public string? Status { get; set; }
 
-        public bool IsPublished { get; set; } = true;
+        public bool IsFeatured { get; set; }
+
+        public bool IsPublished { get; set; }
 
         public Guid CategoryId { get; set; }
 

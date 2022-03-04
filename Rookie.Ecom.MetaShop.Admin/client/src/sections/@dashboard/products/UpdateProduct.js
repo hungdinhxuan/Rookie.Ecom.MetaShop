@@ -386,7 +386,7 @@ const UpdateProduct = ({ open, setOpen }) => {
                 <img
                   src={previewFile.pictureUrl || "/static/none.png"}
                   alt="preview"
-                  style={{ width: "100px", height: "100px" }}
+                  style={{ width: "100px", height: "100px", objectFit: "cover"}}
                   key={index}
                 />
               ))}

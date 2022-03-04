@@ -1,3 +1,5 @@
+using Rookie.Ecom.MetaShop.Contracts.Dtos.Product;
+using System;
 using System.Collections.Generic;
 
 namespace Rookie.Ecom.MetaShop.Contracts
@@ -11,5 +13,6 @@ namespace Rookie.Ecom.MetaShop.Contracts
         public int TotalPages { get; set; }
 
         public IEnumerable<TModel> Items { get; set; }
+
     }
 }

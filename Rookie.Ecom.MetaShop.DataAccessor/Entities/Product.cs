@@ -27,6 +27,9 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Entities
         [Column("is_published")]
         public bool IsPublished { get; set; } = true;
 
+        [Column("is_featured")]
+        public bool IsFeatured { get; set; } = true;
+
         [Column("category_id")]
         public Guid CategoryId { get; set; }
 

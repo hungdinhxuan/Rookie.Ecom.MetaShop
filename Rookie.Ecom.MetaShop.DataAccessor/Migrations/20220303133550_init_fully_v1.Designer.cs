@@ -10,7 +10,7 @@ using Rookie.Ecom.MetaShop.DataAccessor.Data;
 namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220302105823_init_fully_v1")]
+    [Migration("20220303133550_init_fully_v1")]
     partial class init_fully_v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -189,6 +189,10 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
                         .HasColumnName("is_deleted");
+
+                    b.Property<bool>("IsFeatured")
+                        .HasColumnType("bit")
+                        .HasColumnName("is_featured");
 
                     b.Property<bool>("IsPublished")
                         .HasColumnType("bit")

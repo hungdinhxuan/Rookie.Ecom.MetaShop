@@ -169,7 +169,7 @@ const CreateCategory = ({ open, setOpen }) => {
           alt="preview"
           width={100}
           height={100}
-          style={{ marginLeft: "15px" }}
+          style={{ marginLeft: "15px", objectFit: "cover"}}
         />
       </div>
       <DialogActions>

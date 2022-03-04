@@ -164,7 +164,9 @@ const UpdateCategory = ({ open, setOpen }) => {
         />
       </DialogContent>
       <input type="file" onChange={handleFileChange} />
-      <img src={previewUrl || "/static/none.png"} alt="preview" width={100} height={100} />
+      <img src={previewUrl || "/static/none.png"} alt="preview" width={100} height={100}  style={{
+        objectFit: "cover"
+      }}/>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
         <Button onClick={handleUpdate}>Update</Button>

@@ -188,6 +188,10 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("is_deleted");
 
+                    b.Property<bool>("IsFeatured")
+                        .HasColumnType("bit")
+                        .HasColumnName("is_featured");
+
                     b.Property<bool>("IsPublished")
                         .HasColumnType("bit")
                         .HasColumnName("is_published");
