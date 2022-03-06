@@ -1,6 +1,7 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@using Microsoft.AspNetCore.Authentication
 
 <header class="header">
     <div class="header__top">
@@ -22,9 +23,17 @@
                             <a href="#"><i class="fa fa-linkedin"></i></a>
                             <a href="#"><i class="fa fa-pinterest-p"></i></a>
                         </div>
-                        
+
                         <div class="header__top__right__auth">
-                            <a href="#"><i class="fa fa-user"></i> Login</a>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <p>Hello @User.Claims.FirstOrDefault(claim => claim.Type == "name").Value </p>
+                                <a asp-page="/Auth/Logout"><i class="fa fa-user"></i> Logout</a>
+                            }
+                            else
+                            {
+                                <a asp-page="/Auth/Login"><i class="fa fa-user"></i> Login</a>
+                            }
                         </div>
                     </div>
                 </div>

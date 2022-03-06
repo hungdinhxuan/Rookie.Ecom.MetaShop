@@ -40,6 +40,9 @@ namespace Rookie.Ecom.MetaShop.Customer
                     options.ClientSecret = "secret";
                     options.ResponseType = "code";
 
+                    options.Scope.Add("profile");
+                    options.GetClaimsFromUserInfoEndpoint = true;
+
                     options.SaveTokens = true;
                 });
         }

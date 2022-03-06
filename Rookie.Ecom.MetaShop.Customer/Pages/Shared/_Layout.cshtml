@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Authentication
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -23,7 +25,7 @@
         <div class="loader"></div>
     </div>
 
-    <!-- Humberger Begin -->
+    <!-- Humberger Begin (Responsive) -->
     <div class="humberger__menu__overlay"></div>
     <div class="humberger__menu__wrapper">
         <div class="humberger__menu__logo">
@@ -47,7 +49,7 @@
                 </ul>
             </div>
             <div class="header__top__right__auth">
-                <a href="#"><i class="fa fa-user"></i> Login</a>
+                <a asp-area="" asp-page="/Auth/Login"><i class="fa fa-user"></i>Login</a>
             </div>
         </div>
         <nav class="humberger__menu__nav mobile-menu">
@@ -105,7 +107,7 @@
         </header>*@
 
 
-    <!-- Header Section Begin -->
+    <!-- Header Section Begin (For Desktop) -->
     <partial name="_Header" />
     <!-- Header Section End -->
 

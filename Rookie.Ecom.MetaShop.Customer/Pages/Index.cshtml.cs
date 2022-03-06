@@ -18,6 +18,7 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages
         private readonly ICategoryService _categoryService;
         private readonly IProductService _productService;
 
+
         public IndexModel(ILogger<IndexModel> logger, ICategoryService categoryService, IProductService productService)
         {
             _logger = logger;
@@ -34,10 +35,13 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages
         public int CurrentPage { get; set; } = 1;
         public int PageSize { get; set; } = 5;
 
+        public string UserNameIdentity { get; set; }
+
         public async Task<IActionResult> OnGet()
         {
             Products = await _productService.PagedQueryAsync(null, CurrentPage, PageSize);
             Categories = (List<CategoryDto>)await _categoryService.GetAllAsync();
+            UserNameIdentity = User.Identity.Name;
             return Page();
         }
     }
