@@ -1,5 +1,7 @@
+using IdentityServer4;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,9 +22,12 @@ namespace Rookie.Ecom.MetaShop.Customer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
-            services.AddRazorPages().AddRazorRuntimeCompilation();
+            services.AddRazorPages(opt =>
+            {
+                opt.Conventions.AddPageRoute("/Home/Index", "");
+            }).AddRazorRuntimeCompilation();
             services.AddBusinessLayer(Configuration);
+
 
             JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
@@ -39,8 +44,10 @@ namespace Rookie.Ecom.MetaShop.Customer
                     options.ClientId = "mvc";
                     options.ClientSecret = "secret";
                     options.ResponseType = "code";
+                    options.UsePkce = true;
 
                     options.Scope.Add("profile");
+                    options.Scope.Add("offline_access");
                     options.GetClaimsFromUserInfoEndpoint = true;
 
                     options.SaveTokens = true;
@@ -60,6 +67,7 @@ namespace Rookie.Ecom.MetaShop.Customer
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

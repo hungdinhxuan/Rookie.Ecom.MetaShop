@@ -26,6 +26,11 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Data
 
         public DbSet<ProductRating> ProductRatings { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Category>().HasMany(c => c.Products).WithOne(p => p.Category).OnDelete(DeleteBehavior.ClientCascade);
+            modelBuilder.Entity<Product>().HasMany(p => p.ProductPictures).WithOne(p => p.Product).OnDelete(DeleteBehavior.ClientCascade);
+        }
 
         public override Task<int> SaveChangesAsync(
             bool acceptAllChangesOnSuccess,
@@ -55,6 +60,8 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Data
             }
             return base.SaveChangesAsync(cancellationToken);
         }
+
+
 
     }
 }

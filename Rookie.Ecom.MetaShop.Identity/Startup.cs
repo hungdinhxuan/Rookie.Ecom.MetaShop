@@ -1,3 +1,5 @@
+using IdentityServer4;
+using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -27,12 +29,26 @@ namespace Rookie.Ecom.MetaShop.Identity
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             var defaultConnString = Configuration.GetConnectionString("DefaultConnection");
 
+            services.AddControllersWithViews();
+
+            services.AddAuthentication()
+           .AddGoogle("Google", options =>
+           {
+               options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+               options.ClientId = Configuration["Authentication:Google:ClientId"];
+               options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+           });
+
             services.AddDbContext<AspNetIdentityDbContext>(options =>
             options.UseSqlServer(defaultConnString,
                 b => b.MigrationsAssembly(migrationsAssembly)));
+
             services.AddIdentity<IdentityUser, IdentityRole>()
-            .AddEntityFrameworkStores<AspNetIdentityDbContext>();
-            services.AddIdentityServer()
+            .AddEntityFrameworkStores<AspNetIdentityDbContext>()
+            .AddDefaultTokenProviders();
+
+            // configure identity server with sqlserver stores, keys, clients and scopes
+            var builder = services.AddIdentityServer()
             .AddAspNetIdentity<IdentityUser>()
             .AddConfigurationStore(options =>
             {
@@ -43,10 +59,12 @@ namespace Rookie.Ecom.MetaShop.Identity
             {
                 options.ConfigureDbContext = b =>
                 b.UseSqlServer(defaultConnString, opt => opt.MigrationsAssembly(migrationsAssembly));
-            })
-            .AddDeveloperSigningCredential();
+            });
 
-            services.AddControllersWithViews();
+
+
+            builder.AddDeveloperSigningCredential();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +73,7 @@ namespace Rookie.Ecom.MetaShop.Identity
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
             }
 
             app.UseStaticFiles();

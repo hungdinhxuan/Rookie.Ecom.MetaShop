@@ -56,7 +56,7 @@ const TABLE_HEAD = [
   { id: "price", label: "Price", alignRight: false },
   { id: "quantity", label: "Quantity", alignRight: false },
   { id: "status", label: "Status", alignRight: false },
-  { id: "isPublished", label: "Publish", alignRight: false },
+  { id: "isFeatured", label: "Featured Product", alignRight: false },
   { id: "" },
 ];
 
@@ -271,7 +271,7 @@ export default function Product() {
                           price,
                           quantity,
                           status,
-                          isPublished,
+                          isFeatured,
                           createdDate,
                           updatedDate,
                         } = row;
@@ -317,11 +317,11 @@ export default function Product() {
                               <Label
                                 variant="ghost"
                                 color={
-                                  (isPublished === false && "error") ||
+                                  (isFeatured === false && "error") ||
                                   "success"
                                 }
                               >
-                                {sentenceCase(`${isPublished}`)}
+                                {sentenceCase(`${isFeatured}`)}
                               </Label>
                             </TableCell>
 

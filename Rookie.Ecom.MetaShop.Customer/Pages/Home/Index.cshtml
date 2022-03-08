@@ -117,7 +117,7 @@
                                 <div class="latest-prdouct__slider__item">
                                     <a href="#" class="latest-product__item">
                                         <div class="latest-product__item__pic">
-                                            <img src="img/latest-product/lp-1.jpg" alt="">
+                                            <img src="/img/latest-product/lp-1.jpg" alt="">
                                         </div>
                                         <div class="latest-product__item__text">
                                             <h6>Crab Pool Security</h6>
@@ -126,7 +126,7 @@
                                     </a>
                                     <a href="#" class="latest-product__item">
                                         <div class="latest-product__item__pic">
-                                            <img src="img/latest-product/lp-2.jpg" alt="">
+                                            <img src="/img/latest-product/lp-2.jpg" alt="">
                                         </div>
                                         <div class="latest-product__item__text">
                                             <h6>Crab Pool Security</h6>
@@ -135,7 +135,7 @@
                                     </a>
                                     <a href="#" class="latest-product__item">
                                         <div class="latest-product__item__pic">
-                                            <img src="img/latest-product/lp-3.jpg" alt="">
+                                            <img src="/img/latest-product/lp-3.jpg" alt="">
                                         </div>
                                         <div class="latest-product__item__text">
                                             <h6>Crab Pool Security</h6>
@@ -146,7 +146,7 @@
                                 <div class="latest-prdouct__slider__item">
                                     <a href="#" class="latest-product__item">
                                         <div class="latest-product__item__pic">
-                                            <img src="img/latest-product/lp-1.jpg" alt="">
+                                            <img src="/img/latest-product/lp-1.jpg" alt="">
                                         </div>
                                         <div class="latest-product__item__text">
                                             <h6>Crab Pool Security</h6>
@@ -155,7 +155,7 @@
                                     </a>
                                     <a href="#" class="latest-product__item">
                                         <div class="latest-product__item__pic">
-                                            <img src="img/latest-product/lp-2.jpg" alt="">
+                                            <img src="/img/latest-product/lp-2.jpg" alt="">
                                         </div>
                                         <div class="latest-product__item__text">
                                             <h6>Crab Pool Security</h6>
@@ -164,7 +164,7 @@
                                     </a>
                                     <a href="#" class="latest-product__item">
                                         <div class="latest-product__item__pic">
-                                            <img src="img/latest-product/lp-3.jpg" alt="">
+                                            <img src="/img/latest-product/lp-3.jpg" alt="">
                                         </div>
                                         <div class="latest-product__item__text">
                                             <h6>Crab Pool Security</h6>
@@ -189,7 +189,7 @@
                             <div class="col-lg-4">
                                 <div class="product__discount__item">
                                     <div class="product__discount__item__pic set-bg"
-                                         data-setbg="img/product/discount/pd-1.jpg">
+                                         data-setbg="/img/product/discount/pd-1.jpg">
                                         <div class="product__discount__percent">-20%</div>
                                         <ul class="product__item__pic__hover">
                                             <li><a href="#"><i class="fa fa-heart"></i></a></li>
@@ -207,7 +207,7 @@
                             <div class="col-lg-4">
                                 <div class="product__discount__item">
                                     <div class="product__discount__item__pic set-bg"
-                                         data-setbg="img/product/discount/pd-2.jpg">
+                                         data-setbg="/img/product/discount/pd-2.jpg">
                                         <div class="product__discount__percent">-20%</div>
                                         <ul class="product__item__pic__hover">
                                             <li><a href="#"><i class="fa fa-heart"></i></a></li>
@@ -225,7 +225,7 @@
                             <div class="col-lg-4">
                                 <div class="product__discount__item">
                                     <div class="product__discount__item__pic set-bg"
-                                         data-setbg="img/product/discount/pd-3.jpg">
+                                         data-setbg="/img/product/discount/pd-3.jpg">
                                         <div class="product__discount__percent">-20%</div>
                                         <ul class="product__item__pic__hover">
                                             <li><a href="#"><i class="fa fa-heart"></i></a></li>
@@ -243,7 +243,7 @@
                             <div class="col-lg-4">
                                 <div class="product__discount__item">
                                     <div class="product__discount__item__pic set-bg"
-                                         data-setbg="img/product/discount/pd-4.jpg">
+                                         data-setbg="/img/product/discount/pd-4.jpg">
                                         <div class="product__discount__percent">-20%</div>
                                         <ul class="product__item__pic__hover">
                                             <li><a href="#"><i class="fa fa-heart"></i></a></li>
@@ -261,7 +261,7 @@
                             <div class="col-lg-4">
                                 <div class="product__discount__item">
                                     <div class="product__discount__item__pic set-bg"
-                                         data-setbg="img/product/discount/pd-5.jpg">
+                                         data-setbg="/img/product/discount/pd-5.jpg">
                                         <div class="product__discount__percent">-20%</div>
                                         <ul class="product__item__pic__hover">
                                             <li><a href="#"><i class="fa fa-heart"></i></a></li>
@@ -279,12 +279,12 @@
                             <div class="col-lg-4">
                                 <div class="product__discount__item">
                                     <div class="product__discount__item__pic set-bg"
-                                         data-setbg="img/product/discount/pd-6.jpg">
+                                         data-setbg="/img/product/discount/pd-6.jpg">
                                         <div class="product__discount__percent">-20%</div>
                                         <ul class="product__item__pic__hover">
                                             <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                             <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                            <li><a onclick="handleAddToCart(@User.Identity.IsAuthenticated.ToString().ToLower())"><i class="fa fa-shopping-cart"></i></a></li>
                                         </ul>
                                     </div>
                                     <div class="product__discount__item__text">
@@ -325,21 +325,26 @@
 
                     @foreach (var item in Model.Products.Items)
                     {
+
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
                                 <div class="product__item__pic set-bg" data-setbg="@item.ProductPictures[0].PictureUrl">
+                                    <a asp-page="/Product/Index" asp-route-id="@item.Id" class="product-wrapper-link"><i class="fa-solid fa-eye"></i></a>
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a onclick="handleAddToCart(@User.Identity.IsAuthenticated.ToString().ToLower())"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
+
+
                                 <div class="product__item__text">
                                     <h6><a href="#">@item.Name</a></h6>
                                     <h5>$@item.Price</h5>
                                 </div>
                             </div>
                         </div>
+
                     }
                 </div>
                 <div>
@@ -347,7 +352,7 @@
                         @for (var i = 1; i <= Model.Products.TotalPages; i++)
                         {
                             <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                                <a asp-page="/Index" asp-route-currentpage="@i" class="page-link">@i</a>
+                                <a asp-page="/Home/Index" asp-route-currentpage="@i" class="page-link">@i</a>
                             </li>
                         }
                     </ul>

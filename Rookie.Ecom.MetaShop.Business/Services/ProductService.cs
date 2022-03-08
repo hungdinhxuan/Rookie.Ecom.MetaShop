@@ -54,17 +54,11 @@ namespace Rookie.Ecom.MetaShop.Business.Services
             return _mapper.Map<List<ProductDto>>(products);
         }
 
-        public async Task<ProductDto> GetByIdAsync(Guid id)
+        public Task<ProductDto> GetByIdAsync(Guid id)
         {
-            // map roles and users: collection (roleid, userid)
-            // upsert: delete, update, insert
-            // input vs db
-            // input-y vs db-no => insert
-            // input-n vs db-yes => delete
-            // input-y vs db-y => update
-            // unique, distinct, no-duplicate
-            var product = await _baseRepository.GetByIdAsync(id);
-            return _mapper.Map<ProductDto>(product);
+            IQueryable<Product> query = _baseRepository.Entities;
+            Product product = query.Where(p => p.Id == id).Include(p => p.ProductPictures).Include(p => p.Category).FirstOrDefault();
+            return Task.FromResult(_mapper.Map<ProductDto>(product));
         }
 
         public async Task<ProductDto> GetByNameAsync(string name)
@@ -99,6 +93,26 @@ namespace Rookie.Ecom.MetaShop.Business.Services
         public async Task SoftDeleteAsync(Guid id)
         {
             await _baseRepository.SoftDeleteAsync(id);
+        }
+
+        public async Task<List<ProductDto>> GetRelatedProducts(Guid categroyId, int num)
+        {
+            var query = _baseRepository.Entities;
+            List<Product> products = await query.Include(p => p.Category).Include(p => p.ProductPictures).OrderByDescending(p => p.Price).Take(num).ToListAsync();
+            return _mapper.Map<List<ProductDto>>(products);
+        }
+
+        public async Task<List<ProductDto>> FilterProducts(bool isLastest, bool isFeatured)
+        {
+            var query = _baseRepository.Entities;
+
+            if (isLastest)
+                query = query.Include(p => p.Category).Include(p => p.ProductPictures).OrderByDescending(p => p.CreatedBy);
+            else
+                query = query.Where(p => p.IsFeatured == true).Include(p => p.Category).Include(p => p.ProductPictures);
+
+            List<Product> products = await query.ToListAsync();
+            return _mapper.Map<List<ProductDto>>(products);
         }
     }
 }

@@ -191,7 +191,7 @@ const UpdateProduct = ({ open, setOpen }) => {
             longDesc: product.longDesc,
             price: product.price,
             quantity: product.quantity,
-            isPublished: product.isPublished,
+            isFeatured: product.isFeatured,
             categoryId: product.categoryId,
             productPictureDtos: urls.map((url) => ({
               pictureUrl: url,
@@ -232,7 +232,7 @@ const UpdateProduct = ({ open, setOpen }) => {
             longDesc: product.longDesc,
             price: product.price,
             quantity: product.quantity,
-            isPublished: product.isPublished,
+            isFeatured: product.isFeatured,
             categoryId: product.categoryId,
             productPictureDtos: product.productPictures["$values"],
           })
@@ -331,14 +331,14 @@ const UpdateProduct = ({ open, setOpen }) => {
         <FormControlLabel
           control={
             <Switch
-              checked={product.isPublished}
+              checked={product.isFeatured}
               onChange={(e) => {
-                dispatch(setProduct({ ...product, isPublished: e.target.checked }));
+                dispatch(setProduct({ ...product, isFeatured: e.target.checked }));
               }}
               inputProps={{ "aria-label": "controlled" }}
             />
           }
-          label="Published"
+          label="Featured Product"
         />
 
         <Form.Select

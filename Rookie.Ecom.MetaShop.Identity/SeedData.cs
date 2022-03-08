@@ -60,23 +60,32 @@ namespace Rookie.Ecom.MetaShop.Identity
 
             var ctx = scope.ServiceProvider.GetService<AspNetIdentityDbContext>();
             ctx.Database.Migrate();
+            EnsureRoles(scope);
             EnsureUsers(scope);
         }
 
         private static void EnsureUsers(IServiceScope scope)
         {
-            var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            UserManager<IdentityUser> userMgr = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-            var angella = userMgr.FindByNameAsync("angella").Result;
-            if (angella == null)
+            IdentityUser admin = userMgr.FindByNameAsync("admin").Result;
+            IdentityUser john = userMgr.FindByNameAsync("john").Result;
+            if (admin == null)
             {
-                angella = new IdentityUser
+                admin = new IdentityUser
                 {
-                    UserName = "angella",
-                    Email = "angella.freeman@email.com",
+                    UserName = "admin",
+                    Email = "admin@metashop.com",
                     EmailConfirmed = true
                 };
-                var result = userMgr.CreateAsync(angella, "Pass123$").Result;
+                IdentityResult result = userMgr.CreateAsync(admin, "Str0ng!Passw0rd@").Result;
+                if (!result.Succeeded)
+                {
+                    throw new Exception(result.Errors.First().Description);
+                }
+
+                result = userMgr.AddToRoleAsync(admin, "Admin").Result;
+
                 if (!result.Succeeded)
                 {
                     throw new Exception(result.Errors.First().Description);
@@ -84,16 +93,90 @@ namespace Rookie.Ecom.MetaShop.Identity
 
                 result =
                     userMgr.AddClaimsAsync(
-                        angella,
+                        admin,
                         new Claim[]
                         {
-                            new Claim(JwtClaimTypes.Name, "Angella Freeman"),
-                            new Claim(JwtClaimTypes.GivenName, "Angella"),
+                            new Claim(JwtClaimTypes.Name, "admin"),
+                            new Claim(JwtClaimTypes.GivenName, "admin"),
                             new Claim(JwtClaimTypes.FamilyName, "Freeman"),
-                            new Claim(JwtClaimTypes.WebSite, "http://angellafreeman.com"),
-                            new Claim("location", "somewhere")
+                            new Claim(JwtClaimTypes.WebSite, "https://metashop.com"),
+                            new Claim("location", "somewhere"),
+                            new Claim(JwtClaimTypes.Role, "Admin")
                         }
                     ).Result;
+                if (!result.Succeeded)
+                {
+                    throw new Exception(result.Errors.First().Description);
+                }
+            }
+
+            if (john == null)
+            {
+                john = new IdentityUser
+                {
+                    UserName = "johnd",
+                    Email = "john@metashop.com",
+                    EmailConfirmed = true
+                };
+                IdentityResult result = userMgr.CreateAsync(john, "Str0ng!Passw0rd@").Result;
+                if (!result.Succeeded)
+                {
+                    throw new Exception(result.Errors.First().Description);
+                }
+
+                result = userMgr.AddToRoleAsync(john, "Customer").Result;
+
+                if (!result.Succeeded)
+                {
+                    throw new Exception(result.Errors.First().Description);
+                }
+
+                result =
+                    userMgr.AddClaimsAsync(
+                        john,
+                        new Claim[]
+                        {
+                            new Claim(JwtClaimTypes.Name, "johnny D"),
+                            new Claim(JwtClaimTypes.GivenName, "john"),
+                            new Claim(JwtClaimTypes.FamilyName, "D"),
+                            new Claim(JwtClaimTypes.WebSite, "https://john.metashop.com"),
+                            new Claim("address", "somewhere"),
+                            new Claim(JwtClaimTypes.Role, "Customer")
+                        }
+                    ).Result;
+                if (!result.Succeeded)
+                {
+                    throw new Exception(result.Errors.First().Description);
+                }
+            }
+        }
+
+        private static void EnsureRoles(IServiceScope scope)
+        {
+            RoleManager<IdentityRole> roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            IdentityRole admin = roleMgr.FindByNameAsync("Admin").Result;
+            IdentityRole customer = roleMgr.FindByNameAsync("Customer").Result;
+            if (admin == null)
+            {
+                admin = new IdentityRole
+                {
+                    Name = "Admin",
+                    NormalizedName = "admin"
+                };
+                var result = roleMgr.CreateAsync(admin).Result;
+                if (!result.Succeeded)
+                {
+                    throw new Exception(result.Errors.First().Description);
+                }
+            }
+            if (customer == null)
+            {
+                customer = new IdentityRole
+                {
+                    Name = "Customer",
+                    NormalizedName = "customer"
+                };
+                var result = roleMgr.CreateAsync(customer).Result;
                 if (!result.Succeeded)
                 {
                     throw new Exception(result.Errors.First().Description);

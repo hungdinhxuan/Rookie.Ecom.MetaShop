@@ -29,6 +29,9 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages
 
         public PagedResponseModel<ProductDto> Products { get; set; }
 
+        public List<ProductDto> FeaturedProducts { get; set; }
+        public List<ProductDto> LastestProducts { get; set; }
+
         public List<CategoryDto> Categories { get; set; }
 
         [BindProperty(SupportsGet = true)]
@@ -40,6 +43,8 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages
         public async Task<IActionResult> OnGet()
         {
             Products = await _productService.PagedQueryAsync(null, CurrentPage, PageSize);
+            LastestProducts = await _productService.FilterProducts(true, false);
+            FeaturedProducts = await _productService.FilterProducts(false, true);
             Categories = (List<CategoryDto>)await _categoryService.GetAllAsync();
             UserNameIdentity = User.Identity.Name;
             return Page();

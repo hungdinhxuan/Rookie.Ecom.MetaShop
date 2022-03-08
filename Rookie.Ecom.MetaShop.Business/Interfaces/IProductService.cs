@@ -24,5 +24,9 @@ namespace Rookie.Ecom.MetaShop.Business.Interfaces
 
         Task UpdateAsync(UpdateProductDto ProductDto);
         Task SoftDeleteAsync(Guid id);
+
+        Task<List<ProductDto>> GetRelatedProducts(Guid categroyId, int num);
+
+        Task<List<ProductDto>> FilterProducts(bool isLastest, bool isFeatured);
     }
 }

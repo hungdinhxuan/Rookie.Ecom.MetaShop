@@ -36,21 +36,25 @@ namespace Rookie.Ecom.MetaShop.Identity
             new Client
             {
                 ClientId = "mvc",
-                ClientSecrets = { new Secret("secret".Sha256()) },
-                AllowedGrantTypes = GrantTypes.Code,
+                    ClientSecrets = { new Secret("secret".Sha256()) },
 
-                RedirectUris = { "https://localhost:5002/signin-oidc" },
+                    AllowedGrantTypes = GrantTypes.Code,
 
-                PostLogoutRedirectUris = { "https://localhost:5002/signout-callback-oidc" },
+                    // where to redirect to after login
+                    RedirectUris = { "https://localhost:5002/signin-oidc" },
 
-                AllowedScopes =
-                {
-                    IdentityServerConstants.StandardScopes.OpenId,
-                    IdentityServerConstants.StandardScopes.Profile,
-                    "api1"
-                },
+                    // where to redirect to after logout
+                    PostLogoutRedirectUris = { "https://localhost:5002/signout-callback-oidc" },
 
-                AllowOfflineAccess = true
+                    // Enable refresh token
+                    AllowOfflineAccess = true,
+
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "api1"
+                    }
             }
         };
     };

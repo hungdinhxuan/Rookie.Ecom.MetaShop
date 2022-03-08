@@ -7,12 +7,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import { useState, forwardRef, useEffect } from "react";
 import { swalWithBootstrapButtons } from "../../../utils/sweetalert2";
-import { storage } from "src/utils/firebase";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { createProductAsync } from "src/features/productSlice";
 import {getAllCategoriesAsync} from "src/features/categorySlice";
 import { useDispatch, useSelector } from "react-redux";
-import uuid from "src/utils/uuid";
 import { styled } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
 import { Form } from "react-bootstrap";
@@ -98,7 +95,7 @@ const CreateProduct = ({ open, setOpen }) => {
     longDesc: "",
     price: 0,
     quantity: 0,
-    isPublished: true,
+    isFeatured: true,
     categoryId: "",
     productPictureDtos: []
   });
@@ -154,7 +151,7 @@ const CreateProduct = ({ open, setOpen }) => {
       longDesc: "",
       price: 0,
       quantity: 0,
-      isPublished: true,
+      isFeatured: true,
       categoryId: "",
       productPictureDtos: []
     });
@@ -203,52 +200,6 @@ const CreateProduct = ({ open, setOpen }) => {
       
     }
   }
-
-  const handleCreate = () => {
-    // firebase upload
-    if (file) {
-      const storageRef = ref(storage, uuid() + file.name);
-      const uploadTask = uploadBytesResumable(storageRef, file);
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          // Observe state change events such as progress, pause, and resume
-          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        },
-        (error) => {
-          // Handle unsuccessful uploads
-          console.log(error);
-          swalWithBootstrapButtons.fire(
-            "Error",
-            error || "Something went wrong",
-            "error"
-          );
-        },
-        () => {
-          // Handle successful uploads on complete
-          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            console.log("File available at", downloadURL);
-
-            dispatch(createProductAsync({ ...product, imageUrl: downloadURL }));
-          });
-        }
-      );
-    } else {
-      if (product.name && product.desc) {
-        dispatch(createProductAsync({ ...product, imageUrl: "" }));
-      } else {
-        swalWithBootstrapButtons.fire(
-          "Error",
-          "Please fill all the fields",
-          "error"
-        );
-      }
-    }
-    handleClose();
-  };
 
   useEffect(() => {
     dispatch(getAllCategoriesAsync());
@@ -331,13 +282,13 @@ const CreateProduct = ({ open, setOpen }) => {
         <FormControlLabel control={
            <Switch
          
-           checked={product.isPublished}
+           checked={product.isFeatured}
            onChange={(e) => {
-             setProduct({ ...product, isPublished: e.target.checked });
+             setProduct({ ...product, isFeatured: e.target.checked });
            }}
            inputProps={{ 'aria-label': 'controlled' }}
          />
-        } label="Published" />
+        } label="Featured Producted" />
        
         <Form.Select
           aria-label="Default select example"
