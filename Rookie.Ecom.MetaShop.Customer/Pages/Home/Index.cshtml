@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Home page";
     var products = Model.Products;
+    var LastestProducts = Model.LastestProducts;
+    var LastestProductsLength = LastestProducts.Count;
 }
 
 <partial name="_Hero" />
@@ -114,7 +116,49 @@
                         <div class="latest-product__text">
                             <h4>Latest Products</h4>
                             <div class="latest-product__slider owl-carousel">
-                                <div class="latest-prdouct__slider__item">
+
+                                @for (var i = 0; i < LastestProducts.Count; i+=3)
+                               {
+                                   <div class="latest-prdouct__slider__item">
+                                    <a asp-page="/Product/Index" asp-route-id="@LastestProducts[i].Id" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                                <img src="@LastestProducts[i].ProductPictures[0].PictureUrl" alt="">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                <h6>@LastestProducts[i].Name</h6>
+                                                <span>$@LastestProducts[i].Price</span>
+                                            </div>
+                                    </a>
+                                        @if(i + 1 < LastestProductsLength)
+                                        {
+                                            
+                                            <a asp-page="/Product/Index" asp-route-id="@Model.LastestProducts[i+1].Id" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img src="@LastestProducts[i+1].ProductPictures[0].PictureUrl" alt="">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                <h6>@LastestProducts[i+1].Name</h6>
+                                                <span>$@LastestProducts[i+1].Price</span>
+                                            </div>
+                                        </a>
+                                        }
+                                        @if(i + 2 < LastestProductsLength)
+                                        {
+                                            
+                                            <a asp-page="/Product/Index" asp-route-id="@LastestProducts[i+2].Id" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img src="@LastestProducts[i+2].ProductPictures[0].PictureUrl" alt="">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                <h6>@LastestProducts[i+2].Name</h6>
+                                                <span>$@LastestProducts[i+2].Price</span>
+                                            </div>
+                                        </a>
+                                        }
+                                </div>
+                               }
+
+                               @* <div class="latest-prdouct__slider__item">
                                     <a href="#" class="latest-product__item">
                                         <div class="latest-product__item__pic">
                                             <img src="/img/latest-product/lp-1.jpg" alt="">
@@ -171,9 +215,7 @@
                                             <span>$30.00</span>
                                         </div>
                                     </a>
-
-
-                                </div>
+                                </div>*@
                             </div>
                         </div>
                     </div>
@@ -186,101 +228,13 @@
                     </div>
                     <div class="row">
                         <div class="product__discount__slider owl-carousel">
-                            <div class="col-lg-4">
+                            @foreach (var item in Model.FeaturedProducts)
+                            {
+                                <div class="col-lg-4">
                                 <div class="product__discount__item">
                                     <div class="product__discount__item__pic set-bg"
-                                         data-setbg="/img/product/discount/pd-1.jpg">
-                                        <div class="product__discount__percent">-20%</div>
-                                        <ul class="product__item__pic__hover">
-                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__discount__item__text">
-                                        <span>Dried Fruit</span>
-                                        <h5><a href="#">Raisin’n’nuts</a></h5>
-                                        <div class="product__item__price">$30.00 <span>$36.00</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="product__discount__item">
-                                    <div class="product__discount__item__pic set-bg"
-                                         data-setbg="/img/product/discount/pd-2.jpg">
-                                        <div class="product__discount__percent">-20%</div>
-                                        <ul class="product__item__pic__hover">
-                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__discount__item__text">
-                                        <span>Vegetables</span>
-                                        <h5><a href="#">Vegetables’package</a></h5>
-                                        <div class="product__item__price">$30.00 <span>$36.00</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="product__discount__item">
-                                    <div class="product__discount__item__pic set-bg"
-                                         data-setbg="/img/product/discount/pd-3.jpg">
-                                        <div class="product__discount__percent">-20%</div>
-                                        <ul class="product__item__pic__hover">
-                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__discount__item__text">
-                                        <span>Dried Fruit</span>
-                                        <h5><a href="#">Mixed Fruitss</a></h5>
-                                        <div class="product__item__price">$30.00 <span>$36.00</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="product__discount__item">
-                                    <div class="product__discount__item__pic set-bg"
-                                         data-setbg="/img/product/discount/pd-4.jpg">
-                                        <div class="product__discount__percent">-20%</div>
-                                        <ul class="product__item__pic__hover">
-                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__discount__item__text">
-                                        <span>Dried Fruit</span>
-                                        <h5><a href="#">Raisin’n’nuts</a></h5>
-                                        <div class="product__item__price">$30.00 <span>$36.00</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="product__discount__item">
-                                    <div class="product__discount__item__pic set-bg"
-                                         data-setbg="/img/product/discount/pd-5.jpg">
-                                        <div class="product__discount__percent">-20%</div>
-                                        <ul class="product__item__pic__hover">
-                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__discount__item__text">
-                                        <span>Dried Fruit</span>
-                                        <h5><a href="#">Raisin’n’nuts</a></h5>
-                                        <div class="product__item__price">$30.00 <span>$36.00</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="product__discount__item">
-                                    <div class="product__discount__item__pic set-bg"
-                                         data-setbg="/img/product/discount/pd-6.jpg">
-                                        <div class="product__discount__percent">-20%</div>
+                                         data-setbg="@item.ProductPictures[0].PictureUrl">
+                                        @*<div class="product__discount__percent">-20%</div>*@
                                         <ul class="product__item__pic__hover">
                                             <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                             <li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -288,12 +242,13 @@
                                         </ul>
                                     </div>
                                     <div class="product__discount__item__text">
-                                        <span>Dried Fruit</span>
-                                        <h5><a href="#">Raisin’n’nuts</a></h5>
-                                        <div class="product__item__price">$30.00 <span>$36.00</span></div>
+                                        <span>@item.Category.Name</span>
+                                        <h5><a asp-page="/Product/Index" asp-route-id="@item.Id">@item.Name</a></h5>
+                                        <div class="product__item__price">$30.00 @*<span>$36.00</span>*@</div>
                                     </div>
                                 </div>
                             </div>
+                            }
                         </div>
                     </div>
                 </div>

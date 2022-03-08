@@ -22,6 +22,7 @@ namespace Rookie.Ecom.MetaShop.Customer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSession();
             services.AddRazorPages(opt =>
             {
                 opt.Conventions.AddPageRoute("/Home/Index", "");
@@ -69,6 +70,7 @@ namespace Rookie.Ecom.MetaShop.Customer
             }
 
 
+            app.UseSession();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseStatusCodePages();

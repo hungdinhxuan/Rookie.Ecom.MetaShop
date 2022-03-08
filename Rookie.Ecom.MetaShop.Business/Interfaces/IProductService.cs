@@ -27,6 +27,6 @@ namespace Rookie.Ecom.MetaShop.Business.Interfaces
 
         Task<List<ProductDto>> GetRelatedProducts(Guid categroyId, int num);
 
-        Task<List<ProductDto>> FilterProducts(bool isLastest, bool isFeatured);
+        Task<List<ProductDto>> FilterProducts(bool isLastest, bool isFeatured, int num);
     }
 }

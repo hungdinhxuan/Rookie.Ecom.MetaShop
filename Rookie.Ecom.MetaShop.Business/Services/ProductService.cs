@@ -102,14 +102,14 @@ namespace Rookie.Ecom.MetaShop.Business.Services
             return _mapper.Map<List<ProductDto>>(products);
         }
 
-        public async Task<List<ProductDto>> FilterProducts(bool isLastest, bool isFeatured)
+        public async Task<List<ProductDto>> FilterProducts(bool isLastest, bool isFeatured, int num = 5)
         {
             var query = _baseRepository.Entities;
 
             if (isLastest)
-                query = query.Include(p => p.Category).Include(p => p.ProductPictures).OrderByDescending(p => p.CreatedBy);
+                query = query.Include(p => p.Category).Include(p => p.ProductPictures).OrderByDescending(p => p.CreatedBy).Take(num);
             else
-                query = query.Where(p => p.IsFeatured == true).Include(p => p.Category).Include(p => p.ProductPictures);
+                query = query.Where(p => p.IsFeatured == true).Include(p => p.Category).Include(p => p.ProductPictures).Take(num);
 
             List<Product> products = await query.ToListAsync();
             return _mapper.Map<List<ProductDto>>(products);

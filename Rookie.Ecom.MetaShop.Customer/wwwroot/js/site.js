@@ -5,7 +5,6 @@
 
 
 const handleAddToCart = (isAuthenticated) => {
-
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
             confirmButton: 'btn btn-success',
@@ -24,12 +23,12 @@ const handleAddToCart = (isAuthenticated) => {
             cancelButtonText: 'No, cancel!',
             reverseButtons: false
         }).then((result) => {
-            if(result.isConfirmed) {
+            if (result.isConfirmed) {
                 window.location.href = "/Auth/Login"
             }
         });
+    } else {
+
     }
-
-
 
 }

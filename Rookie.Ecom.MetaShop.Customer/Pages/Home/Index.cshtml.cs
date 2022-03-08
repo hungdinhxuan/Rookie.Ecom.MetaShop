@@ -43,8 +43,8 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages
         public async Task<IActionResult> OnGet()
         {
             Products = await _productService.PagedQueryAsync(null, CurrentPage, PageSize);
-            LastestProducts = await _productService.FilterProducts(true, false);
-            FeaturedProducts = await _productService.FilterProducts(false, true);
+            LastestProducts = await _productService.FilterProducts(true, false, 12);
+            FeaturedProducts = await _productService.FilterProducts(false, true, 6);
             Categories = (List<CategoryDto>)await _categoryService.GetAllAsync();
             UserNameIdentity = User.Identity.Name;
             return Page();

@@ -1001,7 +1001,8 @@ ol {
 
     .latest-product__item__pic img {
         height: 110px;
-        width: 110px;
+        width: 110px !important;
+        object-fit: cover;
     }
 
 .latest-product__item__text {
