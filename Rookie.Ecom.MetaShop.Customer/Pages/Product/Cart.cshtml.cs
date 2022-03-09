@@ -14,39 +14,44 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages.Product
 
     public class CartModel : PageModel
     {
-        private readonly IProductService _productService;
+       
 
         public List<ProductItemCartDto> Cart { get; set; }
         public decimal Total { get; set; }
 
-        public CartModel(IProductService productService)
-        {
-            _productService = productService;
-        }
+     
 
         public void OnGet()
         {
             Cart = SessionHelper.GetObjectFromJson<List<ProductItemCartDto>>(HttpContext.Session, "cart");
-            Total = Cart.Sum(i => i.Product.Price * i.Quantity);
+            if (Cart != null)
+                Total = Cart.Sum(i => i.Product.Price * i.Quantity);
+            else
+                Total = 0;
         }
 
         public IActionResult OnGetDelete(Guid productId)
         {
             Cart = SessionHelper.GetObjectFromJson<List<ProductItemCartDto>>(HttpContext.Session, "cart");
             int index = Exists(Cart, productId);
-            Cart.RemoveAt(index);
+            if(index != -1)
+                Cart.RemoveAt(index);
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", Cart);
             return Page();
         }
 
-        public IActionResult OnPostUpdate(int[] quantities)
+        public IActionResult OnPostUpdateCart(int[] quantities)
         {
             Cart = SessionHelper.GetObjectFromJson<List<ProductItemCartDto>>(HttpContext.Session, "cart");
-            for (var i = 0; i < Cart.Count; i++)
+            if(Cart != null)
             {
-                Cart[i].Quantity = quantities[i];
+                for (var i = 0; i < Cart.Count; i++)
+                {
+                    Cart[i].Quantity = quantities[i];
+                }
+
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", Cart);
             }
-            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", Cart);
             return Page();
         }
 

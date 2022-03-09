@@ -1,17 +1,12 @@
-﻿using AutoMapper;
-using EnsureThat;
+﻿using EnsureThat;
 using Microsoft.AspNetCore.Mvc;
-using Rookie.Ecom.MetaShop.Business;
 using Rookie.Ecom.MetaShop.Business.Interfaces;
 using Rookie.Ecom.MetaShop.Contracts;
 using Rookie.Ecom.MetaShop.Contracts.Constants;
-using Rookie.Ecom.MetaShop.Contracts.Dtos;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.Product;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.ProductPicture;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Rookie.Ecom.MetaShop.Admin.Controllers
@@ -71,6 +66,18 @@ namespace Rookie.Ecom.MetaShop.Admin.Controllers
         {
             Ensure.Any.IsNotNull(ProductDto, nameof(ProductDto));
             await _productService.UpdateAsync(ProductDto);
+            if (ProductDto.NewProductPictureDtos != null && ProductDto.NewProductPictureDtos.Count > 0)
+            {
+                // delete old pictures
+                if (ProductDto.ProductPictureDtos != null && ProductDto.ProductPictureDtos.Count > 0)
+                    await _productPictureService.RemoveRangeAsync(ProductDto.ProductPictureDtos);
+                // add new pictures
+                for (int i = 0; i < ProductDto.NewProductPictureDtos.Count; i++)
+                {
+                    ProductDto.NewProductPictureDtos[i].ProductId = ProductDto.Id;
+                }
+                await _productPictureService.AddRangeAsync(ProductDto.NewProductPictureDtos);
+            }
             return NoContent();
         }
 

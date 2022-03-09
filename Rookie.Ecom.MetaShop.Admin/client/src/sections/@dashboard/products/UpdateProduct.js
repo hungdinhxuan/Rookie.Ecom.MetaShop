@@ -20,7 +20,11 @@ import NumberFormat from "react-number-format";
 import Box from "@mui/material/Box";
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { uploadImageToFirebaseAsPromise } from "src/utils/firebase";
+import { storage, uploadImageToFirebaseAsPromise } from "src/utils/firebase";
+import {
+  ref,
+  deleteObject,
+} from "firebase/storage";
 
 const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
   const { onChange, ...other } = props;
@@ -98,7 +102,7 @@ const UpdateProduct = ({ open, setOpen }) => {
   };
 
   const [selectedFiles, setSelectedFiles] = useState([]);
-  const [previewFiles, setPreviewFiles] = useState(product.productPictures["$values"]);
+  const [previewFiles, setPreviewFiles] = useState(product.productPictures["$values"].map(item => item.pictureUrl));
 
   const handleSelectedFilesChange = (e) => {
     const files = convertFileListToArray(e.target.files);
@@ -138,6 +142,8 @@ const UpdateProduct = ({ open, setOpen }) => {
     setSelectedFiles([]);
     setPreviewFiles([]);
   };
+
+  console.log(previewFiles)
 
   const handleUpdateProduct = () => {
     
@@ -204,8 +210,10 @@ const UpdateProduct = ({ open, setOpen }) => {
       const deletePromise = [];
       product.productPictures["$values"].forEach((productPictureDto) => {
         const beforeUrlLink = exactFirebaseLink(productPictureDto.pictureUrl);
-        if (beforeUrlLink) {
-          deletePromise.push(beforeUrlLink.delete());
+       
+        if (beforeUrlLink !== null) {
+          const desertRef = ref(storage, beforeUrlLink);
+          deletePromise.push(deleteObject(desertRef));
         }
       });
 
@@ -253,7 +261,7 @@ const UpdateProduct = ({ open, setOpen }) => {
     dispatch(getAllCategoriesAsync());
   }, [dispatch]);
 
-  console.log(product.productPictures["$values"]);
+  
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Product</DialogTitle>
@@ -384,7 +392,7 @@ const UpdateProduct = ({ open, setOpen }) => {
             <Stack direction="row" alignItems="center" spacing={2}>
               {previewFiles.map((previewFile, index) => (
                 <img
-                  src={previewFile.pictureUrl || "/static/none.png"}
+                  src={previewFile || "/static/none.png"}
                   alt="preview"
                   style={{ width: "100px", height: "100px", objectFit: "cover"}}
                   key={index}

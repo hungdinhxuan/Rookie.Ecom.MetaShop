@@ -63,5 +63,11 @@ namespace Rookie.Ecom.MetaShop.Business.Services
 
             throw new NotImplementedException();
         }
+
+        public async Task RemoveRangeAsync(IEnumerable<ProductPictureDto> productPictures)
+        {
+            await _baseRepository.RemoveRangeAsync(_mapper.Map<IEnumerable<ProductPicture>>(productPictures));
+        }
+
     }
 }
