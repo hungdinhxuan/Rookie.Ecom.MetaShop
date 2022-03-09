@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Rookie.Ecom.MetaShop.Business.Extensions;
 using Rookie.Ecom.MetaShop.Business.Interfaces;
 using Rookie.Ecom.MetaShop.Contracts;
@@ -54,11 +55,15 @@ namespace Rookie.Ecom.MetaShop.Business.Services
             return _mapper.Map<List<ProductDto>>(products);
         }
 
-        public Task<ProductDto> GetByIdAsync(Guid id)
+        public async Task<ProductDto> GetByIdAsync(Guid id)
         {
             IQueryable<Product> query = _baseRepository.Entities;
-            Product product = query.Where(p => p.Id == id).Include(p => p.ProductPictures).Include(p => p.Category).FirstOrDefault();
-            return Task.FromResult(_mapper.Map<ProductDto>(product));
+         
+            query = query.Where(Product => Product.Id == id).Include(c => c.Category).Include(c => c.ProductPictures).OrderBy(x => x.Name);
+            Product product = await query.FirstOrDefaultAsync();
+
+            
+            return _mapper.Map<ProductDto>(product);
         }
 
         public async Task<ProductDto> GetByNameAsync(string name)

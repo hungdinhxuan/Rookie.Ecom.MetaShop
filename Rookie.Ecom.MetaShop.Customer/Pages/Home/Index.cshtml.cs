@@ -5,6 +5,7 @@ using Rookie.Ecom.MetaShop.Business.Interfaces;
 using Rookie.Ecom.MetaShop.Contracts;
 using Rookie.Ecom.MetaShop.Contracts.Dtos;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.Product;
+using Rookie.Ecom.MetaShop.Customer.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,12 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages
             _logger = logger;
             _categoryService = categoryService;
             _productService = productService;
+
+
+
+            TotalCartItem = 0;
+
+
         }
 
 
@@ -38,6 +45,7 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages
         public int CurrentPage { get; set; } = 1;
         public int PageSize { get; set; } = 5;
 
+        public int TotalCartItem { get; set; }
         public string UserNameIdentity { get; set; }
 
         public async Task<IActionResult> OnGet()

@@ -2,11 +2,16 @@ using IdentityServer4;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using Rookie.Ecom.MetaShop.Business;
 using System.IdentityModel.Tokens.Jwt;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Rookie.Ecom.MetaShop.Customer
 {
@@ -23,12 +28,18 @@ namespace Rookie.Ecom.MetaShop.Customer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSession();
+
             services.AddRazorPages(opt =>
             {
                 opt.Conventions.AddPageRoute("/Home/Index", "");
-            }).AddRazorRuntimeCompilation();
-            services.AddBusinessLayer(Configuration);
 
+            }).AddRazorRuntimeCompilation().AddNewtonsoftJson(o =>
+            {
+                o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+            });
+
+            services.AddBusinessLayer(Configuration);
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 

@@ -2,6 +2,19 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Http
+@using Rookie.Ecom.MetaShop.Contracts.Dtos.Product
+@using Rookie.Ecom.MetaShop.Customer.Helpers
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    List<ProductItemCartDto> Cart = Helpers.SessionHelper.GetObjectFromJson<List<ProductItemCartDto>>(HttpContextAccessor.HttpContext.Session, "cart");
+    int totalItem = 0;
+    if (Cart != null)
+    {
+        totalItem = Cart.Sum(i => i.Quantity);
+    }
+}
 
 <header class="header">
     <div class="header__top">
@@ -56,13 +69,13 @@
                             <a href="#">Pages</a>
                             <ul class="header__menu__dropdown">
                                 <li><a href="./shop-details.html">Shop Details</a></li>
-                                <li><a href="./shoping-cart.html">Shoping Cart</a></li>
+                                <li><a asp-page="/Product/Cart">Shoping Cart</a></li>
                                 <li><a href="./checkout.html">Check Out</a></li>
                                 <li><a href="./blog-details.html">Blog Details</a></li>
                             </ul>
                         </li>
                         <li><a href="./blog.html">Blog</a></li>
-                        <li><a href="./contact.html">Contact</a></li>
+                        <li><a asp-page="/Home/Contact">Contact</a></li>
                     </ul>
                 </nav>
             </div>
@@ -70,7 +83,7 @@
                 <div class="header__cart">
                     <ul>
                         <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                        <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                        <li><a asp-page="/Product/Cart"><i class="fa fa-shopping-bag"></i> <span> @totalItem </span></a></li>
                     </ul>
                     <div class="header__cart__price">item: <span>$150.00</span></div>
                 </div>

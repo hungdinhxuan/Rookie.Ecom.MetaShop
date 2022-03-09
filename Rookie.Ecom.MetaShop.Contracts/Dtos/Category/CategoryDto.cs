@@ -1,5 +1,6 @@
 ﻿using Rookie.Ecom.MetaShop.Contracts.Dtos.Product;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Rookie.Ecom.MetaShop.Contracts.Dtos
 {
@@ -11,6 +12,7 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos
 
         public string ImageUrl { get; set; }
 
+        [JsonIgnore]
         public List<ProductDto> Products { get; set; }
     }
 }
