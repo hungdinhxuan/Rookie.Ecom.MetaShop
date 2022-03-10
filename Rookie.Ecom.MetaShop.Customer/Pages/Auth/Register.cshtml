@@ -3,17 +3,54 @@
 @{
 }
 <div class="container">
-    <h1>Register</h1>
+    <h3 class="text-center">Register new account</h3>
+    <br />
     @Html.ValidationSummary()
-    <form asp-page="/Auth/Register" asp-page-handler="register" method="post">
+    <form asp-page="/Auth/Register" asp-page-handler="register" method="post" style="margin: auto">
 
         <div class="registerdiv">
+            <div class="form-group col-sm-12">
+                <label asp-for="@Model.UserRegistration.Line1" class="col-lg-3 control-label"></label>
+                <br>
+                <div class="col-lg-9">
+                    @Html.TextBoxFor(m => m.UserRegistration.Line1, new { placeholder = "Line 1", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.UserRegistration.Line1, null, new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <label asp-for="@Model.UserRegistration.Line2" class="col-lg-3 control-label"></label>
+                <br>
+                <div class="col-lg-9">
+                    @Html.TextBoxFor(m => m.UserRegistration.Line2, new { placeholder = "Line 2", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.UserRegistration.Line2, null, new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <label asp-for="@Model.UserRegistration.Province" class="col-lg-3 control-label"></label>
+                <br>
+                <div class="col-lg-9">
+                    @Html.TextBoxFor(m => m.UserRegistration.Province, new { placeholder = "Province", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.UserRegistration.Province, null, new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <label asp-for="@Model.UserRegistration.Country" class="col-lg-3 control-label"></label>
+                <br>
+                <div class="col-lg-9">
+                    @Html.TextBoxFor(m => m.UserRegistration.Country, new { placeholder = "Country", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.UserRegistration.Country, null, new { @class = "text-danger" })
+                </div>
+            </div>
+
             <div class="form-group col-sm-12">
                 <label asp-for="@Model.UserRegistration.FirstName" class="col-lg-3 control-label"></label>
                 <br>
                 <div class="col-lg-9">
                     @Html.TextBoxFor(m => m.UserRegistration.FirstName, new { placeholder = "First Name", @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.UserRegistration.FirstName)
+                    @Html.ValidationMessageFor(m => m.UserRegistration.FirstName, null, new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -22,7 +59,7 @@
                 <br>
                 <div class="col-lg-9">
                     @Html.TextBoxFor(m => m.UserRegistration.LastName, new { placeholder = "Last Name", @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.UserRegistration.LastName)
+                    @Html.ValidationMessageFor(m => m.UserRegistration.LastName, null, new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -32,7 +69,7 @@
                 <br>
                 <div class="col-lg-9">
                     @Html.TextBoxFor(m => m.UserRegistration.Email, new { placeholder = "Email", @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.UserRegistration.Email)
+                    @Html.ValidationMessageFor(m => m.UserRegistration.Email, null, new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -41,7 +78,7 @@
                 <br>
                 <div class="col-lg-9">
                     @Html.TextBoxFor(m => m.UserRegistration.PhoneNumber, new { placeholder = "Phone Number", @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.UserRegistration.PhoneNumber)
+                    @Html.ValidationMessageFor(m => m.UserRegistration.PhoneNumber, null, new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -51,7 +88,7 @@
                 <br>
                 <div class="col-lg-9">
                     @Html.PasswordFor(m => m.UserRegistration.Password, new { placeholder = "Password", @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.UserRegistration.Password)
+                    @Html.ValidationMessageFor(m => m.UserRegistration.Password, null, new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -60,7 +97,7 @@
                 <br>
                 <div class="col-lg-9">
                     @Html.PasswordFor(m => m.UserRegistration.ConfirmPassword, new { placeholder = "Confirm Password", @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.UserRegistration.ConfirmPassword)
+                    @Html.ValidationMessageFor(m => m.UserRegistration.ConfirmPassword, null, new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -74,3 +111,10 @@
     </form>
 </div>
 
+
+
+@section Scripts {
+    @{
+    <partial name="_ValidationScriptsPartial" />
+    }
+}

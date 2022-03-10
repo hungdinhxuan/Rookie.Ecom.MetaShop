@@ -1,4 +1,5 @@
-﻿using IdentityModel;
+﻿using AutoMapper;
+using IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using Rookie.Ecom.MetaShop.Business.Interfaces;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.Auth;
@@ -13,12 +14,23 @@ namespace Rookie.Ecom.MetaShop.Business.Services
     {
         private readonly UserManager<MetaIdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IMapper _mapper;
 
-        public MetaIdentityUserService(UserManager<MetaIdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public MetaIdentityUserService(UserManager<MetaIdentityUser> userManager, RoleManager<IdentityRole> roleManager, IMapper mapper)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _mapper = mapper;
         }
+
+        public async Task<MetaIdentityUserDto> GetById(string id)
+        {
+            MetaIdentityUser user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+                return null;
+            return _mapper.Map<MetaIdentityUserDto>(user);
+        }
+
         public async Task<IdentityResult> Register(UserRegistrationDto request, string role)
         {
             var userCheck = await _userManager.FindByEmailAsync(request.Email);

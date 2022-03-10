@@ -141,6 +141,7 @@ namespace IdentityServerHost.Quickstart.UI
             }
 
             return Redirect(returnUrl);
+
             /*return RedirectToAction(returnUrl);*/
         }
 

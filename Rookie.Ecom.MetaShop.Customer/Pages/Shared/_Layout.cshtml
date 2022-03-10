@@ -63,7 +63,20 @@
                 </ul>
                 </div>*@
             <div class="header__top__right__auth">
-                <a asp-area="" asp-page="/Auth/Login"><i class="fa fa-user"></i>Login</a>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a asp-page="/Profile" asp-route-id="@User.Claims.FirstOrDefault(claim => claim.Type == "sub").Value">Hello @User.Claims.FirstOrDefault(claim => claim.Type == "name").Value </a>
+                    <a asp-page="/Auth/Logout"><i class="fa fa-user"></i> Logout</a>
+                }
+                else
+                {
+
+                    <a asp-page="/Auth/Login"><i class="fa fa-user"></i> Login</a>
+                    <a asp-page="/Auth/Register"><i class="fa fa-user"></i> Register</a>
+
+
+                }
             </div>
         </div>
         <nav class="humberger__menu__nav mobile-menu">

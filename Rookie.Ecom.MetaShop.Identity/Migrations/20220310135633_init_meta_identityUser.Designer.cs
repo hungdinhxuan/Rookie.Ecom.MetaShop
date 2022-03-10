@@ -10,8 +10,8 @@ using Rookie.Ecom.MetaShop.Identity.Data;
 namespace Rookie.Ecom.MetaShop.Identity.Migrations
 {
     [DbContext(typeof(AspNetIdentityDbContext))]
-    [Migration("20220310045637_init_MetaIdentityUser")]
-    partial class init_MetaIdentityUser
+    [Migration("20220310135633_init_meta_identityUser")]
+    partial class init_meta_identityUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -164,6 +164,11 @@ namespace Rookie.Ecom.MetaShop.Identity.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -180,6 +185,14 @@ namespace Rookie.Ecom.MetaShop.Identity.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Line1")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Line2")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -203,6 +216,11 @@ namespace Rookie.Ecom.MetaShop.Identity.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Province")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");

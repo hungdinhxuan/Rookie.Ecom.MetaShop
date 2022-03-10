@@ -23,5 +23,18 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos.Auth
         public string ConfirmPassword { get; set; }
 
         public string PhoneNumber { get; set; }
+
+        [Required(ErrorMessage = "Line 1 is required")]
+        [MaxLength(255)]
+        public string Line1 { get; set; }
+        public string Line2 { get; set; }
+
+        [Required(ErrorMessage = "Province is required")]
+        [MaxLength(255)]
+        public string Province { get; set; }
+
+        [Required(ErrorMessage = "Country is required")]
+        [MaxLength(255)]
+        public string Country { get; set; }
     }
 }

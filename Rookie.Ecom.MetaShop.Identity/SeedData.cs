@@ -79,7 +79,7 @@ namespace Rookie.Ecom.MetaShop.Identity
             UserManager<MetaIdentityUser> userMgr = scope.ServiceProvider.GetRequiredService<UserManager<MetaIdentityUser>>();
 
             MetaIdentityUser admin = userMgr.FindByNameAsync("admin").Result;
-            MetaIdentityUser john = userMgr.FindByNameAsync("john").Result;
+            MetaIdentityUser john = userMgr.FindByNameAsync("customer").Result;
             if (admin == null)
             {
                 admin = new MetaIdentityUser
@@ -88,7 +88,12 @@ namespace Rookie.Ecom.MetaShop.Identity
                     Email = "admin@metashop.com",
                     EmailConfirmed = true,
                     FirstName = "admin",
-                    LastName = "admin"
+                    LastName = "admin",
+                    Line1 = " Etown 1, Level 3, 364 Cong Hoa Street Tan Binh District",
+                    Province = "Ho Chi Minh city",
+                    Country = "Viet Nam",
+                    PhoneNumber = "0123456789",
+                    PhoneNumberConfirmed = true
                 };
                 IdentityResult result = userMgr.CreateAsync(admin, "aduvip").Result;
                 if (!result.Succeeded)
@@ -125,11 +130,16 @@ namespace Rookie.Ecom.MetaShop.Identity
             {
                 john = new MetaIdentityUser
                 {
-                    UserName = "john",
-                    Email = "john@metashop.com",
+                    UserName = "customer",
+                    Email = "customer@metashop.com",
                     EmailConfirmed = true,
                     FirstName = "jhonny",
-                    LastName = "D"
+                    LastName = "D",
+                    Line1 = " Etown 2, Level 5, 364 Cong Hoa Street Tan Binh District",
+                    Province = "Ho Chi Minh city",
+                    Country = "Viet Nam",
+                    PhoneNumber = "0123456755",
+                    PhoneNumberConfirmed = true
                 };
                 IdentityResult result = userMgr.CreateAsync(john, "aduvip").Result;
                 if (!result.Succeeded)

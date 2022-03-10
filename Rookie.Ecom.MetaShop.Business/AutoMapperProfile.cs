@@ -1,8 +1,10 @@
 ﻿using Rookie.Ecom.MetaShop.Contracts.Dtos;
+using Rookie.Ecom.MetaShop.Contracts.Dtos.Auth;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.Category;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.Product;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.ProductPicture;
 using Rookie.Ecom.MetaShop.DataAccessor.Entities;
+using Rookie.Ecom.MetaShop.Identity.Data;
 
 namespace Rookie.Ecom.MetaShop.Business
 {
@@ -34,6 +36,8 @@ namespace Rookie.Ecom.MetaShop.Business
             CreateMap<ProductPictureDto, ProductPicture>(memberList: AutoMapper.MemberList.None);
 
 
+
+
         }
 
         private void FromDataAccessorLayer()
@@ -41,6 +45,7 @@ namespace Rookie.Ecom.MetaShop.Business
             CreateMap<Category, CategoryDto>();
             CreateMap<Product, ProductDto>();
             CreateMap<ProductPicture, ProductPictureDto>();
+            CreateMap<MetaIdentityUser, MetaIdentityUserDto>();
         }
     }
 }

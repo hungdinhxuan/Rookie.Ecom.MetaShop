@@ -399,6 +399,7 @@ ol {
 
 .header__top__right__auth {
     display: inline-block;
+    width: 34%;
 }
 
     .header__top__right__auth a {
@@ -3610,3 +3611,5 @@ ol {
 .product__item__pic:hover .product-wrapper-link {
     display: flex;
 }
+
+

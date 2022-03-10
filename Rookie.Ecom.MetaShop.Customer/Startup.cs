@@ -1,4 +1,5 @@
 using IdentityServer4;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -52,7 +53,10 @@ namespace Rookie.Ecom.MetaShop.Customer
                 options.DefaultScheme = "Cookies";
                 options.DefaultChallengeScheme = "oidc";
             })
-                .AddCookie("Cookies")
+                .AddCookie("Cookies", options =>
+                {
+                    options.AccessDeniedPath = "/Errors/Error403";
+                })
                 .AddOpenIdConnect("oidc", options =>
                 {
                     options.Authority = "https://localhost:5001";
@@ -64,10 +68,14 @@ namespace Rookie.Ecom.MetaShop.Customer
 
                     options.Scope.Add("profile");
                     options.Scope.Add("offline_access");
-                    options.GetClaimsFromUserInfoEndpoint = true;
 
+                    options.Scope.Add("roles");
+                    options.ClaimActions.MapJsonKey("role", "role", "role");
+                    options.TokenValidationParameters.RoleClaimType = "role";
+                    options.GetClaimsFromUserInfoEndpoint = true;
                     options.SaveTokens = true;
-                });
+                })
+                ;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

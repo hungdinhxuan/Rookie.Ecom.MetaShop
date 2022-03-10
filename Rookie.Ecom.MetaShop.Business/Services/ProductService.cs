@@ -58,11 +58,11 @@ namespace Rookie.Ecom.MetaShop.Business.Services
         public async Task<ProductDto> GetByIdAsync(Guid id)
         {
             IQueryable<Product> query = _baseRepository.Entities;
-         
+
             query = query.Where(Product => Product.Id == id).Include(c => c.Category).Include(c => c.ProductPictures).OrderBy(x => x.Name);
             Product product = await query.FirstOrDefaultAsync();
 
-            
+
             return _mapper.Map<ProductDto>(product);
         }
 
@@ -72,7 +72,7 @@ namespace Rookie.Ecom.MetaShop.Business.Services
             return _mapper.Map<ProductDto>(product);
         }
 
-        public async Task<PagedResponseModel<ProductDto>> PagedQueryAsync(string name, int page, int limit)
+        public async Task<PagedResponseModel<ProductDto>> PagedQueryAsync(string name, int? page, int limit)
         {
             var query = _baseRepository.Entities;
 
@@ -84,7 +84,7 @@ namespace Rookie.Ecom.MetaShop.Business.Services
 
             var assets = await query
                 .AsNoTracking()
-                .PaginateAsync(page, limit);
+                .PaginateAsync(page ?? 1, limit);
 
             return new PagedResponseModel<ProductDto>
             {
@@ -103,7 +103,7 @@ namespace Rookie.Ecom.MetaShop.Business.Services
         public async Task<List<ProductDto>> GetRelatedProducts(Guid categroyId, int num)
         {
             var query = _baseRepository.Entities;
-            List<Product> products = await query.Include(p => p.Category).Include(p => p.ProductPictures).OrderByDescending(p => p.Price).Take(num).ToListAsync();
+            List<Product> products = await query.Where(p => p.CategoryId == categroyId).OrderByDescending(p => p.Price).Include(p => p.Category).Include(p => p.ProductPictures).Take(num).ToListAsync();
             return _mapper.Map<List<ProductDto>>(products);
         }
 
@@ -112,9 +112,9 @@ namespace Rookie.Ecom.MetaShop.Business.Services
             var query = _baseRepository.Entities;
 
             if (isLastest)
-                query = query.Include(p => p.Category).Include(p => p.ProductPictures).OrderByDescending(p => p.CreatedBy).Take(num);
+                query = query.Include(p => p.Category).Include(p => p.ProductPictures).OrderByDescending(p => p.CreatedBy).Take(num).OrderByDescending(p => p.Price);
             else
-                query = query.Where(p => p.IsFeatured == true).Include(p => p.Category).Include(p => p.ProductPictures).Take(num);
+                query = query.Where(p => p.IsFeatured == true).Include(p => p.Category).Include(p => p.ProductPictures).Take(num).OrderByDescending(p => p.Price);
 
             List<Product> products = await query.ToListAsync();
             return _mapper.Map<List<ProductDto>>(products);

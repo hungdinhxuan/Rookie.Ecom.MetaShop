@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using IdentityServer4.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +11,7 @@ namespace Rookie.Ecom.MetaShop.Identity
     {
         public static void AddIdentityLayer(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddTransient<IProfileService, ProfileService>();
             services.AddDbContext<AspNetIdentityDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), b =>
                     b.MigrationsAssembly(typeof(AspNetIdentityDbContext).Assembly.FullName)

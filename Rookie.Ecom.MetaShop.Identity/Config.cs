@@ -11,6 +11,7 @@ namespace Rookie.Ecom.MetaShop.Identity
         {
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
+             new IdentityResource("roles", new[] { "role" }) //Add this line
         };
 
         public static IEnumerable<ApiScope> ApiScopes =>
@@ -53,7 +54,8 @@ namespace Rookie.Ecom.MetaShop.Identity
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "api1"
+                        "api1",
+                        "roles"
                     }
             }
         };

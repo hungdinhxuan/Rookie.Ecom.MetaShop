@@ -25,12 +25,7 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages
             _logger = logger;
             _categoryService = categoryService;
             _productService = productService;
-
-
-
             TotalCartItem = 0;
-
-
         }
 
 
@@ -41,21 +36,23 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages
 
         public List<CategoryDto> Categories { get; set; }
 
-        [BindProperty(SupportsGet = true)]
-        public int CurrentPage { get; set; } = 1;
         public int PageSize { get; set; } = 5;
 
-        public int TotalCartItem { get; set; }
-        public string UserNameIdentity { get; set; }
+        public string CurrentFilter { get; set; }
 
-        public async Task<IActionResult> OnGet()
+        public int TotalCartItem { get; set; }
+
+        public int CurrentPage { get; set; } = 1;
+
+
+        public async Task OnGet(string searchString, int? pageIndex)
         {
-            Products = await _productService.PagedQueryAsync(null, CurrentPage, PageSize);
+            CurrentPage = pageIndex ?? 1;
+            CurrentFilter = searchString;
+            Products = await _productService.PagedQueryAsync(searchString, CurrentPage, PageSize);
             LastestProducts = await _productService.FilterProducts(true, false, 12);
             FeaturedProducts = await _productService.FilterProducts(false, true, 6);
             Categories = (List<CategoryDto>)await _categoryService.GetAllAsync();
-            UserNameIdentity = User.Identity.Name;
-            return Page();
         }
     }
 }
