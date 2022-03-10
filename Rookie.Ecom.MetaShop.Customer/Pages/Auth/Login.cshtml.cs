@@ -9,7 +9,7 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages.Auth
     {
         public IActionResult OnGet()
         {
-            return RedirectToPage("/Index");
+            return RedirectToPage("/Home/Index");
         }
     }
 }

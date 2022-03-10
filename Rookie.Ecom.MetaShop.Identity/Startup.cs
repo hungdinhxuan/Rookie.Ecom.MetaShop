@@ -43,13 +43,15 @@ namespace Rookie.Ecom.MetaShop.Identity
             options.UseSqlServer(defaultConnString,
                 b => b.MigrationsAssembly(migrationsAssembly)));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<MetaIdentityUser, IdentityRole>()
             .AddEntityFrameworkStores<AspNetIdentityDbContext>()
             .AddDefaultTokenProviders();
 
+
+
             // configure identity server with sqlserver stores, keys, clients and scopes
             var builder = services.AddIdentityServer()
-            .AddAspNetIdentity<IdentityUser>()
+            .AddAspNetIdentity<MetaIdentityUser>()
             .AddConfigurationStore(options =>
             {
                 options.ConfigureDbContext = b =>

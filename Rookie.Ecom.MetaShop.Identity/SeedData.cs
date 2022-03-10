@@ -23,10 +23,20 @@ namespace Rookie.Ecom.MetaShop.Identity
             );
 
             services
-                .AddIdentity<IdentityUser, IdentityRole>()
+                .AddIdentity<MetaIdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<AspNetIdentityDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Default Password settings.
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+            });
             services.AddOperationalDbContext(
                 options =>
                 {
@@ -66,19 +76,21 @@ namespace Rookie.Ecom.MetaShop.Identity
 
         private static void EnsureUsers(IServiceScope scope)
         {
-            UserManager<IdentityUser> userMgr = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            UserManager<MetaIdentityUser> userMgr = scope.ServiceProvider.GetRequiredService<UserManager<MetaIdentityUser>>();
 
-            IdentityUser admin = userMgr.FindByNameAsync("admin").Result;
-            IdentityUser john = userMgr.FindByNameAsync("john").Result;
+            MetaIdentityUser admin = userMgr.FindByNameAsync("admin").Result;
+            MetaIdentityUser john = userMgr.FindByNameAsync("john").Result;
             if (admin == null)
             {
-                admin = new IdentityUser
+                admin = new MetaIdentityUser
                 {
                     UserName = "admin",
                     Email = "admin@metashop.com",
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    FirstName = "admin",
+                    LastName = "admin"
                 };
-                IdentityResult result = userMgr.CreateAsync(admin, "Str0ng!Passw0rd@").Result;
+                IdentityResult result = userMgr.CreateAsync(admin, "aduvip").Result;
                 if (!result.Succeeded)
                 {
                     throw new Exception(result.Errors.First().Description);
@@ -98,9 +110,8 @@ namespace Rookie.Ecom.MetaShop.Identity
                         {
                             new Claim(JwtClaimTypes.Name, "admin"),
                             new Claim(JwtClaimTypes.GivenName, "admin"),
-                            new Claim(JwtClaimTypes.FamilyName, "Freeman"),
-                            new Claim(JwtClaimTypes.WebSite, "https://metashop.com"),
-                            new Claim("location", "somewhere"),
+                            new Claim(JwtClaimTypes.FamilyName, "admin"),
+                            new Claim(JwtClaimTypes.Email, admin.Email),
                             new Claim(JwtClaimTypes.Role, "Admin")
                         }
                     ).Result;
@@ -112,13 +123,15 @@ namespace Rookie.Ecom.MetaShop.Identity
 
             if (john == null)
             {
-                john = new IdentityUser
+                john = new MetaIdentityUser
                 {
-                    UserName = "johnd",
+                    UserName = "john",
                     Email = "john@metashop.com",
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    FirstName = "jhonny",
+                    LastName = "D"
                 };
-                IdentityResult result = userMgr.CreateAsync(john, "Str0ng!Passw0rd@").Result;
+                IdentityResult result = userMgr.CreateAsync(john, "aduvip").Result;
                 if (!result.Succeeded)
                 {
                     throw new Exception(result.Errors.First().Description);
@@ -136,11 +149,10 @@ namespace Rookie.Ecom.MetaShop.Identity
                         john,
                         new Claim[]
                         {
-                            new Claim(JwtClaimTypes.Name, "johnny D"),
-                            new Claim(JwtClaimTypes.GivenName, "john"),
-                            new Claim(JwtClaimTypes.FamilyName, "D"),
-                            new Claim(JwtClaimTypes.WebSite, "https://john.metashop.com"),
-                            new Claim("address", "somewhere"),
+                            new Claim(JwtClaimTypes.Name, john.FirstName),
+                            new Claim(JwtClaimTypes.GivenName, john.FirstName),
+                            new Claim(JwtClaimTypes.FamilyName, john.LastName),
+                            new Claim(JwtClaimTypes.Email, john.Email),
                             new Claim(JwtClaimTypes.Role, "Customer")
                         }
                     ).Result;

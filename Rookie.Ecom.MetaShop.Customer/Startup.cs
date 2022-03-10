@@ -2,6 +2,7 @@ using IdentityServer4;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Rookie.Ecom.MetaShop.Business;
+using Rookie.Ecom.MetaShop.Identity;
+using Rookie.Ecom.MetaShop.Identity.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -39,6 +42,7 @@ namespace Rookie.Ecom.MetaShop.Customer
             });
 
             services.AddBusinessLayer(Configuration);
+            services.AddIdentityLayer(Configuration);
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             JwtSecurityTokenHandler.DefaultMapInboundClaims = false;

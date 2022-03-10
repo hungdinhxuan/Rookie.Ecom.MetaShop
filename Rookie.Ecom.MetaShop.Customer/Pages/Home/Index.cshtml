@@ -122,7 +122,7 @@
                                     <div class="latest-prdouct__slider__item">
                                         <a asp-page="/Product/Index" asp-route-id="@LastestProducts[i].Id" class="latest-product__item">
                                             <div class="latest-product__item__pic">
-                                                <img src="@LastestProducts[i].ProductPictures[0].PictureUrl" alt="">
+                                                <img src="@(LastestProducts[i].ProductPictures.Count > 0 ? LastestProducts[i].ProductPictures[0].PictureUrl: null)" alt="">
                                             </div>
                                             <div class="latest-product__item__text">
                                                 <h6>@LastestProducts[i].Name</h6>
@@ -134,7 +134,7 @@
 
                                             <a asp-page="/Product/Index" asp-route-id="@Model.LastestProducts[i+1].Id" class="latest-product__item">
                                                 <div class="latest-product__item__pic">
-                                                    <img src="@LastestProducts[i+1].ProductPictures[0].PictureUrl" alt="">
+                                                    <img src="@(LastestProducts[i+1].ProductPictures.Count > 0 ? LastestProducts[i+1].ProductPictures[0].PictureUrl : null)" alt="">
                                                 </div>
                                                 <div class="latest-product__item__text">
                                                     <h6>@LastestProducts[i+1].Name</h6>
@@ -147,7 +147,7 @@
 
                                             <a asp-page="/Product/Index" asp-route-id="@LastestProducts[i+2].Id" class="latest-product__item">
                                                 <div class="latest-product__item__pic">
-                                                    <img src="@LastestProducts[i+2].ProductPictures[0].PictureUrl" alt="">
+                                                    <img src="@(LastestProducts[i+2].ProductPictures.Count > 0 ? LastestProducts[i+2].ProductPictures[0].PictureUrl : null)" alt="">
                                                 </div>
                                                 <div class="latest-product__item__text">
                                                     <h6>@LastestProducts[i+2].Name</h6>
@@ -233,7 +233,7 @@
                                 <div class="col-lg-4">
                                     <div class="product__discount__item">
                                         <div class="product__discount__item__pic set-bg"
-                                         data-setbg="@item.ProductPictures[0].PictureUrl">
+                                         data-setbg="@(item.ProductPictures.Count > 0 ? item.ProductPictures[0].PictureUrl : null)">
                                             @*<div class="product__discount__percent">-20%</div>*@
                                             <ul class="product__item__pic__hover">
                                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
@@ -283,7 +283,7 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="@item.ProductPictures[0].PictureUrl">
+                                <div class="product__item__pic set-bg" data-setbg="@( item.ProductPictures.Count > 0 ? item.ProductPictures[0].PictureUrl : null )">
                                     <a asp-page="/Product/Index" asp-route-id="@item.Id" class="product-wrapper-link"><i class="fa-solid fa-eye"></i></a>
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>

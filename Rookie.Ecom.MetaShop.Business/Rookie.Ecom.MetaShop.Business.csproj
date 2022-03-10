@@ -10,5 +10,6 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Rookie.Ecom.MetaShop.Contracts\Rookie.Ecom.MetaShop.Contracts.csproj" />
 	  <ProjectReference Include="..\Rookie.Ecom.MetaShop.DataAccessor\Rookie.Ecom.MetaShop.DataAccessor.csproj" />
+	  <ProjectReference Include="..\Rookie.Ecom.MetaShop.Identity\Rookie.Ecom.MetaShop.Identity.csproj" />
 	</ItemGroup>
 </Project>

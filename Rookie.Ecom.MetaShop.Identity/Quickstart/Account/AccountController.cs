@@ -18,6 +18,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Rookie.Ecom.MetaShop.DataAccessor.Entities;
+using Rookie.Ecom.MetaShop.Identity.Data;
 
 namespace IdentityServerHost.Quickstart.UI
 {
@@ -34,14 +36,14 @@ namespace IdentityServerHost.Quickstart.UI
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<MetaIdentityUser> _signInManager;
 
         public AccountController(
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
             IEventService events,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<MetaIdentityUser> signInManager)
         {
 
             _interaction = interaction;
