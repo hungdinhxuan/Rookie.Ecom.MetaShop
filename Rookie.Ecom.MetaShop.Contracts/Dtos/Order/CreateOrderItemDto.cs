@@ -16,5 +16,8 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos.Order
 
         public Guid ProductId { get; set; }
 
+        public Guid CreatedBy { get; set; }
+        public Guid UpdatedBy { get; set; }
+
     }
 }

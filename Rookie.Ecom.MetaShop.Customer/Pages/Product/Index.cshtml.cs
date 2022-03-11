@@ -71,6 +71,7 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages.Product
                     }
                 }
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", Cart);
+                TempData["AlertMessage"] = "Product addded to cart";
                 return RedirectToPage($"/Product/Index");
             }
             return NotFound();

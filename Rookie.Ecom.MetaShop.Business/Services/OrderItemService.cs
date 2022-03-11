@@ -4,6 +4,8 @@ using Rookie.Ecom.MetaShop.Contracts.Dtos.Order;
 using Rookie.Ecom.MetaShop.DataAccessor.Entities;
 using Rookie.Ecom.MetaShop.DataAccessor.Interfaces;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Rookie.Ecom.MetaShop.Business.Services
@@ -18,13 +20,20 @@ namespace Rookie.Ecom.MetaShop.Business.Services
             _baseRepository = baseRepository;
             _mapper = mapper;
         }
-        public async Task<OrderItemDto> CreateOrder(CreateOrderItemDto createOrderItemDto)
+        public async Task<OrderItemDto> AddOrderItemAsync(CreateOrderItemDto createOrderItemDto)
         {
             if (createOrderItemDto == null)
                 throw new ArgumentNullException(nameof(createOrderItemDto));
             OrderItem orderItem = _mapper.Map<OrderItem>(createOrderItemDto);
             orderItem = await _baseRepository.AddAsync(orderItem);
             return _mapper.Map<OrderItemDto>(orderItem);
+        }
+
+        public async Task<List<OrderItemDto>> AddRangeOrderItemsAsync(List<CreateOrderItemDto> createOrderItemDtos)
+        {
+            IEnumerable<OrderItem> orderItems = _mapper.Map<IEnumerable<OrderItem>>(createOrderItemDtos);
+            orderItems = await _baseRepository.AddRangeAsync(orderItems);
+            return _mapper.Map<List<OrderItemDto>>(orderItems.ToList());
         }
     }
 }

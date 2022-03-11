@@ -4,6 +4,7 @@ using Rookie.Ecom.MetaShop.Contracts.Dtos.Category;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.Order;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.Product;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.ProductPicture;
+using Rookie.Ecom.MetaShop.Contracts.Dtos.ProductRating;
 using Rookie.Ecom.MetaShop.DataAccessor.Entities;
 using Rookie.Ecom.MetaShop.Identity.Data;
 
@@ -48,6 +49,11 @@ namespace Rookie.Ecom.MetaShop.Business
             // OrderItem
             CreateMap<CreateOrderItemDto, OrderItem>(memberList: AutoMapper.MemberList.None);
             CreateMap<OrderItemDto, OrderItem>(memberList: AutoMapper.MemberList.None);
+
+            // Product Rating
+            CreateMap<CreateProductRatingDto, ProductRating>(memberList: AutoMapper.MemberList.None);
+            CreateMap<ProductRatingDto, ProductRating>(memberList: AutoMapper.MemberList.None);
+            CreateMap<UpdateProductRatingDto, ProductRating>(memberList: AutoMapper.MemberList.None);
         }
 
         private void FromDataAccessorLayer()
@@ -58,6 +64,7 @@ namespace Rookie.Ecom.MetaShop.Business
             CreateMap<MetaIdentityUser, MetaIdentityUserDto>();
             CreateMap<Order, OrderDto>();
             CreateMap<OrderItem, OrderItemDto>();
+            CreateMap<ProductRating, ProductRatingDto>();
         }
     }
 }

@@ -57,10 +57,10 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="checkout__input">
-                                    <p>Phone<span>*</span></p>
+                                    <p>PhoneNumber<span>*</span></p>
                                     @*<input type="text" asp-for="CreateOrder.PhoneNumber">*@
-                                    @Html.TextBoxFor(m => m.CreateOrder.PhoneNumber, new { placeholder = "Province", @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.CreateOrder.Province, null, new { @class = "text-danger" })
+                                    @Html.TextBoxFor(m => m.CreateOrder.PhoneNumber, new { placeholder = "PhoneNumber", @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.CreateOrder.PhoneNumber, null, new { @class = "text-danger" })
                                 </div>
                             </div>
                         </div>
@@ -96,7 +96,7 @@
                             <h4>Your Order</h4>
                             <div class="checkout__order__products">Products <span>Total</span></div>
                             <ul>
-                                @if(@Model.Cart != null)
+                                @if (@Model.Cart != null)
                                 {
 
                                     @foreach (var item in @Model.Cart)
@@ -140,3 +140,26 @@
         </div>
     </div>
 </section>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.4/dist/sweetalert2.all.min.js" integrity="sha256-COxwIctJg+4YcOK90L6sFf84Z18G3tTmqfK98vtnz2Q=" crossorigin="anonymous"></script>
+<script>
+
+    const msg = '@TempData["AlertMessage"]';
+    if(msg)
+    {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: msg,
+          showConfirmButton: false,
+          timer: 1500
+        })
+    }
+</script>
+
+
+@section Scripts {
+    @{
+    <partial name="_ValidationScriptsPartial" />
+    }
+}

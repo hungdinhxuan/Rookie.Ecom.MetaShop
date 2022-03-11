@@ -9,6 +9,7 @@ namespace Rookie.Ecom.MetaShop.Business.Interfaces
 {
     public interface IOrderItemService
     {
-        Task<OrderItemDto> CreateOrder(CreateOrderItemDto createOrderItemDto);
+        Task<OrderItemDto> AddOrderItemAsync(CreateOrderItemDto createOrderItemDto);
+        Task<List<OrderItemDto>> AddRangeOrderItemsAsync(List<CreateOrderItemDto> createOrderItemDtos);
     }
 }

@@ -38,6 +38,7 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages.Auth
 
                 if (result.Succeeded)
                 {
+                    TempData["AlertMessage"] = "Register Successfully";
                     return RedirectToPage("/Auth/Login");
                 }
                 else

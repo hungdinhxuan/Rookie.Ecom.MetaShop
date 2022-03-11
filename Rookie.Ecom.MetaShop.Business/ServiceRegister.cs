@@ -25,6 +25,7 @@ namespace Rookie.Ecom.MetaShop.Business
             services.AddTransient<IMetaIdentityUserService, MetaIdentityUserService>();
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IOrderItemService, OrderItemService>();
+            services.AddTransient<IProductRatingService, ProductRatingService>();
 
         }
     }
