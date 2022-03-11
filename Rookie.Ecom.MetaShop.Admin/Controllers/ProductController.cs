@@ -1,4 +1,5 @@
 ﻿using EnsureThat;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rookie.Ecom.MetaShop.Business.Interfaces;
 using Rookie.Ecom.MetaShop.Contracts;
@@ -11,8 +12,10 @@ using System.Threading.Tasks;
 
 namespace Rookie.Ecom.MetaShop.Admin.Controllers
 {
+
     [Route(Endpoints.Product)]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;

@@ -61,7 +61,7 @@ namespace Rookie.Ecom.MetaShop.Identity
             }
         }
 
-
+        public string AllOrigins = "AllowAllOrigins";
 
         public Startup(IConfiguration configuration)
         {
@@ -78,6 +78,17 @@ namespace Rookie.Ecom.MetaShop.Identity
 
             services.AddControllersWithViews();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: AllOrigins,
+                                  builder =>
+                                  {
+                                      builder.AllowAnyOrigin()
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod();
+                                  });
+            });
+
             services.AddAuthentication()
            .AddGoogle("Google", options =>
            {
@@ -87,8 +98,13 @@ namespace Rookie.Ecom.MetaShop.Identity
            });
 
             services.AddDbContext<AspNetIdentityDbContext>(options =>
-            options.UseSqlServer(defaultConnString,
-                b => b.MigrationsAssembly(migrationsAssembly)));
+            {
+
+                options.UseSqlServer(defaultConnString,
+                    b => b.MigrationsAssembly(migrationsAssembly));
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            }
+            );
 
             services.AddIdentity<MetaIdentityUser, IdentityRole>()
             .AddEntityFrameworkStores<AspNetIdentityDbContext>()
@@ -128,12 +144,13 @@ namespace Rookie.Ecom.MetaShop.Identity
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                /*InitializeDatabase(app);*/
+                InitializeDatabase(app);
 
             }
 
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseCors(AllOrigins);
             app.UseIdentityServer();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

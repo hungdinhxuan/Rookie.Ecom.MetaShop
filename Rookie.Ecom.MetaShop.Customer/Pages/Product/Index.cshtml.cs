@@ -61,7 +61,7 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages.Product
                     {
                         Cart.Add(new ProductItemCartDto
                         {
-                            Product = await _productService.GetByIdAsync(Product.Id),
+                            Product = Product,
                             Quantity = ProductQty
                         });
                     }

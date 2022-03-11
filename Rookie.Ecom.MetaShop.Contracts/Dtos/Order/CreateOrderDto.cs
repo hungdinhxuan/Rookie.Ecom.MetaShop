@@ -1,16 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Rookie.Ecom.MetaShop.DataAccessor.Entities
+namespace Rookie.Ecom.MetaShop.Contracts.Dtos.Order
 {
-    public class Order : BaseEntity
+    public class CreateOrderDto
     {
-
         public string Status { get; set; }
-
-        [DataType(DataType.Currency)]
-        [Column("total_price", TypeName = "money")]
         public decimal TotalPrice { get; set; }
 
         [Required]
@@ -20,10 +19,6 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Entities
         [Required]
         [MaxLength(100)]
         public string LastName { get; set; }
-
-        [Required]
-        [MaxLength(50)]
-        public string PhoneNumber { get; set; }
 
         [Required]
         [MaxLength(255)]
@@ -38,9 +33,10 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Entities
         [MaxLength(255)]
         public string Country { get; set; }
 
-        public string Note { get; set; }
+        [Required]
+        [MaxLength(50)]
+        public string PhoneNumber { get; set; }
 
-        public List<OrderItem> OrderItems { get; set; }
-        public List<ProductRating> ProductRatings { get; set; }
+        public string Note { get; set; }
     }
 }

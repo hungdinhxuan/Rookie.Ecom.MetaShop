@@ -22,7 +22,7 @@ export const getPagedCategoriesAsync = createAsyncThunk(
       const response = await axiosClient.get(`/category/find${values}`);
       return response;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
@@ -34,7 +34,7 @@ export const getAllCategoriesAsync = createAsyncThunk(
       const response = await axiosClient.get(`/category`);
       return response;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
@@ -46,7 +46,7 @@ export const deleteCategoryAsync = createAsyncThunk(
       const response = await axiosClient.delete(`/category/${values.id}`);
       return response;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
@@ -58,7 +58,7 @@ export const createCategoryAsync = createAsyncThunk(
       const response = await axiosClient.post(`/category`, values);
       return response;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
@@ -70,7 +70,7 @@ export const updateCategoryAsync = createAsyncThunk(
       const response = await axiosClient.put(`/category`, values);
       return response;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
@@ -94,7 +94,7 @@ export const categorySlice = createSlice({
       })
       .addCase(getAllCategoriesAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.categories = action.payload.data["$values"];
+        state.categories = action.payload["$values"];
       })
       .addCase(getAllCategoriesAsync.rejected, (state, action) => {
         state.loading = false;
@@ -103,11 +103,11 @@ export const categorySlice = createSlice({
         state.loading = true;
       })
       .addCase(getPagedCategoriesAsync.fulfilled, (state, action) => {
-        console.log(action.payload.data);
-        state.categories = action.payload.data.items["$values"];
-        state.totalPages = action.payload.data.totalPages;
-        state.currentPage = action.payload.data.currentPage;
-        state.totalItems = action.payload.data.totalItems;
+        console.log(action.payload);
+        state.categories = action.payload.items["$values"];
+        state.totalPages = action.payload.totalPages;
+        state.currentPage = action.payload.currentPage;
+        state.totalItems = action.payload.totalItems;
         state.loading = false;
       })
       .addCase(getPagedCategoriesAsync.rejected, (state, action) => {
@@ -157,7 +157,7 @@ export const categorySlice = createSlice({
         state.category = null;
       })
       .addCase(createCategoryAsync.fulfilled, (state, action) => {
-        state.categories.push(action.payload.data);
+        state.categories.push(action.payload);
         state.totalItems = state.totalItems + 1;
 
         if (state.totalItems / LIMIT_CATEGORY_PER_PAGE > state.totalPages) {

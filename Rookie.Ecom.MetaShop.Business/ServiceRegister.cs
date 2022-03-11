@@ -23,6 +23,8 @@ namespace Rookie.Ecom.MetaShop.Business
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IProductPictureService, ProductPictureService>();
             services.AddTransient<IMetaIdentityUserService, MetaIdentityUserService>();
+            services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<IOrderItemService, OrderItemService>();
 
         }
     }

@@ -8,7 +8,7 @@ import Iconify from '../../components/Iconify';
 import MenuPopover from '../../components/MenuPopover';
 //
 import account from '../../_mocks_/account';
-
+import userManager from '../../utils/userManager';
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
@@ -40,6 +40,13 @@ export default function AccountPopover() {
   };
   const handleClose = () => {
     setOpen(false);
+  };
+  const user = JSON.parse(localStorage.getItem("user"));
+  const handleLogout = () => {
+    
+    localStorage.removeItem('user');
+    userManager.signoutRedirect({ id_token_hint: user.id_token });
+    userManager.removeUser(); // removes the user data from sessionStorage
   };
 
   return (
@@ -106,7 +113,7 @@ export default function AccountPopover() {
         ))}
 
         <Box sx={{ p: 2, pt: 1.5 }}>
-          <Button fullWidth color="inherit" variant="outlined">
+          <Button fullWidth color="inherit" variant="outlined" onClick={handleLogout}>
             Logout
           </Button>
         </Box>

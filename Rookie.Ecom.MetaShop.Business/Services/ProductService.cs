@@ -59,7 +59,10 @@ namespace Rookie.Ecom.MetaShop.Business.Services
         {
             IQueryable<Product> query = _baseRepository.Entities;
 
-            query = query.Where(Product => Product.Id == id).Include(c => c.Category).Include(c => c.ProductPictures).OrderBy(x => x.Name);
+            query = query.Where(Product => Product.Id == id);
+            if (query == null)
+                return null;
+            query = query.Include(c => c.Category).Include(c => c.ProductPictures).OrderBy(x => x.Name);
             Product product = await query.FirstOrDefaultAsync();
 
 

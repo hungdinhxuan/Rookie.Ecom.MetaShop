@@ -36,7 +36,8 @@ namespace Rookie.Ecom.MetaShop.Identity
             // interactive ASP.NET Core MVC client
             new Client
             {
-                ClientId = "mvc",
+                 ClientName = "Rookie.Ecom.MetaShop.mvc",
+                   ClientId = "mvc",
                     ClientSecrets = { new Secret("secret".Sha256()) },
 
                     AllowedGrantTypes = GrantTypes.Code,
@@ -54,9 +55,33 @@ namespace Rookie.Ecom.MetaShop.Identity
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "api1",
                         "roles"
                     }
+            },
+            new Client
+            {
+                ClientName ="Rookie.Ecom.MetaShop.Admin",
+                ClientId = "rookieecom",
+                ClientSecrets = {new Secret("rookieecom".Sha256()) },
+                AllowedGrantTypes = GrantTypes.Implicit ,
+                RedirectUris = new List<string>()
+                    {
+                        "https://localhost:3000/callback",
+                        "https://localhost:5003/callback"
+                    },
+                 PostLogoutRedirectUris = new List<string>()
+                    {
+                        "https://localhost:3000/",
+                        "https://localhost:5003/"
+                    },
+
+                  AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "roles"
+                    },
+                  AllowAccessTokensViaBrowser = true
             }
         };
     };

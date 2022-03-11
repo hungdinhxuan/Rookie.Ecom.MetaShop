@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Rookie.Ecom.MetaShop.Identity.Migrations.IdentityServer.ConfigurationDb
+namespace Rookie.Ecom.MetaShop.Identity.Migrations.ConfigurationDb
 {
     [DbContext(typeof(ConfigurationDbContext))]
-    [Migration("20220310135111_InitialIdentityServerConfigurationDbMigration")]
-    partial class InitialIdentityServerConfigurationDbMigration
+    [Migration("20220311031254_InitConfigurationDb")]
+    partial class InitConfigurationDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

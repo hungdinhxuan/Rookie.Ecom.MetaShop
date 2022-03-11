@@ -6,10 +6,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Rookie.Ecom.MetaShop.Business;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+
 
 namespace Rookie.Ecom.MetaShop.Admin
 {
@@ -39,6 +41,26 @@ namespace Rookie.Ecom.MetaShop.Admin
 
             services.AddHttpContextAccessor();
             services.AddBusinessLayer(Configuration);
+
+            services.AddAuthentication("Bearer")
+           .AddJwtBearer("Bearer", options =>
+           {
+               options.Authority = "https://localhost:5001";
+
+               options.TokenValidationParameters = new TokenValidationParameters
+               {
+                   ValidateAudience = false
+               };
+           });
+
+            /*services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ApiScope", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim("scope", "api1");
+                });
+            });*/
 
             services.AddCors(options =>
             {
@@ -85,7 +107,10 @@ namespace Rookie.Ecom.MetaShop.Admin
                  });
 
             app.UseRouting();
+            //Enable Authentication
             app.UseCors(AllOrigins);
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Rookie.Ecom.MetaShop.Identity.Migrations.IdentityServer.PersistedGrantDb
+namespace Rookie.Ecom.MetaShop.Identity.Migrations.PersistedGrantDb
 {
-    public partial class InitialIdentityServerPersistedGrantDbMigration : Migration
+    public partial class InitPersistedGrantDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

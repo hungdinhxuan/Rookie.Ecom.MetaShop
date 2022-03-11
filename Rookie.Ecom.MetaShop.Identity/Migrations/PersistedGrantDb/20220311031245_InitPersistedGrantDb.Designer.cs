@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Rookie.Ecom.MetaShop.Identity.Migrations.IdentityServer.PersistedGrantDb
+namespace Rookie.Ecom.MetaShop.Identity.Migrations.PersistedGrantDb
 {
     [DbContext(typeof(PersistedGrantDbContext))]
-    [Migration("20220310135054_InitialIdentityServerPersistedGrantDbMigration")]
-    partial class InitialIdentityServerPersistedGrantDbMigration
+    [Migration("20220311031245_InitPersistedGrantDb")]
+    partial class InitPersistedGrantDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

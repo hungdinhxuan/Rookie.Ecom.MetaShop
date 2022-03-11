@@ -39,48 +39,6 @@ namespace Rookie.Ecom.UnitTests.Business
         }
 
         [Fact]
-        public async Task GetAsyncShouldReturnNullAsync()
-        {
-            var id = Guid.NewGuid();
-            _productRepository
-                  .Setup(x => x.GetByIdAsync(id))
-                  .Returns(Task.FromResult<Product>(null));
-
-            var result = await _productService.GetByIdAsync(id);
-            result.Should().BeNull();
-        }
-
-        [Fact]
-        public async Task GetAsyncShouldReturnObjectAsync()
-        {
-
-            var category = new Category()
-            {
-                Name = "abc",
-                Desc = "xyz",
-                ImageUrl = "gaga"
-            };
-            var entity = new Product()
-            {
-                Name = "product",
-                ShortDesc = "ProductShortDesc>",
-                LongDesc = "long>",
-                Price = 20,
-                Quantity = 1,
-                CategoryId = category.Id
-            };
-
-            _productRepository.Setup(x => x.GetByIdAsync(entity.Id)).Returns(Task.FromResult(entity));
-            var result = await _productService.GetByIdAsync(entity.Id);
-            result.Should().NotBeNull();
-
-            result.Id.Should().Be(entity.Id);
-
-
-            _productRepository.Verify(mock => mock.GetByIdAsync(entity.Id), Times.Once);
-        }
-
-        [Fact]
         public async Task AddProductShouldThrowExceptionAsync()
         {
             Func<Task> act = async () => await _productService.AddAsync(null);

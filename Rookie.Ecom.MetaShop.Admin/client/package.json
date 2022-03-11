@@ -67,6 +67,7 @@
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.1",
     "react-scripts": "^5.0.0",
+    "redux-oidc": "^4.0.0-beta1",
     "simplebar": "^5.3.6",
     "simplebar-react": "^2.3.6",
     "sweetalert2": "^11.4.4",

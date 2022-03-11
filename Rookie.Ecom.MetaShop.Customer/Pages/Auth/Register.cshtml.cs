@@ -23,7 +23,7 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages.Auth
         }
         public IActionResult OnGet()
         {
-            if (User.Identity.IsAuthenticated)
+            if (!User.Identity.IsAuthenticated)
                 return RedirectToPage("/Home/Login");
             return Page();
         }

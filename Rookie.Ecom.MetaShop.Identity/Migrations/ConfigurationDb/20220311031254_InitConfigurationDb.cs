@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Rookie.Ecom.MetaShop.Identity.Migrations.IdentityServer.ConfigurationDb
+namespace Rookie.Ecom.MetaShop.Identity.Migrations.ConfigurationDb
 {
-    public partial class InitialIdentityServerConfigurationDbMigration : Migration
+    public partial class InitConfigurationDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

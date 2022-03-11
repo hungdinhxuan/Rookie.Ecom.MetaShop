@@ -2,13 +2,18 @@ import { configureStore } from '@reduxjs/toolkit'
 import CategoryReducer from '../features/categorySlice';
 import ProductReducer from '../features/productSlice';
 import { getDefaultMiddleware } from '@reduxjs/toolkit';
-const customizedMiddleware = getDefaultMiddleware({
-  serializableCheck: false
-})
+import createOidcMiddleware from "redux-oidc";
+import userManager from "../utils/userManager";
+import { reducer as oidc } from "redux-oidc";
+
+
 export const store = configureStore({
   reducer: {
     category: CategoryReducer,
-    product: ProductReducer
+    product: ProductReducer,
+    oidc: oidc
   },
-  middleware: customizedMiddleware
+  middleware: [...getDefaultMiddleware({
+    serializableCheck: false
+  }), (createOidcMiddleware(userManager))]
 })

@@ -22,7 +22,7 @@ export const getAllProductsAsync = createAsyncThunk(
       const response = await axiosClient.get(`/product/find${values}`);
       return response;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
@@ -34,7 +34,7 @@ export const deleteProductAsync = createAsyncThunk(
       const response = await axiosClient.delete(`/product/${values.id}`);
       return response;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
@@ -46,7 +46,7 @@ export const createProductAsync = createAsyncThunk(
       const response = await axiosClient.post(`/product`, values);
       return response;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
@@ -58,7 +58,7 @@ export const updateProductAsync = createAsyncThunk(
       const response = await axiosClient.put(`/product`, values);
       return response;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
@@ -81,11 +81,11 @@ export const productSlice = createSlice({
           state.loading = true
       })
       .addCase(getAllProductsAsync.fulfilled, (state, action) => {
-        console.log(action.payload.data);
-        state.products = action.payload.data.items["$values"];
-        state.totalPages = action.payload.data.totalPages;
-        state.currentPage = action.payload.data.currentPage;
-        state.totalItems = action.payload.data.totalItems;
+        console.log(action.payload);
+        state.products = action.payload.items["$values"];
+        state.totalPages = action.payload.totalPages;
+        state.currentPage = action.payload.currentPage;
+        state.totalItems = action.payload.totalItems;
         state.loading = false
       })
       .addCase(getAllProductsAsync.rejected, (state, action) => {
@@ -139,7 +139,7 @@ export const productSlice = createSlice({
         state.product = null;
       })
       .addCase(createProductAsync.fulfilled, (state, action) => {
-        state.products.push(action.payload.data);
+        state.products.push(action.payload);
         state.totalItems = state.totalItems + 1;
 
         if(state.totalItems / LIMIT_PRODUCT_PER_PAGE > state.totalPages){
