@@ -13,12 +13,10 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos.ProductRating
 
         public Guid ProductId { get; set; }
 
-
-        public Guid OrderId { get; set; }
-
         public bool IsRated { get; set; }
 
-        public OrderDto Order { get; set; }
-        public ProductDto Product { get; set; }
+        public Guid OrderItemId { get; set; }
+        public OrderItemDto OrderItem { get; set; }
+
     }
 }

@@ -15,14 +15,9 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Entities
         [Range(0, 5)]
         public float Rating { get; set; } = 5;
 
-        [Column("product_id")]
-        public Guid ProductId { get; set; }
-
-        public Product Product { get; set; }
-
-        [Column("order_id")]
-        public Guid OrderId { get; set; }
-        public Order Order { get; set; }
+        [Column("order_item_id")]
+        public Guid OrderItemId { get; set; }
+        public OrderItem OrderItem { get; set; }
 
         [Column("is_rated")]
         public bool IsRated { get; set; } = false;

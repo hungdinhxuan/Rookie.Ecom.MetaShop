@@ -30,6 +30,8 @@ namespace Rookie.Ecom.MetaShop.Customer
             services.AddRazorPages(opt =>
             {
                 opt.Conventions.AddPageRoute("/Home/Index", "");
+                opt.Conventions.AddPageRoute("/Profile", @"Index");
+                
 
             }).AddRazorRuntimeCompilation().AddNewtonsoftJson(o =>
             {

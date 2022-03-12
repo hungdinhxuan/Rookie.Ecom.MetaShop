@@ -41,6 +41,5 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Entities
         public string Note { get; set; }
 
         public List<OrderItem> OrderItems { get; set; }
-        public List<ProductRating> ProductRatings { get; set; }
     }
 }

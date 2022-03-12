@@ -41,7 +41,7 @@
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <div style="display: flex; justify-content: space-evenly;">
-                                    <a asp-page="/Profile/Index" asp-route-id="@User.Claims.FirstOrDefault(claim => claim.Type == "sub").Value"> Hello @User.Claims.FirstOrDefault(claim => claim.Type == "name").Value </a>
+                                    <a asp-page="/Profile/Index"> Hello @User.Claims.FirstOrDefault(claim => claim.Type == "name").Value </a>
                                     <a asp-page="/Auth/Logout"><i class="fa fa-user"></i> Logout</a>
                                 </div>
                             }

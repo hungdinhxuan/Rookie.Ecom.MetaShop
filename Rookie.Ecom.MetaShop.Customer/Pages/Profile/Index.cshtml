@@ -1,6 +1,8 @@
-﻿@page "{id}"
+﻿@page 
 @model Rookie.Ecom.MetaShop.Customer.Pages.Profile.IndexModel
 @{
 }
 
 <h1> Hello @Model.CurrentUser.Email</h1>
+
+<a asp-page="/Profile/History/Order"> View Order History</a>

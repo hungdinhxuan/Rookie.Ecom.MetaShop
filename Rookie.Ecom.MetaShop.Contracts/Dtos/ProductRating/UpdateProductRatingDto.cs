@@ -16,6 +16,6 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos.ProductRating
         [Range(0, 5)]
         public float Rating { get; set; } = 5;
 
-        bool IsRated { get; set; } = false;
+        public bool IsRated { get; set; } = false;
     }
 }

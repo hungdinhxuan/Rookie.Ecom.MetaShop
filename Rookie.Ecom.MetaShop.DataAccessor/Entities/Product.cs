@@ -37,7 +37,5 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Entities
 
         public List<ProductPicture> ProductPictures { get; set; }
         public List<OrderItem> OrderItems { get; set; }
-
-        public List<ProductRating> ProductRating { get; set; }
     }
 }

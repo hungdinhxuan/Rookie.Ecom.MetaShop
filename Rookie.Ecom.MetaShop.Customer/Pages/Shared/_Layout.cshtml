@@ -29,6 +29,8 @@
     <link rel="stylesheet" href="~/css/jquery-ui.min.css" type="text/css">
     <link rel="stylesheet" href="~/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="~/css/slicknav.min.css" type="text/css">
+
+    @*Star rating*@
     <link rel="stylesheet" href="~/css/style.css" type="text/css">
     <link rel="stylesheet" href="~/css/site.css" />
 
@@ -66,7 +68,7 @@
 
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <a asp-page="/Profile" asp-route-id="@User.Claims.FirstOrDefault(claim => claim.Type == "sub").Value">Hello @User.Claims.FirstOrDefault(claim => claim.Type == "name").Value </a>
+                    <a asp-page="/Profile/Index" asp-route-id="@User.Claims.FirstOrDefault(c => c.Type == "sub").Value">Hello @User.Claims.FirstOrDefault(claim => claim.Type == "name").Value </a>
                     <a asp-page="/Auth/Logout"><i class="fa fa-user"></i> Logout</a>
                 }
                 else
@@ -155,6 +157,7 @@
     @*<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>*@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/jquery-3.3.1.min.js"></script>
+    <
     <script src="~/js/bootstrap.min.js"></script>
     <script src="~/js/jquery.nice-select.min.js"></script>
     <script src="~/js/jquery-ui.min.js"></script>
@@ -162,6 +165,7 @@
     <script src="~/js/mixitup.min.js"></script>
     <script src="~/js/owl.carousel.min.js"></script>
     <script src="~/js/main.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

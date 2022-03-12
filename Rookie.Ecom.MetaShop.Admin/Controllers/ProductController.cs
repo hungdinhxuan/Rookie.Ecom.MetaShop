@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 namespace Rookie.Ecom.MetaShop.Admin.Controllers
 {
 
+    [Authorize]
     [Route(Endpoints.Product)]
     [ApiController]
-    [Authorize(Roles = "Admin")]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;

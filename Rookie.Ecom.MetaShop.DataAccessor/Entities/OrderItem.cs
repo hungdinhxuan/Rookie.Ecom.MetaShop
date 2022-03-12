@@ -19,5 +19,7 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Entities
         public Order Order { get; set; }
 
         public Product Product { get; set; }
+
+        public ProductRating ProductRating { get; set; }
     }
 }

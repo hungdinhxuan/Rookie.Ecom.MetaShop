@@ -17,7 +17,7 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos.ProductRating
 
         public Guid ProductId { get; set; }
 
-        public Guid OrderId { get; set; }
+        public Guid OrderItemId { get; set; }
 
         public Guid CreatedBy { get; set; }
         public Guid UpdatedBy { get; set; }

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Rookie.Ecom.MetaShop.Contracts.Dtos.ProductRating;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Rookie.Ecom.MetaShop.Contracts.Dtos.Order
 {
@@ -33,5 +35,7 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos.Order
         public string PhoneNumber { get; set; }
 
         public string Note { get; set; }
+
+        public List<OrderItemDto> OrderItems { get; set; }
     }
 }

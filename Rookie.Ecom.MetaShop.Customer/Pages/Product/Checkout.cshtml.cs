@@ -93,10 +93,12 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages.Product
                             CreatedBy = userId,
                             UpdatedBy = userId
                         });
+
+                        // init temporary
                         createProductRatingDtos.Add(new CreateProductRatingDto
                         {
                             ProductId = item.Product.Id,
-                            OrderId = order.Id,
+                            OrderItemId = order.Id,
                             IsRated = false,
                             Comment = "",
                             Rating = 5,
@@ -104,7 +106,14 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages.Product
                             UpdatedBy = userId
                         });
                     }
-                    await _orderItemService.AddRangeOrderItemsAsync(createOrderItemDtos);
+
+                    List<OrderItemDto> orderItemDtos = await _orderItemService.AddRangeOrderItemsAsync(createOrderItemDtos);
+
+                    for (int i = 0; i < orderItemDtos.Count; i++)
+                    {
+                        createProductRatingDtos[i].OrderItemId = orderItemDtos[i].Id;
+                    }
+
                     await _productRatingService.AddRangeProductRatingAsync(createProductRatingDtos);
                     TempData["AlertMessage"] = "Order Product Successfully!";
                     SessionHelper.Remove(HttpContext.Session, "cart");

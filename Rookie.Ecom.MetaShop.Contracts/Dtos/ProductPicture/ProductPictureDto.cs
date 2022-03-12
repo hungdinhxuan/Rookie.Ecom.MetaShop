@@ -10,7 +10,7 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos.ProductPicture
 
         public Guid ProductId { get; set; }
 
-        [JsonIgnore]
-        public ProductDto Product { get; set; }
+        /*[JsonIgnore]
+        public ProductDto Product { get; set; }*/
     }
 }

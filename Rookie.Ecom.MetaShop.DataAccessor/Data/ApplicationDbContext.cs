@@ -28,8 +28,8 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Category>().HasMany(c => c.Products).WithOne(p => p.Category).OnDelete(DeleteBehavior.ClientCascade);
-            modelBuilder.Entity<Product>().HasMany(p => p.ProductPictures).WithOne(p => p.Product).OnDelete(DeleteBehavior.ClientCascade);
+            modelBuilder.Entity<Category>().HasMany(c => c.Products).WithOne(p => p.Category).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Product>().HasMany(p => p.ProductPictures).WithOne(p => p.Product).OnDelete(DeleteBehavior.Cascade);
         }
 
         public override Task<int> SaveChangesAsync(

@@ -1,0 +1,36 @@
+﻿@page
+@model Rookie.Ecom.MetaShop.Customer.Pages.Profile.History.OrderModel
+@{
+}
+
+
+<div class="container">
+    @foreach (var order in Model.Orders)
+    {
+        <div class="card w-100">
+            <div class="card-header"> Order Id: @order.Id </div>
+            <div class="card-body">
+
+                @foreach (var orderItem in order.OrderItems)
+                {
+                    <div class="card border-primary mb-3 w-80 d-flex flex-row">
+                        <img class="card-img-top" src="@orderItem.Product.ProductPictures[0].PictureUrl" alt="Card image cap" style="width: 30%; height: 150px; object-fit: cover">
+
+                        <div class="card-body text-primary d-flex flex-row align-items-center" style="justify-content: space-evenly;">
+                            <h4 class="card-title">@orderItem.Product.Name </h4>
+                            <h5 class="card-title">Unit Price: $@orderItem.Price</h5>
+                            <h5 class="card-title">Quantity: x @orderItem.Quantity</h5>
+                            <h5 class="text-center"><strong>Total Price: $@(orderItem.Product.Price * orderItem.Product.Quantity) </strong></h5>
+                        </div>
+
+                    </div>
+
+                    <br />
+                }
+                <h5 class="text-center" style="color: red;"><strong>Total Order Price: $@(order.TotalPrice) </strong></h5>
+            </div>
+        </div>
+        <hr />
+    }
+</div>
+

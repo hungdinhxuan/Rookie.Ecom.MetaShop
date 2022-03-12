@@ -10,8 +10,8 @@ using Rookie.Ecom.MetaShop.DataAccessor.Data;
 namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220311095730_update_order_note")]
-    partial class update_order_note
+    [Migration("20220312084323_init_fully_v1")]
+    partial class init_fully_v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -346,13 +346,9 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("is_rated");
 
-                    b.Property<Guid>("OrderId")
+                    b.Property<Guid>("OrderItemId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("order_id");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("product_id");
+                        .HasColumnName("order_item_id");
 
                     b.Property<float>("Rating")
                         .HasColumnType("real");
@@ -367,9 +363,8 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
+                    b.HasIndex("OrderItemId")
+                        .IsUnique();
 
                     b.ToTable("ProductRatings");
                 });
@@ -398,7 +393,7 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                     b.HasOne("Rookie.Ecom.MetaShop.DataAccessor.Entities.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
@@ -409,7 +404,7 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                     b.HasOne("Rookie.Ecom.MetaShop.DataAccessor.Entities.Product", "Product")
                         .WithMany("ProductPictures")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Product");
@@ -417,21 +412,13 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
 
             modelBuilder.Entity("Rookie.Ecom.MetaShop.DataAccessor.Entities.ProductRating", b =>
                 {
-                    b.HasOne("Rookie.Ecom.MetaShop.DataAccessor.Entities.Order", "Order")
-                        .WithMany("ProductRatings")
-                        .HasForeignKey("OrderId")
+                    b.HasOne("Rookie.Ecom.MetaShop.DataAccessor.Entities.OrderItem", "OrderItem")
+                        .WithOne("ProductRating")
+                        .HasForeignKey("Rookie.Ecom.MetaShop.DataAccessor.Entities.ProductRating", "OrderItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Rookie.Ecom.MetaShop.DataAccessor.Entities.Product", "Product")
-                        .WithMany("ProductRating")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
+                    b.Navigation("OrderItem");
                 });
 
             modelBuilder.Entity("Rookie.Ecom.MetaShop.DataAccessor.Entities.Category", b =>
@@ -442,8 +429,11 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
             modelBuilder.Entity("Rookie.Ecom.MetaShop.DataAccessor.Entities.Order", b =>
                 {
                     b.Navigation("OrderItems");
+                });
 
-                    b.Navigation("ProductRatings");
+            modelBuilder.Entity("Rookie.Ecom.MetaShop.DataAccessor.Entities.OrderItem", b =>
+                {
+                    b.Navigation("ProductRating");
                 });
 
             modelBuilder.Entity("Rookie.Ecom.MetaShop.DataAccessor.Entities.Product", b =>
@@ -451,8 +441,6 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Migrations
                     b.Navigation("OrderItems");
 
                     b.Navigation("ProductPictures");
-
-                    b.Navigation("ProductRating");
                 });
 #pragma warning restore 612, 618
         }

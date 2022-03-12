@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Rookie.Ecom.MetaShop.Business.Interfaces;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.Order;
 using Rookie.Ecom.MetaShop.DataAccessor.Entities;
 using Rookie.Ecom.MetaShop.DataAccessor.Interfaces;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Rookie.Ecom.MetaShop.Business.Services
@@ -24,9 +27,23 @@ namespace Rookie.Ecom.MetaShop.Business.Services
                 throw new ArgumentNullException(nameof(createOrderDto));
             Order order = _mapper.Map<Order>(createOrderDto);
             order = await _baseRepository.AddAsync(order);
+
+
             return _mapper.Map<OrderDto>(order);
         }
 
+        public async Task<List<OrderDto>> GetListOrderByUserIdAsync(Guid userId)
+        {
+            var query = _baseRepository.Entities;
+            query = query.Where(o => o.CreatedBy == userId);
+            if (query.Count() > 0)
+            {
+                query = query.Include(o => o.OrderItems);
+                return _mapper.Map<List<OrderDto>>(await query.ToListAsync());
 
+            }
+
+            return null;
+        }
     }
 }

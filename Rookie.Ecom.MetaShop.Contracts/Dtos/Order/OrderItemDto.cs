@@ -1,4 +1,5 @@
 ﻿using Rookie.Ecom.MetaShop.Contracts.Dtos.Product;
+using Rookie.Ecom.MetaShop.Contracts.Dtos.ProductRating;
 using System;
 
 namespace Rookie.Ecom.MetaShop.Contracts.Dtos.Order
@@ -14,5 +15,6 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos.Order
         public Guid ProductId { get; set; }
 
         public ProductDto Product { get; set; }
+        public ProductRatingDto ProductRating { get; set; }
     }
 }
