@@ -2,9 +2,9 @@
 ## Rookie.Ecom.MetaShop.Identity
 ### Migration
 #### Add migration for ConfigurationDbContext, PersistedGrantDb, AspNetIdentityDbContext
-add-migration -C ConfigurationDbContext initConfigurationDb
-add-migration -C PersistedGrantDbContext initPersistedGrantDb
-add-migration -C AspNetIdentityDbContext initAspNetIdentityDb
+##### add-migration -C ConfigurationDbContext initConfigurationDb
+##### add-migration -C PersistedGrantDbContext initPersistedGrantDb
+##### add-migration -C AspNetIdentityDbContext initAspNetIdentityDb
 #### Update database from context
 - Uncomment InitializeDatabase(app) at Startup.cs
 - Update-Database -Context AspNetIdentityDbContext
