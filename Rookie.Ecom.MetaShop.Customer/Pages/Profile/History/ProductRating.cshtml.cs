@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 
 namespace Rookie.Ecom.MetaShop.Customer.Pages.Profile.History
 {
@@ -7,6 +8,14 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages.Profile.History
     {
         public void OnGet()
         {
+        }
+
+        
+
+        public IActionResult OnPost(float Rating)
+        {
+            Console.WriteLine(Rating);
+            return Page();
         }
     }
 }

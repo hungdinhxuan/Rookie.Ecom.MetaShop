@@ -1,8 +1,7 @@
 ﻿@page
-@model Rookie.Ecom.MetaShop.Customer.Pages.Profile.History.OrderModel
+@model Rookie.Ecom.MetaShop.Customer.Pages.Profile.History.Order.IndexModel
 @{
 }
-
 
 <div class="container">
     @foreach (var order in Model.Orders)
@@ -24,13 +23,14 @@
                         </div>
 
                     </div>
-
                     <br />
                 }
                 <h5 class="text-center" style="color: red;"><strong>Total Order Price: $@(order.TotalPrice) </strong></h5>
+                <a asp-page="/Profile/History/Order/Detail" asp-route-id="@order.Id" class="card-link">View order detail</a>
             </div>
         </div>
         <hr />
     }
 </div>
 
+<a asp-page="/Profile/History/Order/Detail" asp-route-id="1"> Order Detail</a>

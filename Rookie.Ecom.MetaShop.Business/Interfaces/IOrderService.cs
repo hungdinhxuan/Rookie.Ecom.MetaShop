@@ -11,5 +11,7 @@ namespace Rookie.Ecom.MetaShop.Business.Interfaces
     {
         Task<OrderDto> CreateOrder(CreateOrderDto createOrderDto);
         Task<List<OrderDto>> GetListOrderByUserIdAsync(Guid userId);
+
+        Task<OrderDto> GetOrderByIdAysnc(Guid id);
     }
 }

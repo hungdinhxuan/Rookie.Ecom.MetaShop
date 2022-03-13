@@ -45,5 +45,15 @@ namespace Rookie.Ecom.MetaShop.Business.Services
 
             return null;
         }
+
+        public async Task<OrderDto> GetOrderByIdAysnc(Guid id)
+        {
+            var query = _baseRepository.Entities;
+
+            query = query.Where(o => o.Id == id).Include(o => o.OrderItems);
+            if (query == null)
+                return null;
+            return _mapper.Map<OrderDto>(await query.FirstOrDefaultAsync());
+        }
     }
 }

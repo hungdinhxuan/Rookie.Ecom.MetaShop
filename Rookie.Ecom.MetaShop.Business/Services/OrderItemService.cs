@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Rookie.Ecom.MetaShop.Business.Interfaces;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.Order;
 using Rookie.Ecom.MetaShop.DataAccessor.Entities;
@@ -34,6 +35,13 @@ namespace Rookie.Ecom.MetaShop.Business.Services
             IEnumerable<OrderItem> orderItems = _mapper.Map<IEnumerable<OrderItem>>(createOrderItemDtos);
             orderItems = await _baseRepository.AddRangeAsync(orderItems);
             return _mapper.Map<List<OrderItemDto>>(orderItems.ToList());
+        }
+
+        public Task<OrderItemDto> GetOrderItemByIdAsync(Guid id)
+        {
+            var query = _baseRepository.Entities;
+            query = query.Where(x => x.Id == id).Include(x => x.Product);
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,34 +1,28 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Rookie.Ecom.MetaShop.Business.Interfaces;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.Order;
-using Rookie.Ecom.MetaShop.Contracts.Dtos.Product;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Rookie.Ecom.MetaShop.Customer.Pages.Profile.History
+namespace Rookie.Ecom.MetaShop.Customer.Pages.Profile.History.Order
 {
-    [Authorize]
-    public class OrderModel : PageModel
+    public class IndexModel : PageModel
     {
         private readonly IOrderService _orderService;
         private readonly IProductService _productService;
 
-        public OrderModel(IOrderService orderService, IProductService productService)
+        public IndexModel(IOrderService orderService, IProductService productService)
         {
             _orderService = orderService;
             _productService = productService;
         }
         public List<OrderDto> Orders { get; set; }
-
-
-        public Guid UserId { get; set; }
-        public async Task<IActionResult> OnGet()
+        public async Task<IActionResult> OnGet(int? id)
         {
-            UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "sub").Value);
+            Guid UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "sub").Value);
             Orders = await _orderService.GetListOrderByUserIdAsync(UserId);
             if (Orders != null)
             {
