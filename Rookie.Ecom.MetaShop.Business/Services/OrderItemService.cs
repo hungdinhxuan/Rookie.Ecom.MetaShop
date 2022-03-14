@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Rookie.Ecom.MetaShop.Business.Interfaces;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.Order;
+using Rookie.Ecom.MetaShop.Contracts.Dtos.ProductRating;
 using Rookie.Ecom.MetaShop.DataAccessor.Entities;
 using Rookie.Ecom.MetaShop.DataAccessor.Interfaces;
 using System;
@@ -35,6 +36,15 @@ namespace Rookie.Ecom.MetaShop.Business.Services
             IEnumerable<OrderItem> orderItems = _mapper.Map<IEnumerable<OrderItem>>(createOrderItemDtos);
             orderItems = await _baseRepository.AddRangeAsync(orderItems);
             return _mapper.Map<List<OrderItemDto>>(orderItems.ToList());
+        }
+
+        public async Task<List<ProductRatingDto>> GetListProductRatingByProductIdAsync(Guid productId)
+        {
+            var query = _baseRepository.Entities;
+            query = query.Where(x => x.ProductId == productId)
+                .Include(o => o.Product)
+                .Include(o => o.ProductRating);
+            return _mapper.Map<List<ProductRatingDto>>(await query.Select(x => x.ProductRating).ToListAsync());
         }
 
         public Task<OrderItemDto> GetOrderItemByIdAsync(Guid id)

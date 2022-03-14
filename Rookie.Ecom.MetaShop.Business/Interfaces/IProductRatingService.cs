@@ -13,5 +13,11 @@ namespace Rookie.Ecom.MetaShop.Business.Interfaces
         Task RatingAsync(UpdateProductRatingDto updateProductRatingDto);
 
         Task RemoveRatingAsync(Guid id);
+
+        Task<ProductRatingDto> GetProductRatingAsync(Guid id);
+
+        Task<List<ProductRatingDto>> GetListProductRatingByProductIdAsync(Guid productId);
+
+
     }
 }

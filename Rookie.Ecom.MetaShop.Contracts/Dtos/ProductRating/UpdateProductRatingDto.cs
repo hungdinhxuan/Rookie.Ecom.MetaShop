@@ -17,5 +17,8 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos.ProductRating
         public float Rating { get; set; } = 5;
 
         public bool IsRated { get; set; } = false;
+
+        public DateTime UpdatedDate { get; set; }
+
     }
 }

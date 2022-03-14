@@ -12,29 +12,17 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages.Profile.History.Order
     public class IndexModel : PageModel
     {
         private readonly IOrderService _orderService;
-        private readonly IProductService _productService;
 
-        public IndexModel(IOrderService orderService, IProductService productService)
+
+        public IndexModel(IOrderService orderService)
         {
             _orderService = orderService;
-            _productService = productService;
         }
         public List<OrderDto> Orders { get; set; }
         public async Task<IActionResult> OnGet(int? id)
         {
-            Guid UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "sub").Value);
-            Orders = await _orderService.GetListOrderByUserIdAsync(UserId);
-            if (Orders != null)
-            {
-                for (int i = 0; i < Orders.Count; i++)
-                {
-                    for (int j = 0; j < Orders[i].OrderItems.Count; j++)
-                    {
-                        Orders[i].OrderItems[j].Product = await _productService.GetByIdAsync(Orders[i].OrderItems[j].ProductId);
-                    }
-                }
-            }
-            else
+            Orders = await _orderService.GetListOrderByUserIdAsync(User.Claims.FirstOrDefault(c => c.Type == "sub").Value);
+            if (Orders == null)
             {
                 Orders = new List<OrderDto>();
             }

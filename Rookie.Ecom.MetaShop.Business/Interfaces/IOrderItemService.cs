@@ -1,4 +1,5 @@
 ﻿using Rookie.Ecom.MetaShop.Contracts.Dtos.Order;
+using Rookie.Ecom.MetaShop.Contracts.Dtos.ProductRating;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace Rookie.Ecom.MetaShop.Business.Interfaces
         Task<List<OrderItemDto>> AddRangeOrderItemsAsync(List<CreateOrderItemDto> createOrderItemDtos);
 
         Task<OrderItemDto> GetOrderItemByIdAsync(Guid id);
+
+        Task<List<ProductRatingDto>> GetListProductRatingByProductIdAsync(Guid productId);
     }
 }

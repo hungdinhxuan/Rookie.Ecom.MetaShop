@@ -1,4 +1,5 @@
 ﻿
+using Rookie.Ecom.MetaShop.Identity.Data;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -24,13 +25,13 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Entities
 
 
         [Column("created_by")]
-        public Guid? CreatedBy { get; set; }
+        public string? CreatedBy { get; set; }
 
         [Column("updated_by")]
-        public Guid? UpdatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
 
-        [Column("deleted_by")]
-        public Guid? DeletedBy { get; set; }
+        public MetaIdentityUser MetaIdentityUser { get; set; }
+
 
         [Column("is_deleted")]
         public bool IsDeleted { get; set; } = false;

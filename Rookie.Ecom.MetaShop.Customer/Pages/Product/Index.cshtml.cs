@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Rookie.Ecom.MetaShop.Business.Interfaces;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.Product;
+using Rookie.Ecom.MetaShop.Contracts.Dtos.ProductRating;
 using Rookie.Ecom.MetaShop.Customer.Helpers;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages.Product
     public class IndexModel : PageModel
     {
         private readonly IProductService _productService;
+        private readonly IProductRatingService _productRatingService;
 
         public ProductDto Product { get; set; }
         public List<ProductDto> Products { get; set; }
@@ -19,15 +21,17 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages.Product
         public int ProductQty { get; set; } = 1;
 
         public List<ProductItemCartDto> Cart { get; set; }
+        public List<ProductRatingDto> Reviews { get; set; }
 
-        public IndexModel(IProductService productService)
+        public IndexModel(IProductService productService, IProductRatingService productRatingService)
         {
             _productService = productService;
+            _productRatingService = productRatingService;
         }
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
             Product = await _productService.GetByIdAsync(id);
-
+            Reviews = await _productRatingService.GetListProductRatingByProductIdAsync(id);
             if (Product == null)
             {
                 return NotFound();

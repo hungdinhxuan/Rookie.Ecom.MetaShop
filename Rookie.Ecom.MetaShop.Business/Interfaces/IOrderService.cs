@@ -10,7 +10,7 @@ namespace Rookie.Ecom.MetaShop.Business.Interfaces
     public interface IOrderService
     {
         Task<OrderDto> CreateOrder(CreateOrderDto createOrderDto);
-        Task<List<OrderDto>> GetListOrderByUserIdAsync(Guid userId);
+        Task<List<OrderDto>> GetListOrderByUserIdAsync(string userId);
 
         Task<OrderDto> GetOrderByIdAysnc(Guid id);
     }

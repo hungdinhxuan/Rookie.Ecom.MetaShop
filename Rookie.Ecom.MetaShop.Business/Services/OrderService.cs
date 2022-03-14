@@ -32,13 +32,16 @@ namespace Rookie.Ecom.MetaShop.Business.Services
             return _mapper.Map<OrderDto>(order);
         }
 
-        public async Task<List<OrderDto>> GetListOrderByUserIdAsync(Guid userId)
+        public async Task<List<OrderDto>> GetListOrderByUserIdAsync(string userId)
         {
             var query = _baseRepository.Entities;
             query = query.Where(o => o.CreatedBy == userId);
             if (query.Count() > 0)
             {
-                query = query.Include(o => o.OrderItems);
+                query = query.Include(o => o.OrderItems)
+                    .ThenInclude(p => p.ProductRating)
+                    .Include(o => o.OrderItems).ThenInclude(p => p.Product)
+                    .ThenInclude(p => p.ProductPictures);
                 return _mapper.Map<List<OrderDto>>(await query.ToListAsync());
 
             }
@@ -50,7 +53,13 @@ namespace Rookie.Ecom.MetaShop.Business.Services
         {
             var query = _baseRepository.Entities;
 
-            query = query.Where(o => o.Id == id).Include(o => o.OrderItems);
+            query = query.Where(o => o.Id == id)
+                .Include(o => o.OrderItems)
+                .ThenInclude(x => x.ProductRating)
+                .Include(o => o.OrderItems)
+                .ThenInclude(p => p.Product)
+                .ThenInclude(p => p.ProductPictures);
+
             if (query == null)
                 return null;
             return _mapper.Map<OrderDto>(await query.FirstOrDefaultAsync());

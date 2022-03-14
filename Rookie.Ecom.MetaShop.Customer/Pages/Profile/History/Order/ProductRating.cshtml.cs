@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Rookie.Ecom.MetaShop.Business.Interfaces;
-using Rookie.Ecom.MetaShop.Contracts.Dtos.Order;
+using Rookie.Ecom.MetaShop.Contracts.Dtos.ProductRating;
 using System;
 using System.Threading.Tasks;
 
@@ -9,17 +9,44 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages.Profile.History.Order
 {
     public class ProductRatingModel : PageModel
     {
-        private readonly IOrderItemService _orderItemService;
+        private readonly IProductRatingService _productRatingService;
 
-        public ProductRatingModel(IOrderItemService orderItemService)
+
+        public ProductRatingModel(IProductRatingService productRatingService)
         {
-            _orderItemService = orderItemService;
+            _productRatingService = productRatingService;
+
         }
-        public OrderItemDto OrderItem { get; set; }
+        public ProductRatingDto ProductRating { get; set; }
         public async Task<IActionResult> OnGet(Guid id)
         {
-            OrderItem = await _orderItemService.GetOrderItemByIdAsync(id);
+            ProductRating = await _productRatingService.GetProductRatingAsync(id);
+            if (ProductRating == null)
+                return NotFound();
             return Page();
+        }
+        public async Task<IActionResult> OnPostAsync(Guid id, float Rating, string Comment)
+        {
+            ProductRating = await _productRatingService.GetProductRatingAsync(id);
+            if (ProductRating == null)
+            {
+                return NotFound();
+            }
+            if (!ProductRating.IsRated)
+            {
+                UpdateProductRatingDto updateProductRatingDto = new UpdateProductRatingDto()
+                {
+                    Id = id,
+                    Rating = Rating,
+                    Comment = Comment,
+                    UpdatedDate = DateTime.Now,
+                    IsRated = true
+                };
+                await _productRatingService.RatingAsync(updateProductRatingDto);
+                TempData["AlertMessage"] = "Rating Product Successfully!";
+            }
+
+            return RedirectToPage($"/Profile/History/Order/{ProductRating.OrderItem.OrderId}");
         }
     }
 }

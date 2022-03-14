@@ -9,14 +9,12 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages.Profile.History.Order
 {
     public class DetailModel : PageModel
     {
-        private readonly IOrderItemService _orderItemService;
-        private readonly IProductService _productService;
+
         private readonly IOrderService _orderService;
 
-        public DetailModel(IOrderService orderService, IProductService productService)
+        public DetailModel(IOrderService orderService)
         {
-
-            _productService = productService;
+          
             _orderService = orderService;
         }
         public OrderDto Order { get; set; }
@@ -26,10 +24,7 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages.Profile.History.Order
 
             if (Order == null)
                 return NotFound();
-            for (int i = 0; i < Order.OrderItems.Count; i++)
-            {
-                Order.OrderItems[i].Product = await _productService.GetByIdAsync(Order.OrderItems[i].ProductId);
-            }
+
             return Page();
         }
     }

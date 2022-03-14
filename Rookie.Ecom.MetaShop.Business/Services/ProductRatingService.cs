@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Rookie.Ecom.MetaShop.Business.Interfaces;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.ProductRating;
 using Rookie.Ecom.MetaShop.DataAccessor.Entities;
@@ -35,9 +36,28 @@ namespace Rookie.Ecom.MetaShop.Business.Services
             return _mapper.Map<ProductRatingDto>(productRating);
         }
 
+        public async Task<List<ProductRatingDto>> GetListProductRatingByProductIdAsync(Guid productId)
+        {
+            var query = _baseRepository.Entities;
+            query = query.Include(pr => pr.OrderItem)
+                .Where(o => o.OrderItem.ProductId == productId);
+            return _mapper.Map<List<ProductRatingDto>>(await query.ToListAsync());
+        }
+
+        public async Task<ProductRatingDto> GetProductRatingAsync(Guid id)
+        {
+            var query = _baseRepository.Entities;
+            query = query.Where(x => x.Id == id).Include(p => p.OrderItem).ThenInclude(o => o.Product).ThenInclude(p => p.ProductPictures);
+            return _mapper.Map<ProductRatingDto>(await query.FirstOrDefaultAsync());
+        }
+
         public async Task RatingAsync(UpdateProductRatingDto updateProductRatingDto)
         {
-            var productRating = _mapper.Map<ProductRating>(updateProductRatingDto);
+            var productRating = await _baseRepository.GetByIdAsync(updateProductRatingDto.Id);
+            productRating.Rating = updateProductRatingDto.Rating;
+            productRating.Comment = updateProductRatingDto.Comment;
+            productRating.IsRated = updateProductRatingDto.IsRated;
+            productRating.UpdatedDate = updateProductRatingDto.UpdatedDate;
             await _baseRepository.UpdateAsync(productRating);
         }
 
