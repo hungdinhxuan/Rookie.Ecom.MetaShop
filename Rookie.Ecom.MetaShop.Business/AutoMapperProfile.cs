@@ -55,6 +55,9 @@ namespace Rookie.Ecom.MetaShop.Business
             CreateMap<ProductRatingDto, ProductRating>(memberList: AutoMapper.MemberList.None);
             CreateMap<UpdateProductRatingDto, ProductRating>(memberList: AutoMapper.MemberList.None);
             CreateMap<ProductRatingDto, UpdateProductRatingDto>(memberList: AutoMapper.MemberList.None);
+
+            // User 
+            CreateMap<MetaIdentityUserDto, MetaIdentityUser>();
         }
 
         private void FromDataAccessorLayer()

@@ -163,6 +163,8 @@ export const productSlice = createSlice({
         const index = state.products.findIndex(
           (product) => product.id === state.product.id
         );
+
+        
         state.products[index] = state.product;
 
         swalWithBootstrapButtons.fire(

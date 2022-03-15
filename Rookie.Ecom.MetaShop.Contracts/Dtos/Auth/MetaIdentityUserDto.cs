@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,7 +26,8 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos.Auth
 
         public string Province { get; set; }
 
-
         public string Country { get; set; }
+
+        public List<string>? Roles { get; set; }
     }
 }

@@ -21,10 +21,7 @@ import Box from "@mui/material/Box";
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { storage, uploadImageToFirebaseAsPromise } from "src/utils/firebase";
-import {
-  ref,
-  deleteObject,
-} from "firebase/storage";
+import { ref, deleteObject } from "firebase/storage";
 
 const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
   const { onChange, ...other } = props;
@@ -102,7 +99,9 @@ const UpdateProduct = ({ open, setOpen }) => {
   };
 
   const [selectedFiles, setSelectedFiles] = useState([]);
-  const [previewFiles, setPreviewFiles] = useState(product.productPictures["$values"].map(item => item.pictureUrl));
+  const [previewFiles, setPreviewFiles] = useState(
+    product.productPictures["$values"].map((item) => item.pictureUrl)
+  );
 
   const handleSelectedFilesChange = (e) => {
     const files = convertFileListToArray(e.target.files);
@@ -127,14 +126,20 @@ const UpdateProduct = ({ open, setOpen }) => {
       });
       return;
     }
-    files.forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setPreviewFiles((previewFiles) => [...previewFiles, reader.result]);
-      };
-      reader.readAsDataURL(file);
-    });
-    setSelectedFiles(files);
+
+    if(files.length > 0)
+    {
+      setPreviewFiles(files.map((file) => URL.createObjectURL(file)));
+      setSelectedFiles(files);
+    }
+    
+    // files.forEach((file) => {
+    //   const reader = new FileReader();
+    //   reader.onload = () => {
+    //     setPreviewFiles((previewFiles) => [...previewFiles, reader.result]);
+    //   };
+    //   reader.readAsDataURL(file);
+    // });
   };
 
   const handleClose = () => {
@@ -143,10 +148,10 @@ const UpdateProduct = ({ open, setOpen }) => {
     setPreviewFiles([]);
   };
 
-  console.log(previewFiles)
+  console.log(previewFiles);
 
   const handleUpdateProduct = () => {
-    
+    // Simple validation
     if (
       !product.name ||
       !product.shortDesc ||
@@ -162,24 +167,9 @@ const UpdateProduct = ({ open, setOpen }) => {
         confirmButtonText: "Ok",
       });
       return;
-    } else {
-      const downloadURLs = [];
-      selectedFiles.forEach((file) => {
-        downloadURLs.push(uploadImageToFirebaseAsPromise(file));
-      });
-      handleClose();
-      Promise.all(downloadURLs).then((urls) => {
-        dispatch(
-          updateProductAsync({
-            ...product,
-            productPictureDtos: urls.map((url) => ({
-              pictureUrl: url,
-            })),
-          })
-        );
-      });
-    }
+    } 
 
+    // if upload new pictures
     if (selectedFiles.length > 0) {
       const downloadURLs = [];
       selectedFiles.forEach((file) => {
@@ -189,28 +179,41 @@ const UpdateProduct = ({ open, setOpen }) => {
 
       // update product picture
       Promise.all(downloadURLs).then((urls) => {
+        let newProduct = {
+          id: product.id,
+          name: product.name,
+          shortDesc: product.shortDesc,
+          longDesc: product.longDesc,
+          price: product.price,
+          quantity: product.quantity,
+          isFeatured: product.isFeatured,
+          categoryId: product.categoryId,
+          newProductPictureDtos: urls.map((url) => ({
+            pictureUrl: url,
+            productId: product.id
+          })),
+          productPictureDtos: product.productPictures["$values"]
+          
+        }
+        dispatch(setProduct({
+          ...newProduct,
+          productPictures: {
+            "$values": newProduct.newProductPictureDtos
+          }
+        }));
+
         dispatch(
-          updateProductAsync({
-            id: product.id,
-            name: product.name,
-            shortDesc: product.shortDesc,
-            longDesc: product.longDesc,
-            price: product.price,
-            quantity: product.quantity,
-            isFeatured: product.isFeatured,
-            categoryId: product.categoryId,
-            productPictureDtos: urls.map((url) => ({
-              pictureUrl: url,
-            })),
-          })
+          updateProductAsync(newProduct)
         );
+
+      
       });
 
       // remove old pictures
       const deletePromise = [];
       product.productPictures["$values"].forEach((productPictureDto) => {
         const beforeUrlLink = exactFirebaseLink(productPictureDto.pictureUrl);
-       
+
         if (beforeUrlLink !== null) {
           const desertRef = ref(storage, beforeUrlLink);
           deletePromise.push(deleteObject(desertRef));
@@ -224,6 +227,10 @@ const UpdateProduct = ({ open, setOpen }) => {
         .catch((error) => {
           console.log(error);
         });
+
+        // revoke all urls
+        previewFiles.forEach((url) => URL.revokeObjectURL(url));
+
     } else {
       if (
         product.name &&
@@ -232,18 +239,25 @@ const UpdateProduct = ({ open, setOpen }) => {
         product.quantity &&
         product.categoryId
       ) {
+        let newProduct = {
+          id: product.id,
+          name: product.name,
+          shortDesc: product.shortDesc,
+          longDesc: product.longDesc,
+          price: product.price,
+          quantity: product.quantity,
+          isFeatured: product.isFeatured,
+          categoryId: product.categoryId,
+          productPictureDtos: product.productPictures["$values"],
+        }
+        dispatch(setProduct({
+          ...newProduct,
+          productPictureDtos: {
+            "$values": product.productPictures["$values"]
+          }
+        }));
         dispatch(
-          updateProductAsync({
-            id: product.id,
-            name: product.name,
-            shortDesc: product.shortDesc,
-            longDesc: product.longDesc,
-            price: product.price,
-            quantity: product.quantity,
-            isFeatured: product.isFeatured,
-            categoryId: product.categoryId,
-            productPictureDtos: product.productPictures["$values"],
-          })
+          updateProductAsync(newProduct)
         );
       } else {
         swalWithBootstrapButtons.fire({
@@ -261,7 +275,6 @@ const UpdateProduct = ({ open, setOpen }) => {
     dispatch(getAllCategoriesAsync());
   }, [dispatch]);
 
-  
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Product</DialogTitle>
@@ -341,7 +354,9 @@ const UpdateProduct = ({ open, setOpen }) => {
             <Switch
               checked={product.isFeatured}
               onChange={(e) => {
-                dispatch(setProduct({ ...product, isFeatured: e.target.checked }));
+                dispatch(
+                  setProduct({ ...product, isFeatured: e.target.checked })
+                );
               }}
               inputProps={{ "aria-label": "controlled" }}
             />
@@ -394,7 +409,11 @@ const UpdateProduct = ({ open, setOpen }) => {
                 <img
                   src={previewFile || "/static/none.png"}
                   alt="preview"
-                  style={{ width: "100px", height: "100px", objectFit: "cover"}}
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    objectFit: "cover",
+                  }}
                   key={index}
                 />
               ))}

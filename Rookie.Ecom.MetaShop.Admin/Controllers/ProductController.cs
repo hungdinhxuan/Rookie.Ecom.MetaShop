@@ -8,12 +8,13 @@ using Rookie.Ecom.MetaShop.Contracts.Dtos.Product;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.ProductPicture;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Rookie.Ecom.MetaShop.Admin.Controllers
 {
 
-    [Authorize]
+
     [Route(Endpoints.Product)]
     [ApiController]
     public class ProductController : ControllerBase
@@ -73,13 +74,13 @@ namespace Rookie.Ecom.MetaShop.Admin.Controllers
             {
                 // delete old pictures
                 if (ProductDto.ProductPictureDtos != null && ProductDto.ProductPictureDtos.Count > 0)
-                    await _productPictureService.RemoveRangeAsync(ProductDto.ProductPictureDtos);
+                    await _productPictureService.RemoveRangeAsync(ProductDto.ProductPictureDtos.AsEnumerable());
                 // add new pictures
                 for (int i = 0; i < ProductDto.NewProductPictureDtos.Count; i++)
                 {
                     ProductDto.NewProductPictureDtos[i].ProductId = ProductDto.Id;
                 }
-                await _productPictureService.AddRangeAsync(ProductDto.NewProductPictureDtos);
+                await _productPictureService.AddRangeAsync(ProductDto.NewProductPictureDtos.AsEnumerable());
             }
             return NoContent();
         }

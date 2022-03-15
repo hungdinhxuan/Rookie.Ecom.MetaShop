@@ -35,11 +35,11 @@ const MainStyle = styled('div')(({ theme }) => ({
 
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
-  const isAuthenticated = Boolean(localStorage.getItem('user'));
+  // const isAuthenticated = Boolean(localStorage.getItem('user'));
 
-  if(!isAuthenticated) {
-    userManager.signinRedirect();
-  }
+  // if(!isAuthenticated) {
+  //   userManager.signinRedirect();
+  // }
 
   return (
    

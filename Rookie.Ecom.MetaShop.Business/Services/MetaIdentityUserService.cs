@@ -1,10 +1,15 @@
 ﻿using AutoMapper;
 using IdentityModel;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Rookie.Ecom.MetaShop.Business.Extensions;
 using Rookie.Ecom.MetaShop.Business.Interfaces;
+using Rookie.Ecom.MetaShop.Contracts;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.Auth;
 using Rookie.Ecom.MetaShop.Identity.Data;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -29,6 +34,35 @@ namespace Rookie.Ecom.MetaShop.Business.Services
             if (user == null)
                 return null;
             return _mapper.Map<MetaIdentityUserDto>(user);
+        }
+
+        public async Task<PagedResponseModel<MetaIdentityUserDto>> PagedQueryAsync(string username, int page, int limit)
+        {
+            var query = _userManager.Users;
+            query = query.Where(x => string.IsNullOrEmpty(username) || x.UserName.Contains(username));
+
+            query = query.OrderBy(x => x.UserName);
+
+            var assets = await query
+                .AsNoTracking()
+                .PaginateAsync(page, limit);
+
+            IEnumerable<MetaIdentityUserDto> users = _mapper.Map<IEnumerable<MetaIdentityUserDto>>(assets.Items);
+
+            List<MetaIdentityUserDto> listUsers = users.ToList();
+            for (int i = 0; i < listUsers.Count; i++)
+            {
+                var tmp = _mapper.Map<MetaIdentityUser>(listUsers[i]);
+                var roles = await _userManager.GetRolesAsync(tmp);
+                listUsers[i].Roles = roles.ToList();
+            }
+            return new PagedResponseModel<MetaIdentityUserDto>
+            {
+                CurrentPage = assets.CurrentPage,
+                TotalPages = assets.TotalPages,
+                TotalItems = assets.TotalItems,
+                Items = listUsers.AsEnumerable()
+            };
         }
 
         public async Task<IdentityResult> Register(UserRegistrationDto request, string role)
