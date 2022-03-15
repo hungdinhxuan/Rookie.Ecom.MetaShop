@@ -32,19 +32,3 @@
 </div>
 
 
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.4/dist/sweetalert2.all.min.js" integrity="sha256-COxwIctJg+4YcOK90L6sFf84Z18G3tTmqfK98vtnz2Q=" crossorigin="anonymous"></script>
-<script>
-
-    const msg = '@TempData["AlertMessage"]';
-    if(msg)
-    {
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: msg,
-          showConfirmButton: false,
-          timer: 1500
-        })
-    }
-</script>

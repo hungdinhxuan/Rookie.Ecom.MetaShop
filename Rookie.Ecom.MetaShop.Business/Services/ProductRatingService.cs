@@ -4,6 +4,7 @@ using Rookie.Ecom.MetaShop.Business.Interfaces;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.ProductRating;
 using Rookie.Ecom.MetaShop.DataAccessor.Entities;
 using Rookie.Ecom.MetaShop.DataAccessor.Interfaces;
+using Rookie.Ecom.MetaShop.Identity.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,13 @@ namespace Rookie.Ecom.MetaShop.Business.Services
     {
         private readonly IBaseRepository<ProductRating> _baseRepository;
         private readonly IMapper _mapper;
+        private readonly AspNetIdentityDbContext _aspNetIdentityDbContext;
 
-        public ProductRatingService(IBaseRepository<ProductRating> baseRepository, IMapper mapper)
+        public ProductRatingService(IBaseRepository<ProductRating> baseRepository, IMapper mapper, AspNetIdentityDbContext aspNetIdentityDbContext)
         {
             _baseRepository = baseRepository;
             _mapper = mapper;
+            _aspNetIdentityDbContext = aspNetIdentityDbContext;
         }
 
         public async Task<List<ProductRatingDto>> AddRangeProductRatingAsync(List<CreateProductRatingDto> createProductRatingDtos)
@@ -41,6 +44,7 @@ namespace Rookie.Ecom.MetaShop.Business.Services
             var query = _baseRepository.Entities;
             query = query.Include(pr => pr.OrderItem)
                 .Where(o => o.OrderItem.ProductId == productId);
+
             return _mapper.Map<List<ProductRatingDto>>(await query.ToListAsync());
         }
 

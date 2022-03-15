@@ -52,6 +52,7 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages.Product
                 }
 
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", Cart);
+                Total = Cart.Sum(i => i.Product.Price * i.Quantity);
             }
             return Page();
         }

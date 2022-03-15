@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rookie.Ecom.MetaShop.Identity.Data;
 
 namespace Rookie.Ecom.MetaShop.Identity.Migrations
 {
     [DbContext(typeof(AspNetIdentityDbContext))]
-    partial class AspNetIdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220315072852_initAspNetIdentityDb")]
+    partial class initAspNetIdentityDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

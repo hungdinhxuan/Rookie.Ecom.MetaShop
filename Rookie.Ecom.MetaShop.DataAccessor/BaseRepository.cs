@@ -13,6 +13,7 @@ namespace Rookie.Ecom.MetaShop.DataAccessor
     {
         private readonly ApplicationDbContext _dbContext;
 
+
         public BaseRepository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;

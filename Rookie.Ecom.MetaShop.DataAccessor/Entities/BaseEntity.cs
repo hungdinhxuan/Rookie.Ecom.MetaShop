@@ -30,8 +30,6 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Entities
         [Column("updated_by")]
         public string? UpdatedBy { get; set; }
 
-        public MetaIdentityUser MetaIdentityUser { get; set; }
-
 
         [Column("is_deleted")]
         public bool IsDeleted { get; set; } = false;

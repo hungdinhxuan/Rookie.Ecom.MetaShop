@@ -46,7 +46,7 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages.Profile.History.Order
                 TempData["AlertMessage"] = "Rating Product Successfully!";
             }
 
-            return RedirectToPage($"/Profile/History/Order/{ProductRating.OrderItem.OrderId}");
+            return RedirectToPage($"/Home/Index");
         }
     }
 }
