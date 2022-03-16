@@ -75,11 +75,14 @@ namespace Rookie.Ecom.MetaShop.Business.Services
             return _mapper.Map<ProductDto>(product);
         }
 
-        public async Task<PagedResponseModel<ProductDto>> PagedQueryAsync(string name, int? page, int limit)
+        public async Task<PagedResponseModel<ProductDto>> PagedQueryAsync(string name, Guid? categoryId, int? page, int limit)
         {
             var query = _baseRepository.Entities;
 
             query = query.Where(x => string.IsNullOrEmpty(name) || x.Name.Contains(name));
+
+            if (categoryId != null)
+                query = query.Where(x => x.CategoryId == categoryId);
 
             query = query.Include(c => c.Category).Include(c => c.ProductPictures);
 

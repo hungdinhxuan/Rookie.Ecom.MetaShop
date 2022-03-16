@@ -85,13 +85,27 @@ namespace Rookie.Ecom.MetaShop.Identity
                                   });
             });
 
+
+
             services.AddAuthentication()
            .AddGoogle("Google", options =>
            {
                options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
                options.ClientId = Configuration["Authentication:Google:ClientId"];
                options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
-           });
+           })
+           .AddFacebook("Facebook", options =>
+           {
+               options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+               options.ClientId = Configuration["Authentication:Facebook:ClientId"];
+               options.ClientSecret = Configuration["Authentication:Facebook:ClientSecret"];
+           }).AddMicrosoftAccount("Microsoft", options =>
+           {
+               options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+               options.ClientId = Configuration["Authentication:Microsoft:ClientId"];
+               options.ClientSecret = Configuration["Authentication:Microsoft:ClientSecret"];
+           })
+           ;
 
             services.AddDbContext<AspNetIdentityDbContext>(options =>
             {
@@ -105,7 +119,7 @@ namespace Rookie.Ecom.MetaShop.Identity
             services.AddIdentity<MetaIdentityUser, IdentityRole>()
             .AddEntityFrameworkStores<AspNetIdentityDbContext>()
             .AddDefaultTokenProviders();
-
+            services.AddIdentityLayer(Configuration);
 
 
             // configure identity server with sqlserver stores, keys, clients and scopes
@@ -127,6 +141,7 @@ namespace Rookie.Ecom.MetaShop.Identity
                 options.ConfigureDbContext = b =>
                 b.UseSqlServer(defaultConnString, opt => opt.MigrationsAssembly(migrationsAssembly));
             });
+
 
 
 

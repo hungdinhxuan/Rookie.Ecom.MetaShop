@@ -12,6 +12,7 @@ namespace Rookie.Ecom.MetaShop.Identity
         {
             var roleClaims = context.Subject.FindAll(JwtClaimTypes.Role);
             context.IssuedClaims.AddRange(roleClaims);
+            context.IssuedClaims.AddRange(context.Subject.FindAll(JwtClaimTypes.Name));
             return Task.CompletedTask;
         }
 

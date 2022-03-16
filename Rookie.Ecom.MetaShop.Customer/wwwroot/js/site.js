@@ -32,3 +32,5 @@ const handleAddToCart = (isAuthenticated) => {
     }
 
 }
+
+

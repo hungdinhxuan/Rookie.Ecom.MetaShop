@@ -72,7 +72,7 @@ namespace Rookie.Ecom.MetaShop.Admin.Controllers
             await _productService.UpdateAsync(ProductDto);
             if (ProductDto.NewProductPictureDtos != null && ProductDto.NewProductPictureDtos.Count > 0)
             {
-                // delete old pictures
+                // remove old pictures
                 if (ProductDto.ProductPictureDtos != null && ProductDto.ProductPictureDtos.Count > 0)
                     await _productPictureService.RemoveRangeAsync(ProductDto.ProductPictureDtos.AsEnumerable());
                 // add new pictures
@@ -88,7 +88,7 @@ namespace Rookie.Ecom.MetaShop.Admin.Controllers
         [HttpGet("find")]
         public async Task<PagedResponseModel<ProductDto>>
             FindAsync(string name, int page = 1, int limit = 10)
-            => await _productService.PagedQueryAsync(name, page, limit);
+            => await _productService.PagedQueryAsync(name, null, page, limit);
 
 
         [HttpPost("picture")]

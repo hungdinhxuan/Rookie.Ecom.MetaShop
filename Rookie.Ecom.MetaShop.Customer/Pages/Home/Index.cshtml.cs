@@ -44,15 +44,21 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages
 
         public int CurrentPage { get; set; } = 1;
 
+        public Guid? SelectedCategoryId { get; set; }
 
-        public async Task OnGet(string searchString, int? pageIndex)
+
+        public async Task OnGet(string searchString, int? pageIndex, Guid? categoryId)
         {
             CurrentPage = pageIndex ?? 1;
+
+
             CurrentFilter = searchString;
-            Products = await _productService.PagedQueryAsync(searchString, CurrentPage, PageSize);
+            SelectedCategoryId = categoryId;
+
+            Products = await _productService.PagedQueryAsync(CurrentFilter, SelectedCategoryId, CurrentPage, PageSize);
             LastestProducts = await _productService.FilterProducts(true, false, 12);
             FeaturedProducts = await _productService.FilterProducts(false, true, 6);
-            Categories = (List<CategoryDto>)await _categoryService.GetAllAsync();
+            Categories = (await _categoryService.GetAllAsync()).ToList();
         }
     }
 }

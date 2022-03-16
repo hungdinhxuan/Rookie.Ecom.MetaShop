@@ -10,9 +10,11 @@
 @{
     List<ProductItemCartDto> Cart = Helpers.SessionHelper.GetObjectFromJson<List<ProductItemCartDto>>(HttpContextAccessor.HttpContext.Session, "cart");
     int totalItem = 0;
+    decimal totalMoney = 0;
     if (Cart != null)
     {
         totalItem = Cart.Sum(i => i.Quantity);
+        totalMoney = Cart.Sum(c => c.Product.Price * c.Quantity);
     }
 }
 
@@ -24,7 +26,7 @@
                     <div class="header__top__left">
                         <ul>
                             <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-                            <li>Free Shipping for all Order of $99</li>
+                            <li>Free Shipping for all Order</li>
                         </ul>
                     </div>
                 </div>
@@ -64,7 +66,7 @@
         <div class="row">
             <div class="col-lg-3">
                 <div class="header__logo">
-                    <a asp-page="/Home/Index"><img src="img/logo.png" alt=""></a>
+                    <a asp-page="/Home/Index"><img src="img/logo.png" alt="" style="height: 100px; padding-left: 70px"></a>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -92,7 +94,11 @@
                         <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
                         <li><a asp-page="/Product/Cart"><i class="fa fa-shopping-bag"></i> <span> @totalItem </span></a></li>
                     </ul>
-                    <div class="header__cart__price">item: <span>$150.00</span></div>
+                    <div class="header__cart__price">
+                        item: <span>
+                            $ @totalMoney
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

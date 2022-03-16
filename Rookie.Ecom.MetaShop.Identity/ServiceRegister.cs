@@ -20,7 +20,8 @@ namespace Rookie.Ecom.MetaShop.Identity
                 .AddUserManager<UserManager<MetaIdentityUser>>()
                 .AddRoles<IdentityRole>()
                 .AddRoleManager<RoleManager<IdentityRole>>()
-                .AddEntityFrameworkStores<AspNetIdentityDbContext>();
+                .AddEntityFrameworkStores<AspNetIdentityDbContext>()
+                .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {

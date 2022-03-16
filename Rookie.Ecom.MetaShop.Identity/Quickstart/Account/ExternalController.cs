@@ -7,8 +7,10 @@ using IdentityServer4.Test;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Rookie.Ecom.MetaShop.Identity.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,12 +28,16 @@ namespace IdentityServerHost.Quickstart.UI
         private readonly IClientStore _clientStore;
         private readonly ILogger<ExternalController> _logger;
         private readonly IEventService _events;
+        private readonly UserManager<MetaIdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public ExternalController(
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IEventService events,
             ILogger<ExternalController> logger,
+            UserManager<MetaIdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager,
             TestUserStore users = null)
         {
             // if the TestUserStore is not in DI, then we'll just use the global users collection
@@ -42,6 +48,8 @@ namespace IdentityServerHost.Quickstart.UI
             _clientStore = clientStore;
             _logger = logger;
             _events = events;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         /// <summary>
@@ -94,13 +102,18 @@ namespace IdentityServerHost.Quickstart.UI
             }
 
             // lookup our user and external provider info
-            var (user, provider, providerUserId, claims) = FindUserFromExternalProvider(result);
+            var (metaUser, user, provider, providerUserId, claims) = FindUserFromExternalProvider(result);
             if (user == null)
             {
                 // this might be where you might initiate a custom workflow for user registration
                 // in this sample we don't show how that would be done, as our sample implementation
                 // simply auto-provisions new external user
                 user = AutoProvisionUser(provider, providerUserId, claims);
+            }
+
+            if (metaUser == null)
+            {
+                metaUser = await AutoProvisionMetaUser(provider, providerUserId, claims, "Customer");
             }
 
             // this allows us to collect any additional claims or properties
@@ -111,9 +124,9 @@ namespace IdentityServerHost.Quickstart.UI
             ProcessLoginCallback(result, additionalLocalClaims, localSignInProps);
 
             // issue authentication cookie for user
-            var isuser = new IdentityServerUser(user.SubjectId)
+            var isuser = new IdentityServerUser(metaUser.Id)
             {
-                DisplayName = user.Username,
+                DisplayName = metaUser.UserName,
                 IdentityProvider = provider,
                 AdditionalClaims = additionalLocalClaims
             };
@@ -128,7 +141,7 @@ namespace IdentityServerHost.Quickstart.UI
 
             // check if external login is in the context of an OIDC request
             var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
-            await _events.RaiseAsync(new UserLoginSuccessEvent(provider, providerUserId, user.SubjectId, user.Username, true, context?.Client.ClientId));
+            await _events.RaiseAsync(new UserLoginSuccessEvent(provider, providerUserId, metaUser.Id, metaUser.UserName, true, context?.Client.ClientId));
 
             if (context != null)
             {
@@ -145,7 +158,7 @@ namespace IdentityServerHost.Quickstart.UI
             /*return RedirectToAction(returnUrl);*/
         }
 
-        private (TestUser user, string provider, string providerUserId, IEnumerable<Claim> claims) FindUserFromExternalProvider(AuthenticateResult result)
+        private (MetaIdentityUser metaUser, TestUser user, string provider, string providerUserId, IEnumerable<Claim> claims) FindUserFromExternalProvider(AuthenticateResult result)
         {
             var externalUser = result.Principal;
 
@@ -166,7 +179,65 @@ namespace IdentityServerHost.Quickstart.UI
             // find external user
             var user = _users.FindByExternalProvider(provider, providerUserId);
 
-            return (user, provider, providerUserId, claims);
+            var metaUser = (_userManager.FindByNameAsync(provider + "_" + providerUserId)).Result;
+
+
+            return (metaUser, user, provider, providerUserId, claims);
+        }
+
+        private async Task<MetaIdentityUser> AutoProvisionMetaUser(string provider, string providerUserId, IEnumerable<Claim> claims, string role)
+        {
+
+
+            string email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+            string username = provider + "_" + providerUserId;
+            var userCheck = await _userManager.FindByEmailAsync(email);
+            var roleCheck = await _roleManager.FindByNameAsync(role);
+            if (userCheck != null)
+            {
+                return null;
+            }
+            else if (roleCheck == null)
+            {
+                return null;
+            }
+            else
+            {
+                var user = new MetaIdentityUser
+                {
+                    FirstName = claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName).Value,
+                    LastName = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value,
+                    UserName = username,
+                    NormalizedUserName = username,
+                    Email = email,
+                    PhoneNumber = "012345678",
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                    Line1 = "",
+                    Province = "Ho Chi Minh city",
+                    Country = "Viet Nam"
+                };
+                var rd = new Random();
+                var result = await _userManager.CreateAsync(user, username + rd.NextDouble().ToString());
+
+
+                result = _userManager.AddToRoleAsync(user, role).Result;
+
+                result =
+                _userManager.AddClaimsAsync(
+                    user,
+                    new Claim[]
+                    {
+                            new Claim(JwtClaimTypes.Email, user.Email),
+                            new Claim(JwtClaimTypes.Name, user.FirstName),
+                            new Claim(JwtClaimTypes.GivenName, user.FirstName),
+                            new Claim(JwtClaimTypes.FamilyName, user.LastName),
+                            new Claim(JwtClaimTypes.Role, role)
+                    }
+                ).Result;
+
+                return user;
+            }
         }
 
         private TestUser AutoProvisionUser(string provider, string providerUserId, IEnumerable<Claim> claims)

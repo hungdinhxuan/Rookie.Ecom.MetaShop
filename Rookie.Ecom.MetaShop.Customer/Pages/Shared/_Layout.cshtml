@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Http
 @using Rookie.Ecom.MetaShop.Contracts.Dtos.Product
 @using Rookie.Ecom.MetaShop.Customer.Helpers
+@using System.Security.Claims
 @inject IHttpContextAccessor HttpContextAccessor
 
 @{
@@ -31,9 +32,12 @@
     <link rel="stylesheet" href="~/css/slicknav.min.css" type="text/css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.rateit/1.1.5/rateit.min.css" integrity="sha512-VtezewVucCf4f8ZUJWzF1Pa0kLqPwpbLU/+6ocHmUWaoPqAH9F8gKmPkVYzu2wGWQs6DYuPxijbBfti7B+46FA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <link rel="icon"
+          type="image/png"
+          href="~/img/logo.png">
     <link rel="stylesheet" href="~/css/style.css" type="text/css">
-    <link rel="stylesheet" href="~/css/site.css" type="text/css"/>
+    <link rel="stylesheet" href="~/css/site.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/cyber.css" type="text/css" />
 
 </head>
 <body>
@@ -42,11 +46,15 @@
         <div class="loader"></div>
     </div>
 
+
     <!-- Humberger Begin (Responsive) -->
     <div class="humberger__menu__overlay"></div>
     <div class="humberger__menu__wrapper">
         <div class="humberger__menu__logo">
-            <a asp-page="/Home/Index"><img src="img/logo.png" alt=""></a>
+            <a asp-page="/Home/Index">
+                <img src="img/logo.png" alt=""
+                     style="height: 100px; padding-left: 70px">
+            </a>
         </div>
         <div class="humberger__menu__cart">
             <ul>
@@ -69,7 +77,9 @@
 
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <a asp-page="/Profile/Index" asp-route-id="@User.Claims.FirstOrDefault(c => c.Type == "sub").Value">Hello @User.Claims.FirstOrDefault(claim => claim.Type == "name").Value </a>
+                    <a asp-page="/Profile/Index" asp-route-id="@(User.Claims != null ? User.Claims.FirstOrDefault(c => c.Type == "sub" ).Value : null)">
+                        Hello @(User.Claims != null ? User.Claims.FirstOrDefault(claim => claim.Type == "name" || claim.Type == ClaimTypes.Name).Value : null )
+                    </a>
                     <a asp-page="/Auth/Logout"><i class="fa fa-user"></i> Logout</a>
                 }
                 else
@@ -109,7 +119,7 @@
         <div class="humberger__menu__contact">
             <ul>
                 <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-                <li>Free Shipping for all Order of $99</li>
+                <li>Free Shipping for all Order</li>
             </ul>
         </div>
     </div>
@@ -158,7 +168,6 @@
     @*<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>*@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/jquery-3.3.1.min.js"></script>
-    <
     <script src="~/js/bootstrap.min.js"></script>
     <script src="~/js/jquery.nice-select.min.js"></script>
     <script src="~/js/jquery-ui.min.js"></script>
