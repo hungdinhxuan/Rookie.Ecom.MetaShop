@@ -215,7 +215,8 @@ namespace IdentityServerHost.Quickstart.UI
                     PhoneNumberConfirmed = true,
                     Line1 = "",
                     Province = "Ho Chi Minh city",
-                    Country = "Viet Nam"
+                    Country = "Viet Nam",
+                    TypeAccount = provider
                 };
                 var rd = new Random();
                 var result = await _userManager.CreateAsync(user, username + rd.NextDouble().ToString());

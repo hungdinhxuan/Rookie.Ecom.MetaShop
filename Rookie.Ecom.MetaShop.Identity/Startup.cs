@@ -104,8 +104,7 @@ namespace Rookie.Ecom.MetaShop.Identity
                options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
                options.ClientId = Configuration["Authentication:Microsoft:ClientId"];
                options.ClientSecret = Configuration["Authentication:Microsoft:ClientSecret"];
-           })
-           ;
+           });
 
             services.AddDbContext<AspNetIdentityDbContext>(options =>
             {

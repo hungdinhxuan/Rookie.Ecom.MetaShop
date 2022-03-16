@@ -8,9 +8,11 @@
 @{
     List<ProductItemCartDto> Cart = Helpers.SessionHelper.GetObjectFromJson<List<ProductItemCartDto>>(HttpContextAccessor.HttpContext.Session, "cart");
     int totalItem = 0;
+    decimal totalMoney = 0;
     if (Cart != null)
     {
         totalItem = Cart.Sum(i => i.Quantity);
+        totalMoney = Cart.Sum(c => c.Product.Price * c.Quantity);
     }
 }
 
@@ -61,7 +63,7 @@
                 <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
                 <li><a asp-page="/Product/Cart"><i class="fa fa-shopping-bag"></i> <span>@totalItem</span></a></li>
             </ul>
-            <div class="header__cart__price">item: <span>$150.00</span></div>
+            <div class="header__cart__price">item: <span>$ @totalMoney</span></div>
         </div>
         <div class="humberger__menu__widget">
             @*<div class="header__top__right__language">

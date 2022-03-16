@@ -64,5 +64,10 @@ namespace Rookie.Ecom.MetaShop.Business.Services
                 return null;
             return _mapper.Map<OrderDto>(await query.FirstOrDefaultAsync());
         }
+
+        public async Task<int> GetTotalOrderByUserId(string userId)
+        {
+            return await _baseRepository.Entities.Where(o => o.CreatedBy == userId).CountAsync();
+        }
     }
 }

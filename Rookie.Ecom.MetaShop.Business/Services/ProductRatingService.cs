@@ -55,6 +55,11 @@ namespace Rookie.Ecom.MetaShop.Business.Services
             return _mapper.Map<ProductRatingDto>(await query.FirstOrDefaultAsync());
         }
 
+        public async Task<int> GetTotalRatingByUserId(string userId)
+        {
+            return await _baseRepository.Entities.Where(pr => pr.CreatedBy == userId).Where(pr => pr.IsRated).CountAsync();
+        }
+
         public async Task RatingAsync(UpdateProductRatingDto updateProductRatingDto)
         {
             var productRating = await _baseRepository.GetByIdAsync(updateProductRatingDto.Id);

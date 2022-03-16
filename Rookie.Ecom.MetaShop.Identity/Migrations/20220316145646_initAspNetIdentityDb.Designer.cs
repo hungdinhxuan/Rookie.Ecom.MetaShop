@@ -10,7 +10,7 @@ using Rookie.Ecom.MetaShop.Identity.Data;
 namespace Rookie.Ecom.MetaShop.Identity.Migrations
 {
     [DbContext(typeof(AspNetIdentityDbContext))]
-    [Migration("20220315072852_initAspNetIdentityDb")]
+    [Migration("20220316145646_initAspNetIdentityDb")]
     partial class initAspNetIdentityDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -227,6 +227,10 @@ namespace Rookie.Ecom.MetaShop.Identity.Migrations
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
+
+                    b.Property<string>("TypeAccount")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)

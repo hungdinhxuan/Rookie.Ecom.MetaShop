@@ -9,7 +9,7 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos.Auth
 {
     public class MetaIdentityUserDto
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -29,5 +29,7 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos.Auth
         public string Country { get; set; }
 
         public List<string>? Roles { get; set; }
+
+        public string TypeAccount { get; set; }
     }
 }

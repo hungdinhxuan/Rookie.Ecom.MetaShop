@@ -25,5 +25,8 @@ namespace Rookie.Ecom.MetaShop.Identity.Data
         [Required]
         [MaxLength(255)]
         public string Country { get; set; }
+
+        [Required]
+        public string TypeAccount { get; set; } = "Local";
     }
 }

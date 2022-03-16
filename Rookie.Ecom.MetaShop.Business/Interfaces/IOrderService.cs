@@ -13,5 +13,7 @@ namespace Rookie.Ecom.MetaShop.Business.Interfaces
         Task<List<OrderDto>> GetListOrderByUserIdAsync(string userId);
 
         Task<OrderDto> GetOrderByIdAysnc(Guid id);
+
+        Task<int> GetTotalOrderByUserId(string userId);
     }
 }
