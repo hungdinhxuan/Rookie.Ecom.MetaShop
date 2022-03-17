@@ -20,6 +20,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Rookie.Ecom.MetaShop.DataAccessor.Entities;
 using Rookie.Ecom.MetaShop.Identity.Data;
+using System.Security.Claims;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace IdentityServerHost.Quickstart.UI
 {
@@ -129,13 +132,16 @@ namespace IdentityServerHost.Quickstart.UI
                             {
                                 IsPersistent = true,
                                 ExpiresUtc = DateTimeOffset.UtcNow.Add(AccountOptions.RememberMeLoginDuration)
+
                             };
-                        };
+                        }
+
 
                         // issue authentication cookie with subject ID and username
                         var isuser = new IdentityServerUser(user.Id)
                         {
                             DisplayName = user.UserName
+
                         };
 
                         await HttpContext.SignInAsync(isuser, props);

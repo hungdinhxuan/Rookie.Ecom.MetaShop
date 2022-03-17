@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rookie.Ecom.MetaShop.Identity.Data;
 
-namespace Rookie.Ecom.MetaShop.Identity.Migrations
+namespace Rookie.Ecom.MetaShop.Identity.Migrations.AspNetIdentityDb
 {
     [DbContext(typeof(AspNetIdentityDbContext))]
     partial class AspNetIdentityDbContextModelSnapshot : ModelSnapshot

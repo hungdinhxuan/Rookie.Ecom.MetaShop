@@ -4,16 +4,14 @@ using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Rookie.Ecom.MetaShop.Identity.Migrations.ConfigurationDb
+namespace Rookie.Ecom.MetaShop.Identity.Migrations
 {
     [DbContext(typeof(ConfigurationDbContext))]
-    [Migration("20220311031254_InitConfigurationDb")]
-    partial class InitConfigurationDb
+    partial class ConfigurationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

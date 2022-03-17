@@ -48,7 +48,7 @@ export default function AccountPopover() {
     userManager.signoutRedirect({ id_token_hint: user.id_token });
     userManager.removeUser(); // removes the user data from sessionStorage
   };
-
+  console.log(user)
   return (
     <>
       <IconButton
@@ -82,7 +82,7 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
-            {account.displayName}
+            {user.profile.name}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
             {account.email}

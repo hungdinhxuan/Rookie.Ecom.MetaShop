@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rookie.Ecom.MetaShop.Identity.Data;
 
-namespace Rookie.Ecom.MetaShop.Identity.Migrations
+namespace Rookie.Ecom.MetaShop.Identity.Migrations.AspNetIdentityDb
 {
     [DbContext(typeof(AspNetIdentityDbContext))]
-    [Migration("20220316145646_initAspNetIdentityDb")]
+    [Migration("20220317121720_initAspNetIdentityDb")]
     partial class initAspNetIdentityDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

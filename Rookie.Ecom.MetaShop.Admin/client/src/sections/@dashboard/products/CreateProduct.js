@@ -102,8 +102,6 @@ const CreateProduct = ({ open, setOpen }) => {
   const handleProductChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
-  const [file, setFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState("");
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [previewFiles, setPreviewFiles] = useState([]);
@@ -155,10 +153,10 @@ const CreateProduct = ({ open, setOpen }) => {
       categoryId: "",
       productPictureDtos: []
     });
-    setFile(null);
+    
     setSelectedFiles([]);
     setPreviewFiles([]);
-    setPreviewUrl("");
+    
   };
 
   const handleCreateProduct = () => {

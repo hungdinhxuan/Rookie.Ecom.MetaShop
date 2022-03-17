@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Rookie.Ecom.MetaShop.Identity.Migrations.PersistedGrantDb
 {
-    public partial class InitPersistedGrantDb : Migration
+    public partial class initPersistedGrantDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

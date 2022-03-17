@@ -6,7 +6,6 @@ import {
   Card,
   Table,
   Stack,
-  Avatar,
   Button,
   Checkbox,
   TableRow,
@@ -15,7 +14,6 @@ import {
   Container,
   Typography,
   TableContainer,
-  TablePagination,
   Pagination,
   Box,
   CircularProgress,
@@ -45,6 +43,7 @@ const TABLE_HEAD = [
   { id: "phoneNumber", label: "Phone Number", alignRight: false },
   { id: "province", label: "Province", alignRight: false },
   { id: "country", label: "Country", alignRight: false },
+  { id: "role", label: "Roles", alignRight: false },
   { id: "" },
 ];
 
@@ -250,7 +249,8 @@ export default function User() {
                           phoneNumber,
                           country,
                           province,
-                          id
+                          id,
+                          roles
                         } = row;
                         const isItemSelected = selected.indexOf(userName) !== -1;
 
@@ -288,6 +288,22 @@ export default function User() {
                             <TableCell align="left">{phoneNumber}</TableCell>
                             <TableCell align="left">{province}</TableCell>
                             <TableCell align="left">{country}</TableCell>
+                            <TableCell align="left">
+                              {
+                                roles["$values"]?.map((role, indx) => (
+                                  <Label
+                                  variant="ghost"
+                                  color={
+                                    "success"
+                                  }
+                                  key={indx}
+                                >
+                                  {sentenceCase(role)}
+                                </Label>
+                                ))
+                              }
+                            
+                            </TableCell>
                             {/* <TableCell align="left">
                               {isVerified ? "Yes" : "No"}
                             </TableCell>

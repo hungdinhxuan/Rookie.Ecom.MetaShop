@@ -1,4 +1,5 @@
 ﻿using EnsureThat;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rookie.Ecom.MetaShop.Business.Interfaces;
 using Rookie.Ecom.MetaShop.Contracts;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Rookie.Ecom.MetaShop.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route(Endpoints.Category)]
     [ApiController]
     public class CategoryController : ControllerBase

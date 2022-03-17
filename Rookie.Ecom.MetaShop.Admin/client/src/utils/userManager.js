@@ -16,7 +16,8 @@ const userManagerConfig = {
     filterProtocolClaims: true,
     loadUserInfo: true,
     monitorSession: true,
-    grantType: 'hybrid'
+    grantType: 'implicit'
+    
 };
 
 const userManager = createUserManager(userManagerConfig);

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -7,11 +8,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Rookie.Ecom.MetaShop.Business;
+using Rookie.Ecom.MetaShop.Identity;
+using Swashbuckle.Swagger;
+using System.Collections.Generic;
 using System.IO;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-
+using System.Threading.Tasks;
 
 namespace Rookie.Ecom.MetaShop.Admin
 {
@@ -27,6 +33,12 @@ namespace Rookie.Ecom.MetaShop.Admin
         public string AllOrigins = "AllowAllOrigins";
 
         // This method gets called by the runtime. Use this method to add services to the container.
+
+        private async Task OnTokenValidated(TokenValidatedContext context)
+        {
+            var identity = context.Principal.Identity as ClaimsIdentity;
+            identity.AddClaim(new Claim("role", "role"));
+        }
         public void ConfigureServices(IServiceCollection services)
         {
 
@@ -41,16 +53,15 @@ namespace Rookie.Ecom.MetaShop.Admin
 
             services.AddHttpContextAccessor();
             services.AddBusinessLayer(Configuration);
+            services.AddIdentityLayer(Configuration);
 
-            services.AddAuthentication("Bearer")
-           .AddJwtBearer("Bearer", options =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+           .AddIdentityServerAuthentication(options =>
            {
                options.Authority = "https://localhost:5001";
 
-               options.TokenValidationParameters = new TokenValidationParameters
-               {
-                   ValidateAudience = false
-               };
+               options.JwtBearerEvents.OnTokenValidated = OnTokenValidated;
+
            });
 
             /*services.AddAuthorization(options =>
@@ -73,8 +84,45 @@ namespace Rookie.Ecom.MetaShop.Admin
                                   });
             });
 
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "MetaShop Api",
+                    Version = "v1"
+                });
 
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
+                      Enter 'Bearer' [space] and then your token in the text input below.
+                      \r\n\r\nExample: 'Bearer 12345abcdef'",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+      {
+        {
+          new OpenApiSecurityScheme
+          {
+            Reference = new OpenApiReference
+              {
+                Type = ReferenceType.SecurityScheme,
+                Id = "Bearer"
+              },
+              Scheme = "oauth2",
+              Name = "Bearer",
+              In = ParameterLocation.Header,
+
+            },
+            new List<string>()
+          }
+        });
+
+            });
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {

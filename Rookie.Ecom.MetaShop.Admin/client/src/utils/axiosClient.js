@@ -33,7 +33,7 @@ axiosClient.interceptors.response.use((response) => {
   }
 
   if (error.response.status === 403) {
-      alert("access forbidden")
+      window.location.href = "/403"
   }
   
   throw error;

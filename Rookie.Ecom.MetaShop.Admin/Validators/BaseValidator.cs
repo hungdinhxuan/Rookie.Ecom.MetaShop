@@ -37,6 +37,7 @@ namespace Rookie.Ecom.Admin.Validators
                 context.MessageFormatter.AppendPropertyName(context.PropertyName);
                 return context.GetDefaultMessage();
             };
+
         }
     }
 }

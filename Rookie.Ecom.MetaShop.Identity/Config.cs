@@ -1,6 +1,9 @@
-﻿using IdentityServer4;
+﻿using IdentityModel;
+using IdentityServer4;
 using IdentityServer4.Models;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Security.Claims;
 
 namespace Rookie.Ecom.MetaShop.Identity
 {
@@ -10,13 +13,20 @@ namespace Rookie.Ecom.MetaShop.Identity
         new List<IdentityResource>
         {
             new IdentityResources.OpenId(),
-            new IdentityResources.Profile(),
-             new IdentityResource("roles", new[] { "role" }) //Add this line
+            new IdentityResources.Profile()
+        };
+
+        public static IEnumerable<ApiResource> ApiResources =>
+        new ApiResource[]
+        {
+            new ApiResource("api1", "API #1") {Scopes = {"roles"} },
+            // local API
+            new ApiResource(IdentityServerConstants.LocalApi.ScopeName),
         };
 
         public static IEnumerable<ApiScope> ApiScopes =>
             new[] {
-                new ApiScope("api1", "https://localhost:5003")
+                new ApiScope("roles", new List<string>() { "role", "location" }),
             };
 
 
@@ -81,7 +91,11 @@ namespace Rookie.Ecom.MetaShop.Identity
                         IdentityServerConstants.StandardScopes.Profile,
                         "roles"
                     },
-                  AllowAccessTokensViaBrowser = true
+                  AllowAccessTokensViaBrowser = true,
+                  AlwaysSendClientClaims = true,
+                   AlwaysIncludeUserClaimsInIdToken = true
+
+
             }
         };
     };

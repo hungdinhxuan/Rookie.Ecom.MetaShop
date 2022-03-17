@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
 //
 import DashboardNavbar from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
-import { Navigate } from 'react-router-dom';
 import userManager from '../../utils/userManager';
 // ----------------------------------------------------------------------
 
@@ -35,11 +34,18 @@ const MainStyle = styled('div')(({ theme }) => ({
 
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
-  // const isAuthenticated = Boolean(localStorage.getItem('user'));
+  const navigate = useNavigate();
+  const isAuthenticated = Boolean(localStorage.getItem('user'));
 
-  // if(!isAuthenticated) {
-  //   userManager.signinRedirect();
-  // }
+  if(!isAuthenticated) {
+    userManager.signinRedirect();
+  }
+  
+  userManager.getUser().then(user => {
+    if(user.profile.role !== 'Admin') {
+      navigate('/403');
+    }
+  });
 
   return (
    

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Rookie.Ecom.MetaShop.Identity.Migrations.PersistedGrantDb
 {
     [DbContext(typeof(PersistedGrantDbContext))]
-    [Migration("20220311031245_InitPersistedGrantDb")]
-    partial class InitPersistedGrantDb
+    [Migration("20220317121705_initPersistedGrantDb")]
+    partial class initPersistedGrantDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

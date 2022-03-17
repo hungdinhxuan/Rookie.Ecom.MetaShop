@@ -54,6 +54,15 @@ namespace Rookie.Ecom.MetaShop.Identity
                     }
                     context.SaveChanges();
                 }
+
+                if (!context.ApiResources.Any())
+                {
+                    foreach (var resource in Config.ApiResources)
+                    {
+                        context.ApiResources.Add(resource.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
             }
         }
 
@@ -139,7 +148,8 @@ namespace Rookie.Ecom.MetaShop.Identity
             {
                 options.ConfigureDbContext = b =>
                 b.UseSqlServer(defaultConnString, opt => opt.MigrationsAssembly(migrationsAssembly));
-            });
+            }).AddProfileService<ProfileService>()
+            ;
 
 
 
@@ -162,6 +172,7 @@ namespace Rookie.Ecom.MetaShop.Identity
             app.UseRouting();
             app.UseCors(AllOrigins);
             app.UseIdentityServer();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
