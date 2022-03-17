@@ -130,13 +130,7 @@ const CreateProduct = ({ open, setOpen }) => {
       });
       return;
     }
-    files.forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setPreviewFiles((previewFiles) => [...previewFiles, reader.result]);
-      };
-      reader.readAsDataURL(file);
-    });
+    setPreviewFiles(files.map((file) => URL.createObjectURL(file)));
     setSelectedFiles(files);
   };
 
@@ -153,7 +147,8 @@ const CreateProduct = ({ open, setOpen }) => {
       categoryId: "",
       productPictureDtos: []
     });
-    
+    // reset selected files
+    previewFiles.forEach((previewFile) => URL.revokeObjectURL(previewFile));
     setSelectedFiles([]);
     setPreviewFiles([]);
     

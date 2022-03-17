@@ -8,6 +8,7 @@ using Rookie.Ecom.MetaShop.Contracts.Dtos;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.Category;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Rookie.Ecom.MetaShop.Admin.Controllers
@@ -48,6 +49,7 @@ namespace Rookie.Ecom.MetaShop.Admin.Controllers
         public async Task<ActionResult<CategoryDto>> CreateAsync([FromBody] CreateCategoryDto newCategoryDto)
         {
             Ensure.Any.IsNotNull(newCategoryDto, nameof(newCategoryDto));
+            newCategoryDto.CreatedBy = User.Claims.SingleOrDefault(c => c.Type == "sub").Value;
             var asset = await _categoryService.AddAsync(newCategoryDto);
             return Created(Endpoints.Category, asset);
         }
@@ -56,6 +58,7 @@ namespace Rookie.Ecom.MetaShop.Admin.Controllers
         public async Task<ActionResult> UpdateAsync([FromBody] UpdateCategoryDto categoryDto)
         {
             Ensure.Any.IsNotNull(categoryDto, nameof(categoryDto));
+            categoryDto.UpdatedBy = User.Claims.SingleOrDefault(c => c.Type == "sub").Value;
             await _categoryService.UpdateAsync(categoryDto);
 
             return NoContent();

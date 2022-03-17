@@ -10,7 +10,7 @@
                 <div class="product__details__pic">
                     <div class="product__details__pic__item">
                         <img class="product__details__pic__item--large"
-                             src="@Model.Product.ProductPictures[0].PictureUrl" alt="">
+                             src="@(Model.Product.ProductPictures.Count > 0 ? Model.Product.ProductPictures[0].PictureUrl: null)" alt="">
                     </div>
                     <div class="product__details__pic__slider owl-carousel">
                         @foreach (var item in Model.Product.ProductPictures)
@@ -31,7 +31,7 @@
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star-half-o"></i>*@
 
-                        <div class="rateit" data-rateit-value="@(Model.Reviews != null ? Model.Reviews.Average(r => r.Rating) : 0)" data-rateit-ispreset="true" data-rateit-readonly="true"></div>
+                        <div class="rateit" data-rateit-value="@(Model.Reviews != null && Model.Reviews.Count > 0 ? Model.Reviews.Average(r => r.Rating) : 0)" data-rateit-ispreset="true" data-rateit-readonly="true"></div>
 
                         <span>(@(Model.Reviews != null ? Model.Reviews.Count : 0) reviews)</span>
                     </div>
@@ -168,7 +168,7 @@
 
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="@item.ProductPictures[0].PictureUrl">
+                        <div class="product__item__pic set-bg" data-setbg="@(item.ProductPictures.Count > 0 ? item.ProductPictures[0].PictureUrl : null)">
                             <ul class="product__item__pic__hover">
                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                 <li><a href="#"><i class="fa fa-retweet"></i></a></li>

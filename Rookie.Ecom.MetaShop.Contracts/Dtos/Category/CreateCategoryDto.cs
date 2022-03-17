@@ -15,5 +15,7 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos.Category
 
         public string ImageUrl { get; set; }
 
+        public string? CreatedBy { get; set; }
+
     }
 }

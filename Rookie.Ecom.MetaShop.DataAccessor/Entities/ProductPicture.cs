@@ -7,7 +7,7 @@ namespace Rookie.Ecom.MetaShop.DataAccessor.Entities
     public class ProductPicture : BaseEntity
     {
         [Required]
-        [StringLength(maximumLength: 250)]
+        [StringLength(maximumLength: 1500)]
         public string PictureUrl { get; set; }
 
         [Required]

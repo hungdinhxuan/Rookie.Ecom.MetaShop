@@ -238,7 +238,7 @@ namespace Rookie.Ecom.MetaShop.Identity
                 context.SaveChanges();
             }
 
-            /*if (!context.ApiResources.Any())
+            if (!context.ApiResources.Any())
             {
                 foreach (var resource in Config.ApiResources.ToList())
                 {
@@ -246,7 +246,7 @@ namespace Rookie.Ecom.MetaShop.Identity
                 }
 
                 context.SaveChanges();
-            }*/
+            }
         }
     }
 }

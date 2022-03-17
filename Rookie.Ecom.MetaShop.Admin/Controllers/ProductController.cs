@@ -56,6 +56,8 @@ namespace Rookie.Ecom.MetaShop.Admin.Controllers
                 newProductDto.ProductPictureDtos[i].ProductId = asset.Id;
             }
 
+            newProductDto.CreatedBy = User.Claims.SingleOrDefault(c => c.Type == "sub").Value;
+
             var productPictures = await _productPictureService.AddRangeAsync(newProductDto.ProductPictureDtos);
 
             foreach (var item in productPictures)
@@ -69,6 +71,7 @@ namespace Rookie.Ecom.MetaShop.Admin.Controllers
         public async Task<ActionResult> UpdateAsync([FromBody] UpdateProductDto ProductDto)
         {
             Ensure.Any.IsNotNull(ProductDto, nameof(ProductDto));
+            ProductDto.UpdatedBy = User.Claims.SingleOrDefault(c => c.Type == "sub").Value;
             await _productService.UpdateAsync(ProductDto);
             if (ProductDto.NewProductPictureDtos != null && ProductDto.NewProductPictureDtos.Count > 0)
             {

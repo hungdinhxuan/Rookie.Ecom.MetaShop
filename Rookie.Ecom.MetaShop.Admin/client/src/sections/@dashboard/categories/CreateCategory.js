@@ -39,12 +39,7 @@ const CreateCategory = ({ open, setOpen }) => {
 
     if (file && types.includes(file.type)) {
       setFile(file);
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewUrl(reader.result);
-      };
-      reader.readAsDataURL(file);
+      setPreviewUrl(URL.createObjectURL(file));
     } else {
       setOpen(false);
       swalWithBootstrapButtons.fire(
@@ -62,6 +57,7 @@ const CreateCategory = ({ open, setOpen }) => {
       desc: "",
       imageUrl: "",
     });
+    previewUrl && URL.revokeObjectURL(previewUrl);
     setFile(null);
     setPreviewUrl("");
   };

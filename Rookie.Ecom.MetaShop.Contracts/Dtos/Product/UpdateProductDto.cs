@@ -1,9 +1,6 @@
 ﻿using Rookie.Ecom.MetaShop.Contracts.Dtos.ProductPicture;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rookie.Ecom.MetaShop.Contracts.Dtos.Product
 {
@@ -27,6 +24,8 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos.Product
         public bool IsPublished { get; set; }
 
         public Guid CategoryId { get; set; }
+
+        public string? UpdatedBy { get; set; }
 
         public List<ProductPictureDto> ProductPictureDtos { get; set; }
 

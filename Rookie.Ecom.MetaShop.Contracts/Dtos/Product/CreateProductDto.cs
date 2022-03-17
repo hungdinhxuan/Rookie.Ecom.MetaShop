@@ -24,6 +24,8 @@ namespace Rookie.Ecom.MetaShop.Contracts.Dtos.Product
 
         public Guid CategoryId { get; set; }
 
+        public string? CreatedBy { get; set; }
+
         public List<CreateProductPictureDto> ProductPictureDtos { get; set; }
     }
 }
