@@ -7,6 +7,9 @@ import { fShortenNumber } from '../../../utils/formatNumber';
 import Iconify from '../../../components/Iconify';
 
 // ----------------------------------------------------------------------
+import { useSelector, useDispatch } from 'react-redux';
+import { getOverviewAsync } from 'src/features/overviewSlice';
+import { useEffect } from 'react';
 
 const RootStyle = styled(Card)(({ theme }) => ({
   boxShadow: 'none',
@@ -37,12 +40,17 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 const TOTAL = 1723315;
 
 export default function AppItemOrders() {
+  const dispatch = useDispatch();
+  const {overview} = useSelector((state) => state.overview);
+  useEffect(() => {
+    dispatch(getOverviewAsync());
+  }, [dispatch]);
   return (
     <RootStyle>
       <IconWrapperStyle>
         <Iconify icon="ant-design:windows-filled" width={24} height={24} />
       </IconWrapperStyle>
-      <Typography variant="h3">{fShortenNumber(TOTAL)}</Typography>
+      <Typography variant="h3">{fShortenNumber(overview?.totalOrderedItem)}</Typography>
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
         Item Orders
       </Typography>

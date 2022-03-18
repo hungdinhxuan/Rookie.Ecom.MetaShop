@@ -7,7 +7,6 @@ using Rookie.Ecom.MetaShop.Business.Interfaces;
 using Rookie.Ecom.MetaShop.Contracts;
 using Rookie.Ecom.MetaShop.Contracts.Dtos.Auth;
 using Rookie.Ecom.MetaShop.Identity.Data;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -26,6 +25,11 @@ namespace Rookie.Ecom.MetaShop.Business.Services
             _userManager = userManager;
             _roleManager = roleManager;
             _mapper = mapper;
+        }
+
+        public async Task<int> CountAsync()
+        {
+            return await _userManager.Users.CountAsync();
         }
 
         public async Task<MetaIdentityUserDto> GetById(string id)

@@ -3,6 +3,9 @@ import { alpha, styled } from '@mui/material/styles';
 import { Card, Typography } from '@mui/material';
 // utils
 import { fShortenNumber } from '../../../utils/formatNumber';
+import { useSelector, useDispatch } from 'react-redux';
+import { getOverviewAsync } from 'src/features/overviewSlice';
+import { useEffect } from 'react';
 // component
 import Iconify from '../../../components/Iconify';
 
@@ -37,12 +40,18 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 const TOTAL = 1352831;
 
 export default function AppNewUsers() {
+  const dispatch = useDispatch();
+  const {overview} = useSelector((state) => state.overview);
+  useEffect(() => {
+    dispatch(getOverviewAsync());
+  }, [dispatch]);
+  
   return (
     <RootStyle>
       <IconWrapperStyle>
         <Iconify icon="ant-design:apple-filled" width={24} height={24} />
       </IconWrapperStyle>
-      <Typography variant="h3">{fShortenNumber(TOTAL)}</Typography>
+      <Typography variant="h3">{fShortenNumber(overview?.totalUser)}</Typography>
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
         New Users
       </Typography>

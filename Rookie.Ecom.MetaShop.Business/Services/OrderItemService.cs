@@ -38,6 +38,11 @@ namespace Rookie.Ecom.MetaShop.Business.Services
             return _mapper.Map<List<OrderItemDto>>(orderItems.ToList());
         }
 
+        public async Task<int> CountAsync()
+        {
+            return await _baseRepository.Entities.CountAsync();
+        }
+
         public async Task<List<ProductRatingDto>> GetListProductRatingByProductIdAsync(Guid productId)
         {
             var query = _baseRepository.Entities;

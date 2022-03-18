@@ -14,5 +14,7 @@ namespace Rookie.Ecom.MetaShop.Business.Interfaces
 
         Task<PagedResponseModel<MetaIdentityUserDto>> PagedQueryAsync(string username, int page, int limit);
 
+        Task<int> CountAsync();
+
     }
 }

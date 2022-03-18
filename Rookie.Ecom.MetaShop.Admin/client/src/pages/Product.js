@@ -51,11 +51,9 @@ import { sentenceCase } from "change-case";
 const TABLE_HEAD = [
   { id: "id", label: "Id", alignRight: false },
   { id: "name", label: "Name", alignRight: false },
-  { id: "shortDesc", label: "Short Description", alignRight: false },
-  { id: "longDesc", label: "Long Description", alignRight: false },
+  { id: "category", label: "Category", alignRight: false },
   { id: "price", label: "Price", alignRight: false },
   { id: "quantity", label: "Quantity", alignRight: false },
-  { id: "status", label: "Status", alignRight: false },
   { id: "isFeatured", label: "Featured Product", alignRight: false },
   { id: "" },
 ];
@@ -272,8 +270,7 @@ export default function Product() {
                           quantity,
                           status,
                           isFeatured,
-                          createdDate,
-                          updatedDate,
+                          category
                         } = row;
                         const isItemSelected = selected.indexOf(name) !== -1;
 
@@ -308,8 +305,8 @@ export default function Product() {
                               </Stack>
                             </TableCell>
                             <TableCell align="left">{name}</TableCell>
-                            <TableCell align="left">{shortDesc}</TableCell>
-                            <TableCell align="left">{longDesc}</TableCell>
+                            <TableCell align="left">{category?.name}</TableCell>
+                            
                             <TableCell align="left">{price}</TableCell>
                             <TableCell align="left">{quantity}</TableCell>
                             <TableCell align="left">{status}</TableCell>

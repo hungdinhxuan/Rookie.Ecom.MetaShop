@@ -16,5 +16,7 @@ namespace Rookie.Ecom.MetaShop.Business.Interfaces
         Task<OrderItemDto> GetOrderItemByIdAsync(Guid id);
 
         Task<List<ProductRatingDto>> GetListProductRatingByProductIdAsync(Guid productId);
+
+        Task<int> CountAsync();
     }
 }

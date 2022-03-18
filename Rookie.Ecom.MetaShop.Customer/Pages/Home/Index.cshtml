@@ -242,14 +242,38 @@
                     }
                 </div>
                 <div>
+
                     <ul class="pagination">
+                        @if (Model.CurrentPage > 1)
+                        {
+                            <li class="page-item"><a class="page-link" asp-page="/Home/Index" asp-route-pageIndex="@(Model.CurrentPage - 1)" class="page-link" asp-route-searchString="@Model.CurrentFilter">Previous</a></li>
+                        }
                         @for (var i = 1; i <= Model.Products.TotalPages; i++)
                         {
-                            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                                <a asp-page="/Home/Index" asp-route-pageIndex="@i" class="page-link" asp-route-searchString="@Model.CurrentFilter">@i</a>
-                            </li>
+                            @if (i > 10)
+                            {
+
+                                @if (i == Model.CurrentPage)
+                                {
+                                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                        <a asp-page="/Home/Index" asp-route-pageIndex="@i" class="page-link" asp-route-searchString="@Model.CurrentFilter">@i</a>
+                                    </li>
+                                }
+                                <li class="page-item"> ...</li>
+                            }
+                            else
+                            {
+                                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                    <a asp-page="/Home/Index" asp-route-pageIndex="@i" class="page-link" asp-route-searchString="@Model.CurrentFilter">@i</a>
+                                </li>
+                            }
+                        }
+                        @if (Model.CurrentPage < Model.Products.TotalPages)
+                        {
+                            <li class="page-item"><a class="page-link" asp-page="/Home/Index" asp-route-pageIndex="@(Model.CurrentPage + 1)" class="page-link" asp-route-searchString="@Model.CurrentFilter">Next</a></li>
                         }
                     </ul>
+
                 </div>
             </div>
         </div>
