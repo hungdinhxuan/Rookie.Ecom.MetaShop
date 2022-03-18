@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace Rookie.Ecom.MetaShop.Customer.Pages.Auth
 {
-    [AllowAnonymous]
     public class RegisterModel : PageModel
     {
         private readonly IMetaIdentityUserService _metaIdentityUserService;
@@ -23,8 +22,6 @@ namespace Rookie.Ecom.MetaShop.Customer.Pages.Auth
         }
         public IActionResult OnGet()
         {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToPage("/Home/Login");
             return Page();
         }
 

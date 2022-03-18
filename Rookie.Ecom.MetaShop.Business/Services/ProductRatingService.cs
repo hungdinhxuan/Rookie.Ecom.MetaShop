@@ -43,7 +43,9 @@ namespace Rookie.Ecom.MetaShop.Business.Services
         {
             var query = _baseRepository.Entities;
             query = query.Include(pr => pr.OrderItem)
-                .Where(o => o.OrderItem.ProductId == productId);
+                .Where(o => o.OrderItem.ProductId == productId)
+                .Where(p => p.IsRated == true)
+                ;
 
             return _mapper.Map<List<ProductRatingDto>>(await query.ToListAsync());
         }

@@ -58,6 +58,7 @@ namespace Rookie.Ecom.MetaShop.Business
 
             // User 
             CreateMap<MetaIdentityUserDto, MetaIdentityUser>();
+            CreateMap<UserRegistrationDto, MetaIdentityUser>();
         }
 
         private void FromDataAccessorLayer()

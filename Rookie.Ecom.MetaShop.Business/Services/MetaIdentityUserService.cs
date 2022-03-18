@@ -93,7 +93,7 @@ namespace Rookie.Ecom.MetaShop.Business.Services
             }
             else
             {
-                var user = new MetaIdentityUser
+                /*var user = new MetaIdentityUser
                 {
                     FirstName = request.FirstName,
                     LastName = request.LastName,
@@ -103,7 +103,16 @@ namespace Rookie.Ecom.MetaShop.Business.Services
                     PhoneNumber = request.PhoneNumber,
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true,
-                };
+                    Line1 = request.Line1,
+                    Line2 = request.Line2,
+                    Province = request.Province,
+                    Country = request.Country
+                };*/
+
+                var user = _mapper.Map<MetaIdentityUser>(request);
+                user.PhoneNumberConfirmed = user.EmailConfirmed = true;
+                user.UserName = user.NormalizedUserName = user.Email;
+
                 var result = await _userManager.CreateAsync(user, request.Password);
 
 

@@ -50,13 +50,12 @@ namespace Rookie.Ecom.MetaShop.Admin.Controllers
         public async Task<ActionResult<ProductDto>> CreateAsync([FromBody] CreateProductDto newProductDto)
         {
             Ensure.Any.IsNotNull(newProductDto, nameof(newProductDto));
+            newProductDto.CreatedBy = User.Claims.SingleOrDefault(c => c.Type == "sub").Value;
             var asset = await _productService.AddAsync(newProductDto);
             for (int i = 0; i < newProductDto.ProductPictureDtos.Count; i++)
             {
                 newProductDto.ProductPictureDtos[i].ProductId = asset.Id;
             }
-
-            newProductDto.CreatedBy = User.Claims.SingleOrDefault(c => c.Type == "sub").Value;
 
             var productPictures = await _productPictureService.AddRangeAsync(newProductDto.ProductPictureDtos);
 

@@ -175,7 +175,8 @@
                                 <div class="col-lg-4">
                                     <div class="product__discount__item">
                                         <div class="product__discount__item__pic set-bg"
-                                         data-setbg="@(item.ProductPictures.Count > 0 ? item.ProductPictures[0].PictureUrl : null)">
+                                         data-setbg="@(item.ProductPictures.Count > 0 ? item.ProductPictures[0].PictureUrl : null)"
+                                         style="background-image: url('@(item.ProductPictures.Count > 0 ? item.ProductPictures[0].PictureUrl : null)')">
                                             @*<div class="product__discount__percent">-20%</div>*@
                                             <ul class="product__item__pic__hover">
                                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
@@ -210,7 +211,7 @@
                                 <h6><span>@Model.Products.TotalItems</span> Products found</h6>
                             </div>
                         </div>
-                       
+
                     </div>
                 </div>
                 <div class="row">
@@ -220,7 +221,8 @@
 
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="@( item.ProductPictures.Count > 0 ? item.ProductPictures[0].PictureUrl : null )">
+                                <div class="product__item__pic set-bg" data-setbg="@( item.ProductPictures.Count > 0 ? item.ProductPictures[0].PictureUrl : null )"
+                                 style="background-image: url('@(item.ProductPictures.Count > 0 ? item.ProductPictures[0].PictureUrl : null)')">
                                     <a asp-page="/Product/Index" asp-route-id="@item.Id" class="product-wrapper-link"><i class="fa-solid fa-eye"></i></a>
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>

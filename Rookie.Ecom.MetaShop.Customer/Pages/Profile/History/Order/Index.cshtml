@@ -3,34 +3,57 @@
 @{
 }
 
-<div class="container">
-    @foreach (var order in Model.Orders)
-    {
-        <div class="card w-100">
-            <div class="card-header"> Order Id: @order.Id </div>
-            <div class="card-body">
-
-                @foreach (var orderItem in order.OrderItems)
-                {
-                    <div class="card border-primary mb-3 w-80 d-flex flex-row">
-                        <img class="card-img-top" src="@orderItem.Product.ProductPictures[0].PictureUrl" alt="Card image cap" style="width: 30%; height: 150px; object-fit: cover">
-
-                        <div class="card-body text-primary d-flex flex-row align-items-center" style="justify-content: space-evenly;">
-                            <h4 class="card-title">@orderItem.Product.Name </h4>
-                            <h5 class="card-title">Unit Price: $@orderItem.Price</h5>
-                            <h5 class="card-title">Quantity: x @orderItem.Quantity</h5>
-                            <h5 class="text-center"><strong>Total Price: $@(orderItem.Product.Price * orderItem.Product.Quantity) </strong></h5>
-                        </div>
-
+@if (Model.Orders == null || Model.Orders.Count == 0)
+{
+    <div class="container-fluid mt-100">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Cart</h5>
                     </div>
-                    <br />
-                }
-                <h5 class="text-center" style="color: red;"><strong>Total Order Price: $@(order.TotalPrice) </strong></h5>
-                <a asp-page="/Profile/History/Order/Detail" asp-route-id="@order.Id" class="card-link">View order detail</a>
+                    <div class="card-body cart">
+                        <div class="col-sm-12 empty-cart-cls text-center">
+                            <img src="https://i.imgur.com/dCdflKN.png" width="130" height="130" class="img-fluid mb-4 mr-3">
+                            <h3><strong>Your Cart is Empty</strong></h3>
+                            <h4>Add something to make me happy :)</h4> <a asp-page="/Home/Index" class="btn btn-primary cart-btn-transform m-3" data-abc="true">continue shopping</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <hr />
-    }
-</div>
+    </div>
+}
+else
+{
 
-<a asp-page="/Profile/History/Order/Detail" asp-route-id="1"> Order Detail</a>
+    <div class="container">
+        @foreach (var order in Model.Orders)
+        {
+            <div class="card w-100">
+                <div class="card-header"> Order Id: @order.Id </div>
+                <div class="card-body">
+
+                    @foreach (var orderItem in order.OrderItems)
+                    {
+                        <div class="card border-primary mb-3 w-80 d-flex flex-row">
+                            <img class="card-img-top" src="@orderItem.Product.ProductPictures[0].PictureUrl" alt="Card image cap" style="width: 30%; height: 150px; object-fit: cover">
+
+                            <div class="card-body text-primary d-flex flex-row align-items-center" style="justify-content: space-evenly;">
+                                <h4 class="card-title">@orderItem.Product.Name </h4>
+                                <h5 class="card-title">Unit Price: $@orderItem.Price</h5>
+                                <h5 class="card-title">Quantity: x @orderItem.Quantity</h5>
+                                <h5 class="text-center"><strong>Total Price: $@(orderItem.Product.Price * orderItem.Quantity) </strong></h5>
+                            </div>
+
+                        </div>
+                        <br />
+                    }
+                    <h5 class="text-center" style="color: red;"><strong>Total Order Price: $@(order.TotalPrice) </strong></h5>
+                    <a asp-page="/Profile/History/Order/Detail" asp-route-id="@order.Id" class="card-link">View order detail</a>
+                </div>
+            </div>
+            <hr />
+        }
+    </div>
+}
