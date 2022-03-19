@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rookie.Ecom.MetaShop.Contracts;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Rookie.Ecom.MetaShop.Business.Extensions

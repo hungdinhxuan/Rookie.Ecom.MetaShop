@@ -1,6 +1,4 @@
-﻿using Rookie.Ecom.MetaShop.Contracts.Dtos.Product;
-using System;
-using System.Text.Json.Serialization;
+﻿using System;
 
 namespace Rookie.Ecom.MetaShop.Contracts.Dtos.ProductPicture
 {
