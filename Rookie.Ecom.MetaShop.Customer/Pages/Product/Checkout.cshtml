@@ -102,7 +102,7 @@
 
                                     @foreach (var item in @Model.Cart)
                                     {
-                                        <li>@item.Product.Name <span>$@(item.Product.Price * @item.Quantity)</span></li>
+                                        <li>@item.Product.Name <span>$@((item.Product.Price * @item.Quantity).ToString("0.##"))</span></li>
                                     }
                                 }
                             </ul>

@@ -126,7 +126,7 @@
                                             </div>
                                             <div class="latest-product__item__text">
                                                 <h6>@LastestProducts[i].Name</h6>
-                                                <span>$@LastestProducts[i].Price</span>
+                                                <span>$@LastestProducts[i].Price.ToString("0.##")</span>
                                             </div>
                                         </a>
                                         @if (i + 1 < LastestProductsLength)
@@ -138,7 +138,7 @@
                                                 </div>
                                                 <div class="latest-product__item__text">
                                                     <h6>@LastestProducts[i+1].Name</h6>
-                                                    <span>$@LastestProducts[i+1].Price</span>
+                                                    <span>$@LastestProducts[i+1].Price.ToString("0.##")</span>
                                                 </div>
                                             </a>
                                         }
@@ -151,7 +151,7 @@
                                                 </div>
                                                 <div class="latest-product__item__text">
                                                     <h6>@LastestProducts[i+2].Name</h6>
-                                                    <span>$@LastestProducts[i+2].Price</span>
+                                                    <span>$@LastestProducts[i+2].Price.ToString("0.##")</span>
                                                 </div>
                                             </a>
                                         }
@@ -187,7 +187,7 @@
                                         <div class="product__discount__item__text">
                                             <span>@item.Category.Name</span>
                                             <h5><a asp-page="/Product/Index" asp-route-id="@item.Id">@item.Name</a></h5>
-                                            <div class="product__item__price">$30.00 @*<span>$36.00</span>*@</div>
+                                            <div class="product__item__price">$@item.Price.ToString("0.##") @*<span>$36.00</span>*@</div>
                                         </div>
                                     </div>
                                 </div>
@@ -234,7 +234,7 @@
 
                                 <div class="product__item__text">
                                     <h6><a href="#">@item.Name</a></h6>
-                                    <h5>$@item.Price</h5>
+                                    <h5>$@item.Price.ToString("0.##")</h5>
                                 </div>
                             </div>
                         </div>

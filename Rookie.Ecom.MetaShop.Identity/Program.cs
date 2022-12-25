@@ -13,13 +13,13 @@ namespace Rookie.Ecom.MetaShop.Identity
     {
         public static void Main(string[] args)
         {
-            var defaultConnString = "Server=(LocalDb)\\.;Database=Rookie.Ecom.MetaShop;Trusted_Connection=True;";
+            var defaultConnString = "Server=.;Database=Rookie.Ecom.MetaShop;User Id=sa;Password=Strong!Passw0rd;";
             if (args.Contains("/seed"))
             {
                 SeedData.EnsureSeedData(defaultConnString);
             }
-            CreateHostBuilder(args).Build().Run();
-
+            var builder = CreateHostBuilder(args).Build();
+            builder.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

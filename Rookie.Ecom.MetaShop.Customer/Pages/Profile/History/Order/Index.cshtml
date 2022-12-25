@@ -41,15 +41,15 @@ else
 
                             <div class="card-body text-primary d-flex flex-row align-items-center" style="justify-content: space-evenly;">
                                 <h4 class="card-title">@orderItem.Product.Name </h4>
-                                <h5 class="card-title">Unit Price: $@orderItem.Price</h5>
+                                <h5 class="card-title">Unit Price: $@orderItem.Price.ToString("0.##")</h5>
                                 <h5 class="card-title">Quantity: x @orderItem.Quantity</h5>
-                                <h5 class="text-center"><strong>Total Price: $@(orderItem.Product.Price * orderItem.Quantity) </strong></h5>
+                                <h5 class="text-center"><strong>Total Price: $@((orderItem.Product.Price * orderItem.Quantity).ToString("0.##")) </strong></h5>
                             </div>
 
                         </div>
                         <br />
                     }
-                    <h5 class="text-center" style="color: red;"><strong>Total Order Price: $@(order.TotalPrice) </strong></h5>
+                    <h5 class="text-center" style="color: red;"><strong>Total Order Price: $@(order.TotalPrice.ToString("0.##")) </strong></h5>
                     <a asp-page="/Profile/History/Order/Detail" asp-route-id="@order.Id" class="card-link">View order detail</a>
                 </div>
             </div>

@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rookie.Ecom.MetaShop.Custom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rookie.Ecom.MetaShop.Admin", "Rookie.Ecom.MetaShop.Admin\Rookie.Ecom.MetaShop.Admin.csproj", "{03913C07-CD80-4BE5-8B12-A2EDF66E90A7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rookie.Ecom.MetaShop.UnitTests", "Rookie.Ecom.MetaShop.UnitTests\Rookie.Ecom.MetaShop.UnitTests.csproj", "{BE30CC62-A95A-426B-956E-BA94D8C2317F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,10 +45,6 @@ Global
 		{03913C07-CD80-4BE5-8B12-A2EDF66E90A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03913C07-CD80-4BE5-8B12-A2EDF66E90A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03913C07-CD80-4BE5-8B12-A2EDF66E90A7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BE30CC62-A95A-426B-956E-BA94D8C2317F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BE30CC62-A95A-426B-956E-BA94D8C2317F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BE30CC62-A95A-426B-956E-BA94D8C2317F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BE30CC62-A95A-426B-956E-BA94D8C2317F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

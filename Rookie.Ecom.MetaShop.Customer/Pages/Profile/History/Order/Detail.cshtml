@@ -42,7 +42,7 @@
                                                 <div class="col my-auto"> <small>Size : M</small></div>*@
                                             <div class="col my-auto"> <small>Qty : @orderItem.Quantity</small></div>
                                             <div class="col my-auto">
-                                                <h6 class="mb-0">$ @orderItem.Price </h6>
+                                                <h6 class="mb-0">$ @orderItem.Price.ToString("0.##") </h6>
                                             </div>
 
                                             @if (!orderItem.ProductRating.IsRated)
@@ -84,7 +84,7 @@
                             <p class="mb-1"><b>Total</b></p>
                         </div>
                         <div class="flex-sm-col col-auto">
-                            <p class="mb-1">$ @Model.Order.TotalPrice</p>
+                            <p class="mb-1">$ @Model.Order.TotalPrice.ToString("0.##")</p>
                         </div>
                     </div>
                     @*<div class="row justify-content-between">
@@ -132,7 +132,7 @@
                         <h2 class="mb-0 font-weight-bold">TOTAL PAID</h2>
                     </div>
                     <div class="col-auto my-auto ml-auto">
-                        <h1 class="display-3 ">$ @Model.Order.TotalPrice</h1>
+                        <h1 class="display-3 ">$ @Model.Order.TotalPrice.ToString("0.##")</h1>
                     </div>
                 </div>
                 <div class="row mb-3 mt-3 mt-md-0">

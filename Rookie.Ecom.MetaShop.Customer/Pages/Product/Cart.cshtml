@@ -55,7 +55,7 @@ else
                                                     <h5>@item.Product.Name</h5>
                                                 </td>
                                                 <td class="shoping__cart__price">
-                                                    $@item.Product.Price
+                                                    $@item.Product.Price.ToString("0.##")
                                                 </td>
                                                 <td class="shoping__cart__quantity">
                                                     <div class="quantity">
@@ -65,7 +65,7 @@ else
                                                     </div>
                                                 </td>
                                                 <td class="shoping__cart__total">
-                                                    $@(item.Product.Price * item.Quantity)
+                                                    $@((item.Product.Price * item.Quantity).ToString("0.##"))
                                                 </td>
                                                 <td class="shoping__cart__item__close">
                                                     <a asp-page="/Product/Cart" asp-page-handler="delete" asp-route-productid="@item.Product.Id">
